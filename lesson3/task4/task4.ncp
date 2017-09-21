@@ -1,0 +1,175 @@
+<Project>
+  <Name>task4</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>diagram</Name>
+    <Language>Java</Language>
+    <Entities>
+      <Entity type="Interface">
+        <Name>Book</Name>
+        <Access>Public</Access>
+        <Location left="10" top="10" />
+        <Size width="231" height="179" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">String getName()</Member>
+        <Member type="Method">void setName(String name)</Member>
+        <Member type="Method">Reader getReader()</Member>
+        <Member type="Method">void setReader(Reader reader)</Member>
+        <Member type="Method">BookStatus getStatus()</Member>
+        <Member type="Method">void setStatus(BookStatus bookStatus)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>BookImpl</Name>
+        <Access>Public</Access>
+        <Location left="10" top="257" />
+        <Size width="211" height="230" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private String name</Member>
+        <Member type="Field">private BiookStatus bookStatus</Member>
+        <Member type="Field">private Reader reader</Member>
+        <Member type="Method">public String getName()</Member>
+        <Member type="Method">public void setName(String name)</Member>
+        <Member type="Method">public BookStatus getStatus()</Member>
+        <Member type="Method">public void setStatus(BookStatus status)</Member>
+        <Member type="Method">public Reader getReader()</Member>
+        <Member type="Method">public void setReader(Reader reader)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Library</Name>
+        <Access>Public</Access>
+        <Location left="537" top="10" />
+        <Size width="214" height="179" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private Book[] books</Member>
+        <Member type="Field">private Reader[] readers</Member>
+        <Member type="Method">public Book[] getBooks()</Member>
+        <Member type="Method">public void setBooks(Book[] books)</Member>
+        <Member type="Method">public Reader[] getReaders()</Member>
+        <Member type="Method">public void setReader(Reader[] readers)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>LibraryManager</Name>
+        <Access>Public</Access>
+        <Location left="294" top="207" />
+        <Size width="299" height="230" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private MemoryManager&lt;Book&gt; bookMemoryManager</Member>
+        <Member type="Field">private MemoryManager&lt;Reader&gt; readerMemoryManager</Member>
+        <Member type="Method">public void addBook(Book book)</Member>
+        <Member type="Method">public void addReader(Reader reader)</Member>
+        <Member type="Method">public void subscribeOnBook(Reader reader, Book book)</Member>
+        <Member type="Method">public void unsubscribeOnBook(Reader reader, Book book)</Member>
+        <Member type="Method">public Reader whereIsBook(Book book)</Member>
+        <Member type="Method">public void whereIsAllBooks()</Member>
+        <Member type="Method">public void printAllReaders()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>Reader</Name>
+        <Access>Public</Access>
+        <Location left="814" top="10" />
+        <Size width="187" height="179" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">Book[] getBooks()</Member>
+        <Member type="Method">void setBooks(Book[] books)</Member>
+        <Member type="Method">void addBook(Book book)</Member>
+        <Member type="Method">void deleteBook(Book book)</Member>
+        <Member type="Method">String getName()</Member>
+        <Member type="Method">void setName(String name)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>ReaderImpl</Name>
+        <Access>Public</Access>
+        <Location left="786" top="254" />
+        <Size width="265" height="196" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private String name</Member>
+        <Member type="Field">private Book[] books</Member>
+        <Member type="Field">private MemoryManager&lt;Book&gt; bookMemoryManager</Member>
+        <Member type="Method">public String getName()</Member>
+        <Member type="Method">public void setName(String name)</Member>
+        <Member type="Method">public Book[] getBooks()</Member>
+        <Member type="Method">public void setBooks(Book[] books)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>MemoryManager</Name>
+        <Access>Public</Access>
+        <Location left="826" top="464" />
+        <Size width="178" height="111" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public T[] extendArray(T[] array)</Member>
+        <Member type="Method">public boolean isFull(T[] array)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>Manager</Name>
+        <Access>Public</Access>
+        <Location left="492" top="502" />
+        <Size width="162" height="77" />
+        <Collapsed>False</Collapsed>
+      </Entity>
+      <Entity type="Enum">
+        <Name>BookStatus</Name>
+        <Access>Public</Access>
+        <Location left="309" top="10" />
+        <Size width="162" height="112" />
+        <Collapsed>False</Collapsed>
+        <Value>FREE</Value>
+        <Value>BUSY</Value>
+        <Value>NOT_FOUND</Value>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Realization" first="6" second="7">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="1" second="0">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="5" second="4">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="3" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="2" second="3">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="1" second="3">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="5" second="3">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="8" second="3">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Bidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>
