@@ -1,9 +1,11 @@
 package com.senla.training.kononovich.storage;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.senla.training.kononovich.entity.Order;
+import com.senla.training.kononovich.enums.OrderStatus;
 
 public class OrderList implements IListEntity<Order> {
 
@@ -55,6 +57,15 @@ public class OrderList implements IListEntity<Order> {
 			iterator = getList().get(getList().size() - 1).getId();
 		}
 		return ++iterator;
+	}
+	
+	public void completed(int id) {
+		for(Order order : getList()) {
+			if(order.getId() == id) {
+				order.setStatus(OrderStatus.COMPLETED);
+				order.setExecutionDate(new Date());
+			}
+		}
 	}
 
 }

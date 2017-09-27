@@ -1,14 +1,23 @@
 package com.senla.training.kononovich.storage;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.entity.Client;
 import com.senla.training.kononovich.entity.Order;
+import com.senla.training.kononovich.enums.OrderStatus;
+import com.senla.training.kononovich.service.printers.BookPrinter;
+import com.senla.training.kononovich.service.printers.OrderPrinter;
 
 public class Container {
 	private static Container instance;
 	private BookList books;
 	private ClientList clients;
 	private OrderList orders;
+	public final BookPrinter bookPrinter = new BookPrinter();
+	public final OrderPrinter orderPrinter = new OrderPrinter();
 
 	private Container() {
 	}
@@ -20,7 +29,7 @@ public class Container {
 		return instance;
 	}
 
-	public BookList getBooks() {
+	public BookList listOfBooks() {
 		if (books == null) {
 			books = new BookList();
 		}
@@ -54,7 +63,7 @@ public class Container {
 	}
 	
 	public void addBook(Book book) {
-		books.add(book);
+		listOfBooks().add(book);
 	}
 	
 	public void upDateBook(int id, Book book) {
@@ -85,6 +94,10 @@ public class Container {
 		orders.update(id, order);
 	}
 	
+	public void completeOrder(int id) {
+		orders.completed(id);
+	}
+	
 	public void removeOrder(int id) {
 		orders.remove(id);
 	}
@@ -93,6 +106,16 @@ public class Container {
 		Book searchedBook = null;
 		for (Book book : books.getList()) {
 			if (book.getId() == id) {
+				searchedBook = book;
+			}
+		}
+		return searchedBook;
+	}
+	
+	public Book getBookByName(String name) {
+		Book searchedBook = null;
+		for (Book book : books.getList()) {
+			if (book.getName().equals(name)) {
 				searchedBook = book;
 			}
 		}
@@ -109,5 +132,56 @@ public class Container {
 		return searchedClient;
 	}
 	
+	public int numOfCompleteOrders() {
+		int result = 0;
+		for (Order order : orders.getList()) {
+			if (order.getStatus() == OrderStatus.COMPLETED) {
+				result++;
+			}
+		}
+		return result;
+	}
+	
+	public List<Order> ordersOfBook (Book book) {
+		List<Order> list = new ArrayList<Order>();
+		for (Order o : orders.getList()) {
+			if (o.getBook().equals(book)) {
+				list.add(o);
+			}
+		}
+		return list;
+	}
+	
+	public List<Order> completedOrdersByTime (Date start, Date end) {
+		List<Order> list = new ArrayList<Order>();
+		for (Order o : orders.getList()) {
+			if ((o.getExecutionDate().after(start) && o.getExecutionDate().before(end)) && o.getStatus() == OrderStatus.COMPLETED) {
+				list.add(o);
+			}
+		}
+		return list;
+	}
+	
+	public int sumByTime (Date start, Date end) {
+		int sum = 0;
+		for (Order o : orders.getList()) {
+			if ((o.getExecutionDate().after(start) && o.getExecutionDate().before(end)) && o.getStatus() == OrderStatus.COMPLETED) {
+				sum += o.getBook().getCost();
+			}
+		}
+		return sum;
+	}
+	
+	public List<Book> oldBooks() {
+		List<Book> list = new ArrayList<Book>();
+		int sixMonth = 1000 * 60 * 60 * 24 * 30 * 6;
+		Date today = new Date();
+		for (Book book : books.getList()) {
+			if ((today.getTime() - book.getReceiptDate().getTime()) > sixMonth) {
+				list.add(book);
+			}
+		}
+		return list;
+	}
 	
 }

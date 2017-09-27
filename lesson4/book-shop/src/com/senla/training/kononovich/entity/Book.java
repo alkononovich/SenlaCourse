@@ -1,18 +1,21 @@
 package com.senla.training.kononovich.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Book extends AbstractModel {
 	private String name;
 	private int cost;
 	private Date publicationDate;
-	private String description;
-	
+	private Date receiptDate;
+	private SimpleDateFormat form = new SimpleDateFormat("dd.MM.yyyy");
+		
 	public Book(String name, int cost, Date publicationDate) {
 		super();
 		this.name = name;
 		this.cost = cost;
 		this.publicationDate = publicationDate;
+		this.receiptDate = new Date();
 	}
 
 	public String getName() {
@@ -39,12 +42,19 @@ public class Book extends AbstractModel {
 		this.publicationDate = publicationDate;
 	}
 
-	public String getDescription() {
-		return description;
+	public Date getReceiptDate() {
+		return receiptDate;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setReceiptDate(Date receiptDate) {
+		this.receiptDate = receiptDate;
 	}
 
+	@Override
+	public String toString() {
+		return name + ";" + cost + ";" + form.format(publicationDate) + ";"
+				+ form.format(receiptDate);
+	}
+	
+	
 }

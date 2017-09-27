@@ -2,20 +2,19 @@ package com.senla.training.kononovich.entity;
 
 import java.util.Date;
 
-public class Order extends AbstractModel {
-	enum status {
-		ORDRED, DELIVERED, COMPLETED
-	};
+import com.senla.training.kononovich.enums.OrderStatus;
 
+public class Order extends AbstractModel {
 	private Book book;
 	private Client client;
 	private Date executionDate;
-
-	public Order(Book book, Client client, Date executionDate) {
+	private OrderStatus status;
+	
+	public Order(Book book, Client client) {
 		super();
 		this.book = book;
 		this.client = client;
-		this.executionDate = executionDate;
+		this.status = OrderStatus.ORDRERED;		
 	}
 
 	public Book getBook() {
@@ -40,5 +39,18 @@ public class Order extends AbstractModel {
 
 	public void setExecutionDate(Date executionDate) {
 		this.executionDate = executionDate;
+	}
+
+	public OrderStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(OrderStatus status) {
+		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		return book.getName() + ";" + client + ";" + executionDate + ";" + status;
 	}
 }

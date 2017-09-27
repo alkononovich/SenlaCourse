@@ -1,6 +1,7 @@
 package com.senla.training.kononovich.storage;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.senla.training.kononovich.entity.Book;
@@ -14,6 +15,7 @@ public class BookList implements IListEntity<Book> {
 	public void add(Book book) {
 		book.setId(nextId());
 		getList().add(book);
+		book.setReceiptDate(new Date());
 	}
 
 	@Override

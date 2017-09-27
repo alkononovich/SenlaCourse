@@ -25,4 +25,9 @@ public class Client extends AbstractModel {
 	public void setAdress(String adress) {
 		this.adress = adress;
 	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }
