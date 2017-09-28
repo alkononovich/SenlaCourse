@@ -1,5 +1,7 @@
 package com.senla.training.kononovich.service.utilites;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,10 +13,16 @@ import com.senla.training.kononovich.storage.Container;
 
 public class BooksFile {
 	private SimpleDateFormat form = new SimpleDateFormat("dd.MM.yyyy");
-	private TextFileWorker fileWorker = new TextFileWorker("TEST.txt");
+	final String TEST_FILE = "test.txt";
 	private Container cont = Container.getInstance();
+	
+	public void booksToFile(List<Book> books) throws IOException {
+		File file = new File(TEST_FILE);
 		
-	public void booksToFile(List<Book> books) {
+		if(!file.exists()){
+            file.createNewFile();
+        }
+		TextFileWorker fileWorker = new TextFileWorker(TEST_FILE);
 		String[] ar = new String[books.size()];
 		int i = 0;
 		for (Book b : books) {
@@ -25,6 +33,8 @@ public class BooksFile {
 	}
 	
 	public void fileToBooks() throws NumberFormatException, ParseException{
+		TextFileWorker fileWorker = new TextFileWorker(TEST_FILE);
+		
 		String[] ar = fileWorker.readFromFile();
 		String pars = ";";
 		List<Book> list = new ArrayList<Book>();
