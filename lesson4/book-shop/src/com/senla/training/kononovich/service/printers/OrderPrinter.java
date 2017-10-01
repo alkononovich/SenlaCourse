@@ -9,7 +9,7 @@ public class OrderPrinter implements IListPrinter<List<Order>>{
 	@Override
 	public void printList(List<Order> orders) {
 		for (Order order : orders) {
-			System.out.println(order);
+			System.out.println(order.view());
 		}
 	}
 

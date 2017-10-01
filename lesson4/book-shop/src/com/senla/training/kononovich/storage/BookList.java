@@ -13,9 +13,24 @@ public class BookList implements IListEntity<Book> {
 
 	@Override
 	public void add(Book book) {
-		book.setId(nextId());
-		getList().add(book);
-		book.setReceiptDate(new Date());
+		boolean n = false;
+		for (Book c : getList()) {
+			if (c.getName().equals(book.getName())) {
+				n = true;
+			}
+		}
+		if (n) {
+			for (Book b : getList()) {
+				if (b.getName().equals(book.getName())) {
+					b.setCount(b.getCount() + book.getCount());
+				}
+			}
+		} else {
+			book.setId(nextId());
+			getList().add(book);
+			book.setReceiptDate(new Date());
+		}
+
 	}
 
 	@Override

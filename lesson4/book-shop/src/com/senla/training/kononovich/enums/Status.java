@@ -1,6 +1,6 @@
 package com.senla.training.kononovich.enums;
 
-public enum OrderStatus {
+public enum Status {
 	ORDRERED, 
 	COMPLETED;
 }

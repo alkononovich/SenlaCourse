@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.senla.training.kononovich.entity.Order;
-import com.senla.training.kononovich.enums.OrderStatus;
+import com.senla.training.kononovich.enums.Status;
 
 public class OrderList implements IListEntity<Order> {
 
@@ -62,7 +62,7 @@ public class OrderList implements IListEntity<Order> {
 	public void completed(int id) {
 		for(Order order : getList()) {
 			if(order.getId() == id) {
-				order.setStatus(OrderStatus.COMPLETED);
+				order.setStatus(Status.COMPLETED);
 				order.setExecutionDate(new Date());
 			}
 		}

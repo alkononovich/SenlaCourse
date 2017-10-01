@@ -8,7 +8,7 @@ public class OrderCostComparator implements Comparator<Order> {
 
 	@Override
 	public int compare(Order o1, Order o2) {
-		return o1.getBook().getCost() - o2.getBook().getCost();
+		return o1.getCost() - o2.getCost();
 	}
 
 }

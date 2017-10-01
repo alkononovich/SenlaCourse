@@ -1,21 +1,28 @@
 package com.senla.training.kononovich.entity;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.senla.training.kononovich.service.utilites.DateConverter;
 
 public class Book extends AbstractModel {
 	private String name;
 	private int cost;
+	private int count;
 	private Date publicationDate;
 	private Date receiptDate;
-	private SimpleDateFormat form = new SimpleDateFormat("dd.MM.yyyy");
-		
+			
 	public Book(String name, int cost, Date publicationDate) {
 		super();
 		this.name = name;
 		this.cost = cost;
 		this.publicationDate = publicationDate;
 		this.receiptDate = new Date();
+		this.count = 1;
+	}
+	
+	public Book(String name, int cost, Date publicationDate, int count) {
+		this(name, cost, publicationDate);
+		this.count = count;
 	}
 
 	public String getName() {
@@ -34,6 +41,14 @@ public class Book extends AbstractModel {
 		this.cost = cost;
 	}
 
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
 	public Date getPublicationDate() {
 		return publicationDate;
 	}
@@ -50,11 +65,14 @@ public class Book extends AbstractModel {
 		this.receiptDate = receiptDate;
 	}
 
+	public StringBuffer view() {
+		StringBuffer str = new StringBuffer();
+		str.append(getId()).append(";").append(name).append(";").append(cost).append(";").append(DateConverter.dateToString(publicationDate)).append(";").append(DateConverter.dateToString(receiptDate)).append(";").append(count).append(" pcs");
+		return str;
+	}	
+	
 	@Override
 	public String toString() {
-		return name + ";" + cost + ";" + form.format(publicationDate) + ";"
-				+ form.format(receiptDate);
+		return name;
 	}
-	
-	
 }
