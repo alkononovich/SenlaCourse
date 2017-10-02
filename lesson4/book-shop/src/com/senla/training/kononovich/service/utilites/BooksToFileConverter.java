@@ -13,8 +13,12 @@ import com.senla.training.kononovich.storage.Container;
 
 public class BooksToFileConverter {
 	
-	private static final String TEST_FILE = "test.txt";
+	private static String TEST_FILE;
 	private static Container cont = Container.getInstance();
+	
+	public static void setFilePath(String path) {
+		TEST_FILE = path;
+	}
 		
 	public static void booksToFile(List<Book> books) throws IOException {
 		File file = new File(TEST_FILE);

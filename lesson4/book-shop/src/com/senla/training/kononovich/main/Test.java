@@ -11,6 +11,8 @@ import com.senla.training.kononovich.storage.Container;
 public class Test {
 
 	public static void main(String[] args) throws ParseException, IOException {
+		
+		BooksToFileConverter.setFilePath(args[0]);
 				
 		Container worker = Container.getInstance();
 				
