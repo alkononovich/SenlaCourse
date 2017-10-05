@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.senla.training.kononovich.entity.Claim;
 
-public class ClaimList implements IListEntity<Claim>{
+public class ClaimStore implements IListEntity<Claim>{
 
 	private List<Claim> claims;
 	private int iterator = 0;

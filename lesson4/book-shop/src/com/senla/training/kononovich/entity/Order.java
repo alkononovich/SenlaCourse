@@ -7,7 +7,7 @@ import java.util.List;
 import com.senla.training.kononovich.enums.Status;
 import com.senla.training.kononovich.service.utilites.DateConverter;
 
-public class Order extends AbstractModel {
+public class Order extends AbstractModel{
 	private List<Book> books;
 	private String client;
 	private Date executionDate;
@@ -73,7 +73,8 @@ public class Order extends AbstractModel {
 		return s;
 	}
 
-	public StringBuffer view() {
+	@Override
+	public String view() {
 		StringBuffer str = new StringBuffer();
 		if (status == Status.COMPLETED) {
 		str.append(books).append(";").append(client).append(";").append(DateConverter.dateToString(executionDate))
@@ -81,6 +82,6 @@ public class Order extends AbstractModel {
 		} else {
 			str.append(books).append(";").append(client).append(";").append(status);
 		}
-		return str;
+		return str.toString();
 	}
 }

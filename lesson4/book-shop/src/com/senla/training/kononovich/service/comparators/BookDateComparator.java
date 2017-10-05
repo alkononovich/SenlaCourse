@@ -8,7 +8,19 @@ public class BookDateComparator implements Comparator<Book> {
 
 	@Override
 	public int compare(Book o1, Book o2) {
-		return o1.getPublicationDate().compareTo(o2.getPublicationDate());
+		int res = 0;
+		if (o1 != null && o2 != null) {
+			res = o1.getPublicationDate().compareTo(o2.getPublicationDate());
+		} else {
+			if (o1 == null && o2 != null) {
+				res = -1;
+			} else {
+				if (o1 != null && o2 == null) {
+					res = 1;
+				}
+			}
+		}
+		return res;
 	}
 
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import com.senla.training.kononovich.entity.Order;
 import com.senla.training.kononovich.enums.Status;
 
-public class OrderList implements IListEntity<Order> {
+public class OrderStore implements IListEntity<Order> {
 
 	private List<Order> orders;
 	private int iterator = 0;

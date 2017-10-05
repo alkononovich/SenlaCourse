@@ -2,7 +2,9 @@ package com.senla.training.kononovich.storage;
 
 import java.util.List;
 
-public interface IListEntity<E> {
+import com.senla.training.kononovich.entity.AbstractModel;
+
+public interface IListEntity<E extends AbstractModel> {
 	void add(E value);
 
 	void update(int id, E value);

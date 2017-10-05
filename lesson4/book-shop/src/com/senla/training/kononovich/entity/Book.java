@@ -65,10 +65,10 @@ public class Book extends AbstractModel {
 		this.receiptDate = receiptDate;
 	}
 
-	public StringBuffer view() {
+	public String view() {
 		StringBuffer str = new StringBuffer();
 		str.append(getId()).append(";").append(name).append(";").append(cost).append(";").append(DateConverter.dateToString(publicationDate)).append(";").append(DateConverter.dateToString(receiptDate)).append(";").append(count).append(" pcs");
-		return str;
+		return str.toString();
 	}	
 	
 	@Override

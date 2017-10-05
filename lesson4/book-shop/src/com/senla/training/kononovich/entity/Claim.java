@@ -23,10 +23,10 @@ public class Claim extends AbstractModel {
 		this.status = status;
 	}
 	
-	public StringBuffer view () {
+	public String view () {
 		StringBuffer str = new StringBuffer();
 		str.append(book).append(";").append(status);
 		
-		return str;
+		return str.toString();
 	}
 }

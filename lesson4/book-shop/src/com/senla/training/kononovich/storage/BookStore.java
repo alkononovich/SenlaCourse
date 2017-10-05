@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.senla.training.kononovich.entity.Book;
 
-public class BookList implements IListEntity<Book> {
+public class BookStore implements IListEntity<Book> {
 
 	private List<Book> books;
 	private int iterator = 0;
