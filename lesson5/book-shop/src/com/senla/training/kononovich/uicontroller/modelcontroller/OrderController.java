@@ -34,7 +34,7 @@ public class OrderController {
 	public Order initializeOrder() {
 		printer.print(CLIENT);
 		String client = reader.readString();
-		printer.print(ServiceManager.bookService.getBooks().getList());
+		printer.printList(ServiceManager.bookService.getBooks().getList());
 		printer.print(BOOK_ID);
 		List<Book> books = bookReader.readBooks(reader.readString());
 		return new Order(client, books);
@@ -45,7 +45,7 @@ public class OrderController {
 	}
 	
 	public void removeOrder() {
-		printer.print(orderService.getOrders().getList());
+		printer.printList(orderService.getOrders().getList());
 		printer.print(ID);
 		int id = reader.readInt();
 		if (id > 0 && id <= orderService.getOrders().getList().size()) {
@@ -56,7 +56,7 @@ public class OrderController {
 	}
 	
 	public void updateOrder() {
-		printer.print(orderService.getOrders().getList());
+		printer.printList(orderService.getOrders().getList());
 		printer.print(ID);
 		int id = reader.readInt();
 		if (id > 0 && id <= orderService.getOrders().getList().size()) {
@@ -67,7 +67,7 @@ public class OrderController {
 	}
 	
 	public void completeOrder() {
-		printer.print(orderService.getOrders().getList());
+		printer.printList(orderService.getOrders().getList());
 		printer.print(ID);
 		int id = reader.readInt();
 		if (id > 0 && id <= orderService.getOrders().getList().size()) {

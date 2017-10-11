@@ -7,12 +7,13 @@ import java.util.List;
 import com.senla.training.kononovich.entity.Order;
 import com.senla.training.kononovich.service.*;
 import com.senla.training.kononovich.service.comparators.ComparatorManager;
+import com.senla.training.kononovich.service.printers.IPrinter;
 import com.senla.training.kononovich.service.printers.Printer;
 import com.senla.training.kononovich.service.utilites.OrderSorter;
 import com.senla.training.kononovich.uicontroller.ReaderToField;
 
 public class OrderViewer {
-	private Printer printer = Printer.getInstance();
+	private IPrinter printer = Printer.getInstance();
 	private ReaderToField reader = ReaderToField.getInstance();
 	private OrderSorter sorter = new OrderSorter();
 	private OrderService orderService = ServiceManager.orderService;
@@ -63,7 +64,7 @@ public class OrderViewer {
 	}
 
 	public void viewOrders() {
-		printer.print(this.sortOrders(orderService.getOrders().getList()));
+		printer.printList(this.sortOrders(orderService.getOrders().getList()));
 	}
 
 	public void viewCompletedOrders() {
@@ -71,15 +72,15 @@ public class OrderViewer {
 		Date start = reader.readDate();
 		printer.print(END);
 		Date end = reader.readDate();
-		printer.print(this.sortOrders(orderService.completedOrdersByTime(start, end)));
+		printer.printList(this.sortOrders(orderService.completedOrdersByTime(start, end)));
 	}
 
 	public void viewOrdersOnBook() {
-		printer.print(bookService.getBooks().getList());
+		printer.printList(bookService.getBooks().getList());
 		printer.print(BOOK_ID);
 		int id = reader.readInt();
 		if (id > 0 && id <= bookService.getBooks().getList().size()) {
-			printer.print(this.sortOrders(bookOrderService.ordersOfBook(id)));
+			printer.printList(this.sortOrders(bookOrderService.ordersOfBook(id)));
 		} else {
 			printer.print(INVALID_ID);
 		}

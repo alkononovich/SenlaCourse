@@ -7,12 +7,13 @@ import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.service.BookService;
 import com.senla.training.kononovich.service.ServiceManager;
 import com.senla.training.kononovich.service.comparators.ComparatorManager;
+import com.senla.training.kononovich.service.printers.IPrinter;
 import com.senla.training.kononovich.service.printers.Printer;
 import com.senla.training.kononovich.service.utilites.BookSorter;
 import com.senla.training.kononovich.uicontroller.ReaderToField;
 
 public class BookViewer {
-	private Printer printer = Printer.getInstance();
+	private IPrinter printer = Printer.getInstance();
 	private ReaderToField reader = ReaderToField.getInstance();
 	private BookSorter sorter = new BookSorter();
 	private BookService bookService = ServiceManager.bookService;
@@ -64,10 +65,10 @@ public class BookViewer {
 	}
 
 	public void viewBooks() {
-		printer.print(this.sortBooks(bookService.getBooks().getList()));
+		printer.printList(this.sortBooks(bookService.getBooks().getList()));
 	}
 
 	public void viewOldBooks() {
-		printer.print(this.sortBooks(bookService.oldBooks()));
+		printer.printList(this.sortBooks(bookService.oldBooks()));
 	}
 }

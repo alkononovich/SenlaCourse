@@ -34,7 +34,7 @@ public class ClaimController {
 	}
 
 	public void removeClaim() {
-		printer.print(claimService.getClaims().getList());
+		printer.printList(claimService.getClaims().getList());
 		printer.print(ID);
 		int id = reader.readInt();
 		if (id > 0 && id <= claimService.getClaims().getList().size()) {
@@ -45,7 +45,7 @@ public class ClaimController {
 	}
 
 	public void updateClaim() {
-		printer.print(claimService.getClaims().getList());
+		printer.printList(claimService.getClaims().getList());
 		printer.print(ID);
 		int id = reader.readInt();
 		if (id > 0 && id <= claimService.getClaims().getList().size()) {

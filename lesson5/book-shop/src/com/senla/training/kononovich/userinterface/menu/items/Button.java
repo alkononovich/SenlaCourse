@@ -1,18 +1,15 @@
 package com.senla.training.kononovich.userinterface.menu.items;
 
 import com.senla.training.kononovich.userinterface.executors.IExecutor;
-import com.senla.training.kononovich.userinterface.menu.MenuBuilder;
 
-public class Button implements IMenuItem{
+public class Button implements IMenuItem {
 	private String name;
 	private IExecutor executor;
-	private Menu parent;
-	
-	public Button(String name, IExecutor executor, Menu parent) {
+
+	public Button(String name, IExecutor executor) {
 		super();
 		this.name = name;
 		this.executor = executor;
-		this.parent = parent;
 	}
 
 	public String getName() {
@@ -33,8 +30,9 @@ public class Button implements IMenuItem{
 
 	@Override
 	public void onClick() {
-		this.executor.execute();
-		MenuBuilder.buildMenu(parent);
+		if (executor != null) {
+			executor.execute();
+		}
 	}
 
 }

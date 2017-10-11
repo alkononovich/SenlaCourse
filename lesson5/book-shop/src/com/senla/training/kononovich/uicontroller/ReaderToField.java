@@ -32,25 +32,27 @@ public class ReaderToField {
 	}
 
 	public int readInt() {
-		int result = 0;
-		try {
-			result = Integer.parseInt(bufferedReader.readLine());
-		} catch (NumberFormatException | IOException e) {
-			System.out.println("Input format error");
+		Integer result = null;
+		while (result == null) {
+			try {
+				result = Integer.parseInt(bufferedReader.readLine());
+			} catch (NumberFormatException | IOException e) {
+				System.out.println("Input format error");
+			}
 		}
 		return result;
 	}
 
 	public Date readDate() {
 		Date result = null;
-		try {
-			result = DateConverter.stringToDate(bufferedReader.readLine());
-		} catch (IOException e) {
-			System.out.println("Input format error");
-			result = new Date();
+		while (result == null) {
+			try {
+				result = DateConverter.stringToDate(bufferedReader.readLine());
+			} catch (IOException e) {
+				System.out.println("Input format error");
+			}
 		}
-
 		return result;
 	}
-	
+
 }

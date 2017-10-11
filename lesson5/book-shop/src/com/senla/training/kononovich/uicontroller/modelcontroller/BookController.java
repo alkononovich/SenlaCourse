@@ -49,7 +49,7 @@ public class BookController {
 	}
 
 	public void removeBook() {
-		printer.print(bookService.getBooks().getList());
+		printer.printList(bookService.getBooks().getList());
 		printer.print(ID);
 		int id = reader.readInt();
 		if (id > 0 && id <= bookService.getBooks().getList().size()) {
@@ -60,7 +60,7 @@ public class BookController {
 	}
 
 	public void updateBook() {
-		printer.print(bookService.getBooks().getList());
+		printer.printList(bookService.getBooks().getList());
 		printer.print(ID);
 		int id = reader.readInt();
 		if (id > 0 && id <= bookService.getBooks().getList().size()) {

@@ -3,7 +3,6 @@ package com.senla.training.kononovich.userinterface.menu.items;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.senla.training.kononovich.userinterface.menu.MenuBuilder;
 
 public class Menu implements IMenuItem {
 	private String name;
@@ -25,7 +24,16 @@ public class Menu implements IMenuItem {
 
 	@Override
 	public void onClick() {
-		MenuBuilder.buildMenu(this);
+		int index = 1;
+		for (IMenuItem menuItem : getMenu()) {
+			if (menuItem instanceof Button) {
+				System.out.println(index + " " + menuItem.getName());
+			} else {
+				System.out.println(index + " --> " + menuItem.getName());
+			}
+			index++;
+		}
+		System.out.println(index + " --> Back");
 	}
 
 
