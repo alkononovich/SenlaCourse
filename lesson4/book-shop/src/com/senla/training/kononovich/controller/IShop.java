@@ -36,7 +36,7 @@ public interface IShop {
 	public void upDateClaim(int id, Claim claim);
 	public void removeClaim(int id);
 	public void print(List<?> value);
-	public void print(Object value);
+	public void print(String value);
 	public void exportBooksToFile(List<Book> books, String path);
 	public void exportBooksToFile(List<Book> books);
 	public void importBooksFromFile(String path);

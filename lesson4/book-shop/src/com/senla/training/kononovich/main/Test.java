@@ -12,7 +12,7 @@ public class Test {
 
 	public static void main(String[] args) throws ParseException, IOException {
 		
-		IShop worker = Shop.getInstance();
+		IShop worker = new Shop();
 				
 		worker.addBook(new Book("LordOfTheRing", 150, DateConverter.stringToDate("20.03.2001")));
 		worker.addBook(new Book("Witcher", 170, DateConverter.stringToDate("20.03.2005")));

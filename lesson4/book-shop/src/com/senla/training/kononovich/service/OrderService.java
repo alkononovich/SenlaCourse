@@ -8,8 +8,19 @@ import com.senla.training.kononovich.entity.Order;
 import com.senla.training.kononovich.enums.Status;
 import com.senla.training.kononovich.storage.OrderStore;
 
-public class OrderService {
+public class OrderService implements IService{
 	private OrderStore orders;
+	private static OrderService instance;
+
+	private OrderService() {
+	}
+
+	public static OrderService getInstance() {
+		if(instance == null) {
+			instance = new OrderService();
+		}
+		return instance;
+	}
 	
 	public OrderStore getOrders() {
 		if (orders == null) {

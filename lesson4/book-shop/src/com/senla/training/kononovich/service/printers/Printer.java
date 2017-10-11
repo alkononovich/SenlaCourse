@@ -11,14 +11,11 @@ public class Printer implements IPrinter<AbstractModel> {
 		for (AbstractModel a : value) {
 			System.out.println(a.view());
 		}
-		
 	}
 
 	@Override
-	public void print(Object value) {
-		// TODO Auto-generated method stub
-		
+	public void print(String value) {
+		System.out.println(value);
 	}
-
 
 }

@@ -7,9 +7,20 @@ import java.util.List;
 import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.storage.BookStore;
 
-public class BookService {
+public class BookService implements IService {
 	private BookStore books;
-	
+	private static BookService instance;
+
+	private BookService() {
+	}
+
+	public static BookService getInstance() {
+		if(instance == null) {
+			instance = new BookService();
+		}
+		return instance;
+	}
+
 	public BookStore getBooks() {
 		if (books == null) {
 			books = new BookStore();
@@ -20,7 +31,7 @@ public class BookService {
 	public void setBooks(BookStore books) {
 		this.books = books;
 	}
-	
+
 	public void upDateBook(int id, Book book) {
 		books.update(id, book);
 	}
@@ -28,7 +39,7 @@ public class BookService {
 	public void removeBook(int id) {
 		books.remove(id);
 	}
-	
+
 	public Book getBookById(int id) {
 		Book searchedBook = null;
 		for (Book book : books.getList()) {
@@ -38,7 +49,7 @@ public class BookService {
 		}
 		return searchedBook;
 	}
-	
+
 	public Book getBookByName(String name) {
 		Book searchedBook = null;
 		for (Book book : books.getList()) {
@@ -48,7 +59,7 @@ public class BookService {
 		}
 		return searchedBook;
 	}
-	
+
 	public List<Book> oldBooks() {
 		List<Book> list = new ArrayList<Book>();
 		int sixMonth = 1000 * 60 * 60 * 24 * 30 * 6;
@@ -60,4 +71,5 @@ public class BookService {
 		}
 		return list;
 	}
+
 }

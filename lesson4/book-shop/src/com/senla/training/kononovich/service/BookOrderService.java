@@ -8,11 +8,22 @@ import com.senla.training.kononovich.entity.Order;
 import com.senla.training.kononovich.storage.BookStore;
 import com.senla.training.kononovich.storage.OrderStore;
 
-public class BookOrderService {
-	private BookService bookService = ServiceManager.bookService;
-	private OrderService orderService = ServiceManager.orderService;
+public class BookOrderService implements IService{
+	private BookService bookService = BookService.getInstance();
+	private OrderService orderService = OrderService.getInstance();
 	private OrderStore orders = orderService.getOrders();
 	private BookStore books = bookService.getBooks();
+	private static BookOrderService instance;
+
+	private BookOrderService() {
+	}
+
+	public static BookOrderService getInstance() {
+		if(instance == null) {
+			instance = new BookOrderService();
+		}
+		return instance;
+	}
 	
 	public List<Order> ordersOfBook(int id) {
 		List<Order> list = new ArrayList<Order>();

@@ -1,5 +1,6 @@
 package com.senla.training.kononovich.controller;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -8,37 +9,32 @@ import com.senla.training.kononovich.service.utilites.*;
 import com.senla.training.kononovich.storage.*;
 import com.senla.training.kononovich.entity.*;
 import com.senla.training.kononovich.service.*;
-import com.senla.training.kononovich.service.comparators.ComparatorManager;
+import com.senla.training.kononovich.service.comparators.*;
 
 public class Shop implements IShop {
-	private static Shop instance;
-
 	private IPrinter printer = new Printer();
-	private IFileWorker fileWorker = new BooksToFileConverter();
-	private BookService bookService = ServiceManager.bookService;
-	private BookOrderService bookOrderService = ServiceManager.bookOrderService;
-	private BookClaimService bookClaimService = ServiceManager.bookClaimService;
-	private ClaimService claimService = ServiceManager.claimService;
-	private OrderService orderService = ServiceManager.orderService;
+	private BookService bookService = BookService.getInstance();
+	private BookOrderService bookOrderService = BookOrderService.getInstance();
+	private BookClaimService bookClaimService = BookClaimService.getInstance();
+	private ClaimService claimService = ClaimService.getInstance();
+	private OrderService orderService = OrderService.getInstance();
 	private BookSorter bookSorter = new BookSorter();
 	private OrderSorter orderSorter = new OrderSorter();
-	private ComparatorManager comparatorManager = new ComparatorManager();
+	public Comparator bookCostComparator = new BookCostComparator();
+	public Comparator bookCountComparator = new BookCountComparator();
+	public Comparator bookDateComparator = new BookDateComparator();
+	public Comparator bookNameComparator = new BookNameComparator();
+	public Comparator bookReceiptDateComparator = new BookReceiptDateComparator();
+	public Comparator orderCostComparator = new OrderCostComparator();
+	public Comparator orderDateComparator = new OrderDateComparator();
+	public Comparator orderStatusComparator = new OrderStatusComparator();
 
-	private Shop() {
-	}
-
-	public static Shop getInstance() {
-		if (instance == null) {
-			instance = new Shop();
-		}
-		return instance;
-	}
 
 	public void print(List<?> value) {
 		printer.printList(value);
 	}
 
-	public void print(Object value) {
+	public void print(String value) {
 		printer.print(value);
 	}
 
@@ -164,58 +160,61 @@ public class Shop implements IShop {
 
 	@Override
 	public void exportBooksToFile(List<Book> books, String path) {
-		fileWorker.booksToFile(books, path);
+		FileWorker.writeToFile(BooksToFileConverter.booksToStringAr(books), path);
 		
 	}
 	
 	@Override
 	public void exportBooksToFile(List<Book> books) {
-		fileWorker.booksToFile(books);		
+		FileWorker.writeToFile(BooksToFileConverter.booksToStringAr(books));		
 	}
 
 	@Override
 	public void importBooksFromFile(String path) {
-		fileWorker.fileToBooks(path);
+		List<Book> temp = BooksToFileConverter.stringArToBooks(FileWorker.readFromFile(path));
+		for(Book b : temp) {
+			bookClaimService.addBook(b);
+		}
 	}
 
 	@Override
 	public List<Book> sortBooksByName(List<Book> books) {
-		return bookSorter.sort(books, comparatorManager.bookNameComparator);
+		return bookSorter.sort(books, bookNameComparator);
 	}
 
 	@Override
 	public List<Book> sortBooksByCost(List<Book> books) {
-		return bookSorter.sort(books, comparatorManager.bookCostComparator);
+		return bookSorter.sort(books, bookCostComparator);
 	}
 
 	@Override
 	public List<Book> sortBooksByPublicationDate(List<Book> books) {
-		return bookSorter.sort(books, comparatorManager.bookDateComparator);
+		return bookSorter.sort(books, bookDateComparator);
 	}
 
 	@Override
 	public List<Book> sortBooksByReceiptDate(List<Book> books) {
-		return bookSorter.sort(books, comparatorManager.bookReceiptDateComparator);
+		return bookSorter.sort(books, bookReceiptDateComparator);
 	}
 
 	@Override
 	public List<Book> sortBooksByCount(List<Book> books) {
-		return bookSorter.sort(books, comparatorManager.bookCountComparator);
+		return bookSorter.sort(books, bookCountComparator);
 	}
 
 	@Override
 	public List<Order> sortOrdersByCost(List<Order> orders) {
-		return orderSorter.sort(orders, comparatorManager.orderCostComparator);
+		return orderSorter.sort(orders, orderCostComparator);
 	}
 
 	@Override
 	public List<Order> sortOrdersByDate(List<Order> orders) {
-		return orderSorter.sort(orders, comparatorManager.orderDateComparator);
+		return orderSorter.sort(orders, orderDateComparator);
 	}
 
 	@Override
 	public List<Order> sortOrdersByStatus(List<Order> orders) {
-		return orderSorter.sort(orders, comparatorManager.orderStatusComparator);
+		return orderSorter.sort(orders, orderStatusComparator);
 	}
 
 }

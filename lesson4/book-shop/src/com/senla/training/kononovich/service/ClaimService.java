@@ -3,8 +3,19 @@ package com.senla.training.kononovich.service;
 import com.senla.training.kononovich.entity.Claim;
 import com.senla.training.kononovich.storage.ClaimStore;
 
-public class ClaimService {
+public class ClaimService implements IService{
 	private ClaimStore claims;
+	private static ClaimService instance;
+
+	private ClaimService() {
+	}
+
+	public static ClaimService getInstance() {
+		if(instance == null) {
+			instance = new ClaimService();
+		}
+		return instance;
+	}
 
 	public ClaimStore getClaims() {
 		if (claims == null) {
