@@ -5,12 +5,11 @@ import java.util.List;
 
 import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.service.BookService;
-import com.senla.training.kononovich.service.ServiceManager;
 import com.senla.training.kononovich.service.printers.Printer;
 
 public class BookReader {
-	private BookService bookService = ServiceManager.bookService;
-	private Printer printer = Printer.getInstance();
+	private BookService bookService = BookService.getInstance();
+	private Printer printer = new Printer();
 
 	public List<Book> readBooks(String str) {
 		List<Book> result = new ArrayList<Book>();

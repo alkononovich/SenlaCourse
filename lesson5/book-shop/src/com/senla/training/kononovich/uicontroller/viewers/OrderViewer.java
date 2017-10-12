@@ -6,25 +6,28 @@ import java.util.List;
 
 import com.senla.training.kononovich.entity.Order;
 import com.senla.training.kononovich.service.*;
-import com.senla.training.kononovich.service.comparators.ComparatorManager;
+import com.senla.training.kononovich.service.comparators.*;
 import com.senla.training.kononovich.service.printers.IPrinter;
 import com.senla.training.kononovich.service.printers.Printer;
 import com.senla.training.kononovich.service.utilites.OrderSorter;
 import com.senla.training.kononovich.uicontroller.ReaderToField;
 
 public class OrderViewer {
-	private IPrinter printer = Printer.getInstance();
+	private IPrinter printer = new Printer();
 	private ReaderToField reader = ReaderToField.getInstance();
 	private OrderSorter sorter = new OrderSorter();
-	private OrderService orderService = ServiceManager.orderService;
-	private BookOrderService bookOrderService = ServiceManager.bookOrderService;
-	private BookService bookService = ServiceManager.bookService;
+	private OrderService orderService = OrderService.getInstance();
+	private BookOrderService bookOrderService = BookOrderService.getInstance();
+	private BookService bookService = BookService.getInstance();
 	private final static String INVALID_ID = "Invalid Book Id.";
 	private final static String BOOK_ID = "Book Id: ";
 	private final static String START = "Start Date: ";
 	private final static String END = "End Date: ";
 	private final static String ERROR = "Invalid number of method. Sorted by Id.";
 	private final static String SORT = "Choose sort method: \n0. By Id \n1. By Cost; \n2. By execution Date; \n3. By Status; \n: ";
+	private final static String SUM = "Sum: ";
+	private final static String COMPLETE_ORDERS = "Total comlete orders: ";
+	
 	private static OrderViewer instance;
 
 	private OrderViewer() {};
@@ -44,13 +47,13 @@ public class OrderViewer {
 		case 0:
 			break;
 		case 1:
-			comp = ComparatorManager.orderCostComparator;
+			comp = new OrderCostComparator();
 			break;
 		case 2:
-			comp = ComparatorManager.orderDateComparator;
+			comp = new OrderDateComparator();
 			break;
 		case 3:
-			comp = ComparatorManager.orderStatusComparator;
+			comp = new OrderStatusComparator();
 			break;
 		default:
 			printer.print(ERROR);
@@ -91,10 +94,10 @@ public class OrderViewer {
 		Date start = reader.readDate();
 		printer.print(END);
 		Date end = reader.readDate();
-		printer.print(orderService.sumByTime(start, end));
+		printer.print(SUM + orderService.sumByTime(start, end));
 	}
 
 	public void viewCount() {
-		printer.print(orderService.numOfCompleteOrders());
+		printer.print(COMPLETE_ORDERS + orderService.numOfCompleteOrders());
 	}
 }

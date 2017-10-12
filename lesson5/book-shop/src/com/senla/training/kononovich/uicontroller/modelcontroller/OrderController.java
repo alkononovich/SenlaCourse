@@ -10,10 +10,11 @@ import com.senla.training.kononovich.uicontroller.ReaderToField;
 import com.senla.training.kononovich.uicontroller.BookReader;
 
 public class OrderController {
-	private IPrinter printer = Printer.getInstance();
+	private IPrinter printer = new Printer();
 	private ReaderToField reader = ReaderToField.getInstance();
-	private OrderService orderService = ServiceManager.orderService;
-	private BookOrderService bookOrderService = ServiceManager.bookOrderService;
+	private BookService bookService = BookService.getInstance();
+	private OrderService orderService = OrderService.getInstance();
+	private BookOrderService bookOrderService = BookOrderService.getInstance();
 	private BookReader bookReader = new BookReader();
 	private static final String ID = "Id: ";
 	private static final String BOOK_ID = "Books Id: ";
@@ -34,7 +35,7 @@ public class OrderController {
 	public Order initializeOrder() {
 		printer.print(CLIENT);
 		String client = reader.readString();
-		printer.printList(ServiceManager.bookService.getBooks().getList());
+		printer.printList(bookService.getBooks().getList());
 		printer.print(BOOK_ID);
 		List<Book> books = bookReader.readBooks(reader.readString());
 		return new Order(client, books);

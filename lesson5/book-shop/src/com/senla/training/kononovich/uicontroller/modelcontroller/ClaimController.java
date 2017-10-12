@@ -6,9 +6,9 @@ import com.senla.training.kononovich.service.printers.*;
 import com.senla.training.kononovich.uicontroller.ReaderToField;
 
 public class ClaimController {
-	private IPrinter printer = Printer.getInstance();
+	private IPrinter printer = new Printer();
 	private ReaderToField reader = ReaderToField.getInstance();
-	private ClaimService claimService = ServiceManager.claimService;
+	private ClaimService claimService = ClaimService.getInstance();
 	private static final String ID = "Id: ";
 	private static final String BOOK = "Book name: ";
 	private static ClaimController instance;

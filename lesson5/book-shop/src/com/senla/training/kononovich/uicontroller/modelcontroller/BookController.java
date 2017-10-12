@@ -1,5 +1,8 @@
 package com.senla.training.kononovich.uicontroller.modelcontroller;
 
+import java.util.Date;
+import java.util.List;
+
 import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.service.*;
 import com.senla.training.kononovich.service.printers.*;
@@ -7,11 +10,10 @@ import com.senla.training.kononovich.service.utilites.*;
 import com.senla.training.kononovich.uicontroller.ReaderToField;
 
 public class BookController {
-	private IPrinter printer = Printer.getInstance();
+	private IPrinter printer = new Printer();
 	private ReaderToField reader = ReaderToField.getInstance();
-	private BookService bookService = ServiceManager.bookService;
-	private BookClaimService bookClaimService = ServiceManager.bookClaimService;
-	private IFileWorker fileWorker = new BooksToFileConverter();
+	private BookService bookService = BookService.getInstance();
+	private BookClaimService bookClaimService = BookClaimService.getInstance();
 	private static final String NAME = "Name: ";
 	private static final String COST = "Cost: ";
 	private static final String PUBLICATION_DATE = "Publication Date: ";
@@ -37,7 +39,7 @@ public class BookController {
 		printer.print(COST);
 		int cost = reader.readInt();
 		printer.print(PUBLICATION_DATE);
-		String date = reader.readString();
+		Date date = reader.readDate();
 		printer.print(COUNT);
 		int count = reader.readInt();
 
@@ -72,11 +74,16 @@ public class BookController {
 
 	public void readBooksFromFile() {
 		printer.print(PATH);
-		fileWorker.fileToBooks(reader.readString());
+		String path = reader.readString();
+		List<Book> list = BooksToFileConverter.stringArToBooks(FileWorker.readFromFile(path));
+		for (Book b : list) {
+			bookClaimService.addBook(b);
+		}
 	}
 
 	public void writeBooksToFile() {
 		printer.print(PATH);
-		fileWorker.booksToFile(bookService.getBooks().getList(), reader.readString());
+		String path = reader.readString();
+		FileWorker.writeToFile(BooksToFileConverter.booksToStringAr(bookService.getBooks().getList()), path);
 	}
 }

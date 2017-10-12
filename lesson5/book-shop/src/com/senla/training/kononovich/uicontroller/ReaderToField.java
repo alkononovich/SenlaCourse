@@ -3,6 +3,7 @@ package com.senla.training.kononovich.uicontroller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.util.Date;
 
 import com.senla.training.kononovich.service.utilites.DateConverter;
@@ -50,6 +51,9 @@ public class ReaderToField {
 				result = DateConverter.stringToDate(bufferedReader.readLine());
 			} catch (IOException e) {
 				System.out.println("Input format error");
+			} catch (ParseException e) {
+				System.out.println("Input format error");
+				//e.printStackTrace();
 			}
 		}
 		return result;

@@ -1,13 +1,11 @@
 package com.senla.training.kononovich.uicontroller.viewers;
 
 import com.senla.training.kononovich.service.ClaimService;
-import com.senla.training.kononovich.service.ServiceManager;
-import com.senla.training.kononovich.service.printers.IPrinter;
-import com.senla.training.kononovich.service.printers.Printer;
+import com.senla.training.kononovich.service.printers.*;
 
 public class ClaimViewer {
-	private IPrinter printer = Printer.getInstance();
-	private ClaimService claimService = ServiceManager.claimService;
+	private IPrinter printer = new Printer();
+	private ClaimService claimService = ClaimService.getInstance();
 	
 	public void viewClaims() {
 		printer.printList(claimService.getClaims().getList());
