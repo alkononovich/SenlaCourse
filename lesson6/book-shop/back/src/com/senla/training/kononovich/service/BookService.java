@@ -13,6 +13,7 @@ import com.senla.training.kononovich.storage.Container;
 public class BookService implements IService {
 	private Container container = Container.getInstance();
 	private BookStore books;
+	private Integer month = 6;
 	private static BookService instance;
 	private static final Logger logger = Logger.getLogger(BookService.class);
 
@@ -24,6 +25,14 @@ public class BookService implements IService {
 			instance = new BookService();
 		}
 		return instance;
+	}
+
+	public Integer getMonth() {
+		return month;
+	}
+
+	public void setMonth(Integer month) {
+		this.month = month;
 	}
 
 	public BookStore getBooks() {
@@ -82,10 +91,10 @@ public class BookService implements IService {
 	public List<Book> oldBooks() {
 		List<Book> list = new ArrayList<Book>();
 		try {
-			int sixMonth = 1000 * 60 * 60 * 24 * 30 * 6;
+			int oldMonth = 1000 * 60 * 60 * 24 * 30 * month;
 			Date today = new Date();
 			for (Book book : books.getList()) {
-				if ((today.getTime() - book.getReceiptDate().getTime()) > sixMonth) {
+				if ((today.getTime() - book.getReceiptDate().getTime()) > oldMonth) {
 					list.add(book);
 				}
 			}

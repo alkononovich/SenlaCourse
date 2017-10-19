@@ -8,7 +8,7 @@ import java.util.List;
 import com.senla.training.kononovich.enums.Status;
 import com.senla.training.kononovich.service.utilites.DateConverter;
 
-public class Order extends AbstractModel{
+public class Order extends AbstractModel implements Cloneable{
 	/**
 	 * 
 	 */

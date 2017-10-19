@@ -9,6 +9,7 @@ import com.senla.training.kononovich.enums.Status;
 public class BookClaimService implements IService {
 	private BookService bookService = BookService.getInstance();
 	private ClaimService claimService = ClaimService.getInstance();
+	private boolean toggle = true;
 	private static final Logger logger = Logger.getLogger(BookClaimService.class);
 	private static BookClaimService instance;
 
@@ -22,12 +23,22 @@ public class BookClaimService implements IService {
 		return instance;
 	}
 
+	public boolean isToggle() {
+		return toggle;
+	}
+
+	public void setToggle(boolean toggle) {
+		this.toggle = toggle;
+	}
+
 	public void addBook(Book book) {
 		try {
 			bookService.getBooks().add(book);
-			for (Claim claim : claimService.getClaims().getList()) {
-				if (claim.getBook().equals(book.getName())) {
-					claim.setStatus(Status.COMPLETED);
+			if (toggle) {
+				for (Claim claim : claimService.getClaims().getList()) {
+					if (claim.getBook().equals(book.getName())) {
+						claim.setStatus(Status.COMPLETED);
+					}
 				}
 			}
 		} catch (Exception e) {

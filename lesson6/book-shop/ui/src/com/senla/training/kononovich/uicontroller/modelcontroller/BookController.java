@@ -9,11 +9,14 @@ import com.senla.training.kononovich.service.printers.*;
 import com.senla.training.kononovich.service.utilites.*;
 import com.senla.training.kononovich.uicontroller.ReaderToField;
 
+import config.Configuration;
+
 public class BookController {
 	private IPrinter printer = Printer.getInstance();
 	private ReaderToField reader = ReaderToField.getInstance();
 	private BookService bookService = BookService.getInstance();
 	private BookClaimService bookClaimService = BookClaimService.getInstance();
+	private Configuration conf = Configuration.getInstance();
 	private static final String NAME = "Name: ";
 	private static final String COST = "Cost: ";
 	private static final String PUBLICATION_DATE = "Publication Date: ";
@@ -22,8 +25,11 @@ public class BookController {
 	private static final String PATH = "Path to file: ";
 	private static final String INVALID_ID = "Invalid Id";
 	private static BookController instance;
-
+	
+		
 	private BookController() {
+		bookService.setMonth(conf.getProps().getOldMonth());
+		bookClaimService.setToggle(conf.getProps().isToggleOnCompleteClaim());
 	}
 
 	public static BookController getInstance() {
