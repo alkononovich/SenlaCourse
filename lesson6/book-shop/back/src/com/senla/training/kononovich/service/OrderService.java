@@ -13,7 +13,6 @@ import com.senla.training.kononovich.storage.OrderStore;
 
 public class OrderService implements IService {
 	private Container container = Container.getInstance();
-	private OrderStore orders;
 	private static final Logger logger = Logger.getLogger(OrderService.class);
 	private static OrderService instance;
 
@@ -45,7 +44,7 @@ public class OrderService implements IService {
 
 	public void upDateOrder(int id, Order order) {
 		try {
-			orders.update(id, order);
+			getOrders().update(id, order);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -53,7 +52,7 @@ public class OrderService implements IService {
 
 	public void removeOrder(int id) {
 		try {
-			orders.remove(id);
+			getOrders().remove(id);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -76,7 +75,7 @@ public class OrderService implements IService {
 	public int numOfCompleteOrders() {
 		int result = 0;
 		try {
-			for (Order order : orders.getList()) {
+			for (Order order : getOrders().getList()) {
 				if (order.getStatus() == Status.COMPLETED) {
 					result++;
 				}
@@ -90,7 +89,7 @@ public class OrderService implements IService {
 	public List<Order> completedOrdersByTime(Date start, Date end) {
 		List<Order> list = new ArrayList<Order>();
 		try {
-			for (Order o : orders.getList()) {
+			for (Order o : getOrders().getList()) {
 				if ((o.getExecutionDate().after(start) && o.getExecutionDate().before(end))
 						&& o.getStatus() == Status.COMPLETED) {
 					list.add(o);
@@ -105,7 +104,7 @@ public class OrderService implements IService {
 	public int sumByTime(Date start, Date end) {
 		int sum = 0;
 		try {
-			for (Order o : orders.getList()) {
+			for (Order o : getOrders().getList()) {
 				if ((o.getExecutionDate().after(start) && o.getExecutionDate().before(end))
 						&& o.getStatus() == Status.COMPLETED) {
 					sum += o.getCost();
@@ -115,5 +114,9 @@ public class OrderService implements IService {
 			logger.error(e.getMessage(), e);
 		}
 		return sum;
+	}
+	
+	public void cloneOrder(int id) {
+		this.addOrder(this.getOrderById(id).clone());
 	}
 }

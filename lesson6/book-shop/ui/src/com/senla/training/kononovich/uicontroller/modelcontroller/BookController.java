@@ -28,7 +28,7 @@ public class BookController {
 	
 		
 	private BookController() {
-		bookService.setMonth(conf.getProps().getOldMonth());
+		//bookService.setMonth(conf.getProps().getOldMonth());
 		bookClaimService.setToggle(conf.getProps().isToggleOnCompleteClaim());
 	}
 

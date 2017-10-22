@@ -8,7 +8,6 @@ import com.senla.training.kononovich.storage.Container;
 
 public class ClaimService implements IService {
 	private Container container = Container.getInstance();
-	private ClaimStore claims;
 	private static final Logger logger = Logger.getLogger(ClaimService.class);
 	private static ClaimService instance;
 
@@ -40,7 +39,7 @@ public class ClaimService implements IService {
 
 	public void upDateClaim(int id, Claim claim) {
 		try {
-			claims.update(id, claim);
+			getClaims().update(id, claim);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -48,7 +47,7 @@ public class ClaimService implements IService {
 
 	public void removeClaim(int id) {
 		try {
-			claims.remove(id);
+			getClaims().remove(id);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}

@@ -42,7 +42,10 @@ public class BookStore implements IListEntity<Book>, Serializable {
 	public void update(int id, Book book) {
 		for (Book row : getList()) {
 			if (row.getId() == id) {
-				row = book;
+				row.setName(book.getName());
+				row.setCost(book.getCost());
+				row.setPublicationDate(book.getPublicationDate());
+				row.setCount(book.getCount());
 			}
 		}
 	}

@@ -8,48 +8,24 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.apache.log4j.Logger;
-import com.senla.training.kononovich.storage.Container;
 
-import config.Configuration;
 
 public class Serialization {
 	private static final Logger logger = Logger.getLogger(Serialization.class);
-	private static Configuration conf = Configuration.getInstance();
-	private static String path = "object.dat";
-
-	public static String getPath() {
-		return path;
-	}
-
-	public static void setPath(String path) {
-		Serialization.path = path;
-	}
-	private static void initPath() {
-		if (conf.getProps().getSerialPath() != null) {
-			path = conf.getProps().getSerialPath();
-		}
-	}
 	
-	public static void serialToFile() {
-		Container toSerialize = Container.getInstance();
-		initPath();
+	public void serialToFile(Object o, String path) {
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path))) {
-			out.writeObject(toSerialize);
+			out.writeObject(o);
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 			System.out.println("error serialization");
 		}
 	}
 
-	public static void serialFromFile() {
-		initPath();
+	public Object serialFromFile(String path) {
+		Object clone = null;
 		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(path))) {
-			Container container = Container.getInstance();
-			Container clone = (Container) in.readObject();
-
-			container.setBooks(clone.getBooks());
-			container.setOrders(clone.getOrders());
-			container.setClaims(clone.getClaims());
+			clone = in.readObject();
 		} catch (ClassNotFoundException e) {
 			logger.error(e.getMessage(), e);
 		} catch (FileNotFoundException e) {
@@ -57,6 +33,7 @@ public class Serialization {
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
+		return clone;
 	}
 
 }

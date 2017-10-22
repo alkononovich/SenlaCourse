@@ -12,12 +12,12 @@ import com.senla.training.kononovich.storage.Container;
 
 public class BookService implements IService {
 	private Container container = Container.getInstance();
-	private BookStore books;
-	private Integer month = 6;
+	private Integer month;
 	private static BookService instance;
 	private static final Logger logger = Logger.getLogger(BookService.class);
 
 	private BookService() {
+		month = 6;
 	}
 
 	public static BookService getInstance() {
@@ -45,7 +45,7 @@ public class BookService implements IService {
 
 	public void upDateBook(int id, Book book) {
 		try {
-			books.update(id, book);
+			getBooks().update(id, book);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -53,7 +53,7 @@ public class BookService implements IService {
 
 	public void removeBook(int id) {
 		try {
-			books.remove(id);
+			getBooks().remove(id);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -62,7 +62,7 @@ public class BookService implements IService {
 	public Book getBookById(int id) {
 		try {
 			Book searchedBook = null;
-			for (Book book : books.getList()) {
+			for (Book book : getBooks().getList()) {
 				if (book.getId() == id) {
 					searchedBook = book;
 				}
@@ -77,7 +77,7 @@ public class BookService implements IService {
 	public Book getBookByName(String name) {
 		Book searchedBook = null;
 		try {
-			for (Book book : books.getList()) {
+			for (Book book : getBooks().getList()) {
 				if (book.getName().equals(name)) {
 					searchedBook = book;
 				}
@@ -93,7 +93,7 @@ public class BookService implements IService {
 		try {
 			int oldMonth = 1000 * 60 * 60 * 24 * 30 * month;
 			Date today = new Date();
-			for (Book book : books.getList()) {
+			for (Book book : getBooks().getList()) {
 				if ((today.getTime() - book.getReceiptDate().getTime()) > oldMonth) {
 					list.add(book);
 				}

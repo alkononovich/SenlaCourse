@@ -78,18 +78,16 @@ public class OrderController {
 		}
 	}
 	
-/*	public void cloneOrder() {
+	public void cloneOrder() {
 		printer.printList(orderService.getOrders().getList());
 		printer.print(ID);
 		int id = reader.readInt();
 		if (id > 0 && id <= orderService.getOrders().getList().size()) {
-			Order orig = orderService.getOrderById(id);
-			Order clone = (Order) orig.clone();
-			orderService.addOrder(clone);
+			orderService.cloneOrder(id);
 		} else {
 			printer.print(INVALID_ID);
 		}
 	}
-	*/
+	
 }
 

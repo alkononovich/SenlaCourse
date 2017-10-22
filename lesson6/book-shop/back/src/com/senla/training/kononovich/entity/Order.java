@@ -75,15 +75,25 @@ public class Order extends AbstractModel implements Cloneable{
 		}
 		return s;
 	}
+	
+	@Override
+	public Order clone() {
+		Order clone = new Order(this.client, this.getBooks());
+		clone.setStatus(this.getStatus());
+		if(this.getExecutionDate() != null) {
+			clone.setExecutionDate(this.getExecutionDate());
+		}
+		return clone;
+	}
 
 	@Override
 	public String view() {
 		StringBuffer str = new StringBuffer();
 		if (status == Status.COMPLETED) {
-		str.append(books).append(";").append(client).append(";").append(DateConverter.dateToString(executionDate))
+		str.append(getId()).append(";").append(books).append(";").append(client).append(";").append(DateConverter.dateToString(executionDate))
 				.append(";").append(status);
 		} else {
-			str.append(books).append(";").append(client).append(";").append(status);
+			str.append(getId()).append(";").append(books).append(";").append(client).append(";").append(status);
 		}
 		return str.toString();
 	}

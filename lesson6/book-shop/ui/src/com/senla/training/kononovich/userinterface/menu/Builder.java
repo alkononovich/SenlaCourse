@@ -35,6 +35,7 @@ public class Builder {
 		ordersMenu.getMenu().add(new MenuItem("Remove", new RemoveOrder()));
 		ordersMenu.getMenu().add(new MenuItem("Update order", new UpdateOrder()));
 		ordersMenu.getMenu().add(new MenuItem("Complete order", new CompleteOrder()));
+		ordersMenu.getMenu().add(new MenuItem("Clone order", new CloneOrder()));
 		ordersMenu.getMenu().add(new MenuItem("View Orders", viewOrders));
 		
 		viewOrders.getMenu().add(new MenuItem("View all orders", new ViewOrders()));

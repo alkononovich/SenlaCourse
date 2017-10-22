@@ -27,7 +27,8 @@ public class OrderStore implements IListEntity<Order>, Serializable {
 	public void update(int id, Order order) {
 		for (Order row : getList()) {
 			if (row.getId() == id) {
-				row = order;
+				row.setBooks(order.getBooks());
+				row.setClient(order.getClient());
 			}
 		}
 	}
