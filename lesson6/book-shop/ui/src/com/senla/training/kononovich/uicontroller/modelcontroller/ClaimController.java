@@ -1,8 +1,12 @@
 package com.senla.training.kononovich.uicontroller.modelcontroller;
 
+import java.util.List;
+
 import com.senla.training.kononovich.entity.Claim;
 import com.senla.training.kononovich.service.*;
 import com.senla.training.kononovich.service.printers.*;
+import com.senla.training.kononovich.service.utilites.ClaimsConverter;
+import com.senla.training.kononovich.service.utilites.FileWorker;
 import com.senla.training.kononovich.uicontroller.ReaderToField;
 
 public class ClaimController {
@@ -11,6 +15,7 @@ public class ClaimController {
 	private ClaimService claimService = ClaimService.getInstance();
 	private static final String ID = "Id: ";
 	private static final String BOOK = "Book name: ";
+	private static final String PATH = "Path to file: ";
 	private static ClaimController instance;
 
 	private ClaimController() {
@@ -53,6 +58,31 @@ public class ClaimController {
 		} else {
 			printer.print("Invalid Id");
 		}
+	}
+
+	public void readClaimsFromFile() {
+		boolean check = false;
+		printer.print(PATH);
+		String path = reader.readString();
+		List<Claim> list = ClaimsConverter.stringArToClaims(FileWorker.readFromFile(path));
+		for (Claim b : list) {
+			for (Claim c : claimService.getClaims().getList()) {
+				if (c.getId() == b.getId()) {
+					check = true;
+				}
+			}
+			if (check) {
+				claimService.upDateClaim(b.getId(), b);
+			} else {
+				claimService.addClaim(b);
+			}
+		}
+	}
+
+	public void writeClaimsToFile() {
+		printer.print(PATH);
+		String path = reader.readString();
+		FileWorker.writeToFile(ClaimsConverter.claimsToStringAr(claimService.getClaims().getList()), path);
 	}
 
 }

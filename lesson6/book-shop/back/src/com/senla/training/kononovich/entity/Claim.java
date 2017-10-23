@@ -9,11 +9,18 @@ public class Claim extends AbstractModel {
 	private static final long serialVersionUID = 455320977275344269L;
 	private String book;
 	private Status status;
+	
 	public Claim(String book) {
 		super();
 		this.book = book;
 		this.status = Status.ORDRERED;
 	}
+	
+	public Claim(int id, String book) {
+		this(book);
+		this.setId(id);
+	}
+
 	public String getBook() {
 		return book;
 	}
@@ -29,7 +36,7 @@ public class Claim extends AbstractModel {
 	
 	public String view () {
 		StringBuffer str = new StringBuffer();
-		str.append(book).append(";").append(status);
+		str.append(getId()).append(";").append(book).append(";").append(status);
 		
 		return str.toString();
 	}

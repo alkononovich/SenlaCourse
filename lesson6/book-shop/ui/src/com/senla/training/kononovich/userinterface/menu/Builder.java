@@ -32,10 +32,12 @@ public class Builder {
 		viewBooks.getMenu().add(new MenuItem("View old books",  new ViewOldBooks()));
 		
 		ordersMenu.getMenu().add(new MenuItem("Add order", new AddOrder()));
-		ordersMenu.getMenu().add(new MenuItem("Remove", new RemoveOrder()));
+		ordersMenu.getMenu().add(new MenuItem("Remove order", new RemoveOrder()));
 		ordersMenu.getMenu().add(new MenuItem("Update order", new UpdateOrder()));
 		ordersMenu.getMenu().add(new MenuItem("Complete order", new CompleteOrder()));
 		ordersMenu.getMenu().add(new MenuItem("Clone order", new CloneOrder()));
+		ordersMenu.getMenu().add(new MenuItem("Write orders to file", new WriteOrdersToFile()));
+		ordersMenu.getMenu().add(new MenuItem("Read orders from file", new ReadOrdersFromFile()));
 		ordersMenu.getMenu().add(new MenuItem("View Orders", viewOrders));
 		
 		viewOrders.getMenu().add(new MenuItem("View all orders", new ViewOrders()));
@@ -47,6 +49,8 @@ public class Builder {
 		claimsMenu.getMenu().add(new MenuItem("Add claim", new AddClaim()));
 		claimsMenu.getMenu().add(new MenuItem("Remove claim", new RemoveClaim()));
 		claimsMenu.getMenu().add(new MenuItem("Update claim", new UpdateClaim()));
+		claimsMenu.getMenu().add(new MenuItem("Write claims to file", new WriteClaimsToFile()));
+		claimsMenu.getMenu().add(new MenuItem("Read claims from file", new ReadClaimsFromFile()));
 		claimsMenu.getMenu().add(new MenuItem("View all claims", new ViewClaims()));
 		
 		return root;

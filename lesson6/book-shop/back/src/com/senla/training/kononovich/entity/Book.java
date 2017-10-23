@@ -28,6 +28,11 @@ public class Book extends AbstractModel {
 		this(name, cost, publicationDate);
 		this.count = count;
 	}
+	
+	public Book(int id, String name, int cost, Date publicationDate, int count) {
+		this(name, cost, publicationDate, count);
+		this.setId(id);
+	}
 
 	public String getName() {
 		return name;
@@ -71,7 +76,7 @@ public class Book extends AbstractModel {
 
 	public String view() {
 		StringBuffer str = new StringBuffer();
-		str.append(getId()).append(";").append(name).append(";").append(cost).append(";").append(DateConverter.dateToString(publicationDate)).append(";").append(DateConverter.dateToString(receiptDate)).append(";").append(count).append(" pcs");
+		str.append(getId()).append(";").append(name).append(";").append(cost).append(";").append(DateConverter.dateToString(publicationDate)).append(";").append(DateConverter.dateToString(receiptDate)).append(";").append(count);
 		return str.toString();
 	}	
 	

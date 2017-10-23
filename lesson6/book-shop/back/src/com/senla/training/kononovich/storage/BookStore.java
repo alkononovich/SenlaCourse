@@ -31,7 +31,9 @@ public class BookStore implements IListEntity<Book>, Serializable {
 				}
 			}
 		} else {
-			book.setId(nextId());
+			if (book.getId() == 0) {
+				book.setId(nextId());
+			}
 			getList().add(book);
 			book.setReceiptDate(new Date());
 		}

@@ -6,6 +6,9 @@ import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.entity.Order;
 import com.senla.training.kononovich.service.*;
 import com.senla.training.kononovich.service.printers.*;
+import com.senla.training.kononovich.service.utilites.BooksToFileConverter;
+import com.senla.training.kononovich.service.utilites.FileWorker;
+import com.senla.training.kononovich.service.utilites.OrdersConverter;
 import com.senla.training.kononovich.uicontroller.ReaderToField;
 import com.senla.training.kononovich.uicontroller.BookReader;
 
@@ -20,6 +23,7 @@ public class OrderController {
 	private static final String BOOK_ID = "Books Id: ";
 	private static final String CLIENT = "Client: ";
 	private static final String INVALID_ID = "Invalid Id";
+	private static final String PATH = "Path to file: ";
 	private static OrderController instance;
 
 	private OrderController() {
@@ -87,6 +91,31 @@ public class OrderController {
 		} else {
 			printer.print(INVALID_ID);
 		}
+	}
+	
+	public void readOrdersFromFile() {
+		boolean check = false;
+		printer.print(PATH);
+		String path = reader.readString();
+		List<Order> list = OrdersConverter.stringArToOrders(FileWorker.readFromFile(path));
+		for (Order b : list) {
+			for (Order c : orderService.getOrders().getList()) {
+				if (c.getId() == b.getId()) {
+					check = true;
+				}
+			}
+			if (check) {
+				orderService.upDateOrder(b.getId(), b);
+			} else {
+				orderService.addOrder(b);
+			}
+		}
+	}
+
+	public void writeOrdersToFile() {
+		printer.print(PATH);
+		String path = reader.readString();
+		FileWorker.writeToFile(OrdersConverter.ordersToStringAr(orderService.getOrders().getList()), path);
 	}
 	
 }

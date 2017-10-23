@@ -1,19 +1,18 @@
 package com.senla.training.kononovich.service.utilites;
 
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.senla.training.kononovich.entity.Book;
 
-public class BooksToFileConverter{
+public class BooksToFileConverter {
 
 	public static String[] booksToStringAr(List<Book> books) {
 		String[] ar = new String[books.size()];
 		int i = 0;
 		for (Book b : books) {
-			ar[i] = b.view().toString();
+			ar[i] = b.view();
 			i++;
 		}
 		return ar;
@@ -26,7 +25,9 @@ public class BooksToFileConverter{
 		for (int i = 0; i < ar.length; i++) {
 			value = ar[i].split(pars);
 			try {
-				list.add(new Book(value[1], Integer.parseInt(value[2]), DateConverter.stringToDate(value[3])));
+				Book tmp = new Book(Integer.parseInt(value[0]), value[1], Integer.parseInt(value[2]),
+						DateConverter.stringToDate(value[3]), Integer.parseInt(value[5]));
+				list.add(tmp);
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			} catch (ParseException e) {

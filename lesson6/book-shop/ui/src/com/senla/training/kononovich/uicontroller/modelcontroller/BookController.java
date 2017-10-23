@@ -25,10 +25,9 @@ public class BookController {
 	private static final String PATH = "Path to file: ";
 	private static final String INVALID_ID = "Invalid Id";
 	private static BookController instance;
-	
-		
+
 	private BookController() {
-		//bookService.setMonth(conf.getProps().getOldMonth());
+		// bookService.setMonth(conf.getProps().getOldMonth());
 		bookClaimService.setToggle(conf.getProps().isToggleOnCompleteClaim());
 	}
 
@@ -80,10 +79,20 @@ public class BookController {
 
 	public void readBooksFromFile() {
 		printer.print(PATH);
+		boolean check = false;
 		String path = reader.readString();
 		List<Book> list = BooksToFileConverter.stringArToBooks(FileWorker.readFromFile(path));
 		for (Book b : list) {
-			bookClaimService.addBook(b);
+			for (Book c : bookService.getBooks().getList()) {
+				if (c.getId() == b.getId()) {
+					check = true;
+				} 
+			}
+			if (check) {
+				bookService.upDateBook(b.getId(), b);
+			} else {
+				bookClaimService.addBook(b);;
+			}
 		}
 	}
 

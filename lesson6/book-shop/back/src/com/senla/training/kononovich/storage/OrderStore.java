@@ -19,7 +19,9 @@ public class OrderStore implements IListEntity<Order>, Serializable {
 
 	@Override
 	public void add(Order order) {
-		order.setId(nextId());
+		if (order.getId() == 0) {
+			order.setId(nextId());
+		}
 		getList().add(order);
 	}
 
@@ -64,10 +66,10 @@ public class OrderStore implements IListEntity<Order>, Serializable {
 		}
 		return ++iterator;
 	}
-	
+
 	public void completed(int id) {
-		for(Order order : getList()) {
-			if(order.getId() == id) {
+		for (Order order : getList()) {
+			if (order.getId() == id) {
 				order.setStatus(Status.COMPLETED);
 				order.setExecutionDate(new Date());
 			}

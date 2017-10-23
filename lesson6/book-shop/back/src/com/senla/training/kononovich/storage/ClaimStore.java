@@ -17,7 +17,9 @@ public class ClaimStore implements IListEntity<Claim>, Serializable {
 
 	@Override
 	public void add(Claim claim) {
-		claim.setId(nextId());
+		if (claim.getId() == 0) {
+			claim.setId(nextId());
+		}
 		getList().add(claim);
 	}
 

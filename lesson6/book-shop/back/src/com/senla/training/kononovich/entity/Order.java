@@ -8,7 +8,7 @@ import java.util.List;
 import com.senla.training.kononovich.enums.Status;
 import com.senla.training.kononovich.service.utilites.DateConverter;
 
-public class Order extends AbstractModel implements Cloneable{
+public class Order extends AbstractModel implements Cloneable {
 	/**
 	 * 
 	 */
@@ -18,7 +18,7 @@ public class Order extends AbstractModel implements Cloneable{
 	private Date executionDate;
 	private Status status;
 
-	public Order(String client, Book ... book) {
+	public Order(String client, Book... book) {
 		super();
 		this.books = new ArrayList<Book>();
 		books.addAll(Arrays.asList(book));
@@ -31,7 +31,12 @@ public class Order extends AbstractModel implements Cloneable{
 		this.books = new ArrayList<Book>();
 		books.addAll(book);
 		this.client = client;
-		this.status = Status.ORDRERED;		
+		this.status = Status.ORDRERED;
+	}
+
+	public Order(int id, String client, List<Book> book) {
+		this(client, book);
+		this.setId(id);
 	}
 
 	public List<Book> getBooks() {
@@ -75,12 +80,12 @@ public class Order extends AbstractModel implements Cloneable{
 		}
 		return s;
 	}
-	
+
 	@Override
 	public Order clone() {
 		Order clone = new Order(this.client, this.getBooks());
 		clone.setStatus(this.getStatus());
-		if(this.getExecutionDate() != null) {
+		if (this.getExecutionDate() != null) {
 			clone.setExecutionDate(this.getExecutionDate());
 		}
 		return clone;
@@ -90,11 +95,12 @@ public class Order extends AbstractModel implements Cloneable{
 	public String view() {
 		StringBuffer str = new StringBuffer();
 		if (status == Status.COMPLETED) {
-		str.append(getId()).append(";").append(books).append(";").append(client).append(";").append(DateConverter.dateToString(executionDate))
-				.append(";").append(status);
+			str.append(getId()).append(";").append(client).append(";").append(books).append(";").append(status)
+					.append(";").append(DateConverter.dateToString(executionDate));
 		} else {
-			str.append(getId()).append(";").append(books).append(";").append(client).append(";").append(status);
+			str.append(getId()).append(";").append(client).append(";").append(books).append(";").append(status);
 		}
 		return str.toString();
 	}
+
 }
