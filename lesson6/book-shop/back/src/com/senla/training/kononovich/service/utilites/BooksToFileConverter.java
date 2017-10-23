@@ -25,8 +25,9 @@ public class BooksToFileConverter {
 		for (int i = 0; i < ar.length; i++) {
 			value = ar[i].split(pars);
 			try {
-				Book tmp = new Book(Integer.parseInt(value[0]), value[1], Integer.parseInt(value[2]),
+				Book tmp = new Book(value[1], Integer.parseInt(value[2]),
 						DateConverter.stringToDate(value[3]), Integer.parseInt(value[5]));
+				tmp.setId(Integer.parseInt(value[0]));
 				list.add(tmp);
 			} catch (NumberFormatException e) {
 				e.printStackTrace();

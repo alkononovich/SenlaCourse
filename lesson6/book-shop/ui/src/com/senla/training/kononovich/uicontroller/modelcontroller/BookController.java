@@ -59,9 +59,9 @@ public class BookController {
 		printer.printList(bookService.getBooks().getList());
 		printer.print(ID);
 		int id = reader.readInt();
-		if (id > 0 && id <= bookService.getBooks().getList().size()) {
+		try {
 			bookService.removeBook(id);
-		} else {
+		} catch (Exception e) {
 			printer.print(INVALID_ID);
 		}
 	}
@@ -70,19 +70,19 @@ public class BookController {
 		printer.printList(bookService.getBooks().getList());
 		printer.print(ID);
 		int id = reader.readInt();
-		if (id > 0 && id <= bookService.getBooks().getList().size()) {
+		try {
 			bookService.upDateBook(id, initializeBook());
-		} else {
+		} catch (Exception e) {
 			printer.print(INVALID_ID);
 		}
 	}
 
 	public void readBooksFromFile() {
 		printer.print(PATH);
-		boolean check = false;
 		String path = reader.readString();
 		List<Book> list = BooksToFileConverter.stringArToBooks(FileWorker.readFromFile(path));
 		for (Book b : list) {
+			boolean check = false;
 			for (Book c : bookService.getBooks().getList()) {
 				if (c.getId() == b.getId()) {
 					check = true;

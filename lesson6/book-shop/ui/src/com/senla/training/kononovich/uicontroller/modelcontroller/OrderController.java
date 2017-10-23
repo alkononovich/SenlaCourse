@@ -94,11 +94,11 @@ public class OrderController {
 	}
 	
 	public void readOrdersFromFile() {
-		boolean check = false;
 		printer.print(PATH);
 		String path = reader.readString();
 		List<Order> list = OrdersConverter.stringArToOrders(FileWorker.readFromFile(path));
 		for (Order b : list) {
+			boolean check = false;
 			for (Order c : orderService.getOrders().getList()) {
 				if (c.getId() == b.getId()) {
 					check = true;

@@ -61,11 +61,11 @@ public class ClaimController {
 	}
 
 	public void readClaimsFromFile() {
-		boolean check = false;
 		printer.print(PATH);
 		String path = reader.readString();
 		List<Claim> list = ClaimsConverter.stringArToClaims(FileWorker.readFromFile(path));
 		for (Claim b : list) {
+			boolean check = false;
 			for (Claim c : claimService.getClaims().getList()) {
 				if (c.getId() == b.getId()) {
 					check = true;

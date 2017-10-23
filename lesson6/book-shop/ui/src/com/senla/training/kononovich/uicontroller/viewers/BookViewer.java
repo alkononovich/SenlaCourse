@@ -34,6 +34,7 @@ public class BookViewer {
 	
 	public List<Book> sortBooks(List<Book> list) {
 		List<Comparator> comps = new ArrayList<Comparator>();
+		comps.add(new BookIdComparator());
 		comps.add(new BookNameComparator());
 		comps.add(new BookCostComparator());
 		comps.add(new BookDateComparator());
@@ -42,8 +43,8 @@ public class BookViewer {
 		printer.print(SORT);
 		int num = reader.readInt();
 		
-		if (num > 0 && num <= comps.size()) {
-			return BookSorter.sort(list, comps.get(num - 1));
+		if (num >= 0 && num <= comps.size()) {
+			return BookSorter.sort(list, comps.get(num));
 		} else {
 			return list;
 		}
