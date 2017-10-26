@@ -5,9 +5,9 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ConfigPropery {
-	String configName();
+	String configName() default "";
 
-	String propertyName();
+	String propertyName() default "";
 
-	Class<?> type();
+	Class<?> type() default Object.class;
 }
