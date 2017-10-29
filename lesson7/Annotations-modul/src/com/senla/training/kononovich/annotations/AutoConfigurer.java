@@ -4,12 +4,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 public class AutoConfigurer {
 	private static final String NULL = "";
-
-	public void configureObj(Object obj) {
+	private SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+	
+	public Object configureObj(Object obj) {
 		Properties properties = new Properties();
 
 		Class<? extends Object> mClassObject = obj.getClass();
@@ -38,9 +42,16 @@ public class AutoConfigurer {
 			} else {
 				type = annotation.type();
 			}
+			
 			try (FileInputStream fis = new FileInputStream(confName)) {
 				properties.load(fis);
-				field.set(type, properties.getProperty(propName));
+				if (type.equals(String.class)) {
+					field.set(obj, properties.getProperty(propName));
+				} else if (type.equals(Integer.class)) {
+					field.set(obj, Integer.parseInt(properties.getProperty(propName)));
+				} else if (type.equals(Date.class)) {
+					field.set(obj, format.parse(properties.getProperty(propName)));
+				}
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -53,7 +64,13 @@ public class AutoConfigurer {
 			} catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+
 		}
+		return obj;
 	}
+
 }
