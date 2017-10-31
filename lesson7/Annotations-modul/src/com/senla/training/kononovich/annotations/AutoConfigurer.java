@@ -17,7 +17,14 @@ public class AutoConfigurer {
 		Properties properties = new Properties();
 
 		Class<? extends Object> mClassObject = obj.getClass();
-		Field[] fields = mClassObject.getFields();
+		Field[] publFields = mClassObject.getFields();
+		Field[] privFields = mClassObject.getDeclaredFields();
+		for(Field field : privFields) {
+			field.setAccessible(true);
+		}
+		Field[] fields = new Field[publFields.length + privFields.length];
+		System.arraycopy(publFields, 0, fields, 0, publFields.length);
+		System.arraycopy(privFields, 0, fields, publFields.length, privFields.length);
 		for (Field field : fields) {
 			ConfigPropery annotation = field.getAnnotation(ConfigPropery.class);
 			String confName;

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class MyClass {
 	@ConfigPropery(configName = "conf.properties", propertyName = "class.name", type = String.class)
-	public String name;
+	private String name;
 	
 	@ConfigPropery(configName = "conf.properties", propertyName = "class.count", type = Integer.class)
 	public int count;
