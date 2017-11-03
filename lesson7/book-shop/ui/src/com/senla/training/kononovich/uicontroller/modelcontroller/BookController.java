@@ -5,22 +5,27 @@ import java.util.List;
 
 import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.uicontroller.ReaderToField;
+import com.senla.training.kononovich.annotations.ConfigProperty;
+import com.senla.training.kononovich.annotations.IAutoConfigurer;
 import com.senla.training.kononovich.api.*;
 import com.senla.training.kononovich.api.core.IBookClaimService;
 import com.senla.training.kononovich.api.core.IBookService;
 import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
 
-import config.IConfiguration;
 
 public class BookController {
 	private IPrinter printer = (IPrinter)DependencyInjection.getClassInstance(IPrinter.class);
 	private IBookService bookService = (IBookService)DependencyInjection.getClassInstance(IBookService.class);
 	private IBookClaimService bookClaimService = (IBookClaimService)DependencyInjection.getClassInstance(IBookClaimService.class);
-	private IConfiguration conf = (IConfiguration)DependencyInjection.getClassInstance(IConfiguration.class);
 	private IBookConverter bookConverter = (IBookConverter)DependencyInjection.getClassInstance(IBookConverter.class);
 	private IFileWorker fileWorker = (IFileWorker)DependencyInjection.getClassInstance(IFileWorker.class);
 	
 	private ReaderToField reader = ReaderToField.getInstance();
+	
+	@ConfigProperty(configName = "config.properties", propertyName = "book.oldMonth", type = Integer.class)
+	private int oldMonth;
+	@ConfigProperty(configName = "config.properties", propertyName = "claim.toggleOnComplete", type = Boolean.class)
+	private boolean toggle;
 	
 	private static final String NAME = "Name: ";
 	private static final String COST = "Cost: ";
@@ -32,8 +37,16 @@ public class BookController {
 	private static BookController instance;
 
 	private BookController() {
-		bookService.setMonth(conf.getProps().getOldMonth());
-		bookClaimService.setToggle(conf.getProps().isToggleOnCompleteClaim());
+		bookService.setMonth(oldMonth);
+		bookClaimService.setToggle(toggle);
+	}
+
+	public int getOldMonth() {
+		return oldMonth;
+	}
+
+	public boolean isToggle() {
+		return toggle;
 	}
 
 	public static BookController getInstance() {

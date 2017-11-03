@@ -5,14 +5,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
 import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
 import com.senla.training.kononovich.dependencyinjection.propertyworker.IPropertyWorker;
+import com.senla.training.kononovich.service.BookClaimService;
 
-public class AutoConfigurer implements IAutoConfigurer{
+public class AutoConfigurer implements IAutoConfigurer {
+	private static final Logger logger = Logger.getLogger(BookClaimService.class);
 	private static final String NULL = "";
 	private SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-	private IPropertyWorker propertyWorker = (IPropertyWorker) DependencyInjection
-			.getClassInstance(IPropertyWorker.class);
+	private IPropertyWorker propertyWorker = (IPropertyWorker)DependencyInjection.getClassInstance(IPropertyWorker.class);
 
 	public Object configureObj(Object obj) {
 
@@ -32,7 +35,6 @@ public class AutoConfigurer implements IAutoConfigurer{
 				} else {
 					confName = annotation.configName();
 				}
-
 				if (annotation.propertyName().equals(NULL)) {
 					StringBuffer str = new StringBuffer();
 					str.append(mClassObject.getName()).append(".").append(field.getName());
@@ -40,7 +42,6 @@ public class AutoConfigurer implements IAutoConfigurer{
 				} else {
 					propName = annotation.propertyName();
 				}
-
 				if (annotation.type() == Object.class) {
 					type = field.getType();
 				} else {
@@ -57,17 +58,13 @@ public class AutoConfigurer implements IAutoConfigurer{
 						field.set(obj, Boolean.parseBoolean(propertyWorker.getProps(confName, propName)));
 					}
 				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				}
 
 			}

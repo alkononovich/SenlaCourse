@@ -1,13 +1,21 @@
 package com.senla.training.kononovich.userinterface.menu;
 
 import com.senla.training.kononovich.userinterface.menu.items.*;
+import com.senla.training.kononovich.annotations.IAutoConfigurer;
+import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
+import com.senla.training.kononovich.uicontroller.modelcontroller.BookController;
 import com.senla.training.kononovich.userinterface.executors.book.*;
 import com.senla.training.kononovich.userinterface.executors.claim.*;
 import com.senla.training.kononovich.userinterface.executors.order.*;
 
 public class Builder {
 	private Menu root;
+	private IAutoConfigurer configurer = (IAutoConfigurer)DependencyInjection.getClassInstance(IAutoConfigurer.class);
+	private BookController contr = BookController.getInstance();
+
 	public Menu buildMenu() {
+		configurer.configureObj(contr);
+		
 		root = new Menu("Main");
 		
 		Menu booksMenu = new Menu("Books", root);
