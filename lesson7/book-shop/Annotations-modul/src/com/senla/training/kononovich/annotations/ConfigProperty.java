@@ -4,7 +4,7 @@ import java.lang.annotation.*;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ConfigPropery {
+public @interface ConfigProperty {
 	String configName() default "";
 
 	String propertyName() default "";

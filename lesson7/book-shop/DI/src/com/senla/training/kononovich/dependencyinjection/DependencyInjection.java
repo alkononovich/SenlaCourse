@@ -1,26 +1,19 @@
 package com.senla.training.kononovich.dependencyinjection;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.senla.training.kononovich.dependencyinjection.propertyworker.PropertyWorker;
 
 public class DependencyInjection {
-	private static Map<String, Object> objects = new HashMap<String, Object>();
+	private static final String DEPENDENCY_INJECTION = "DependencyInjection.txt";
+	private static PropertyWorker propertyWorker = new PropertyWorker();
 
 	public static Object getClassInstance(Class<?> work) {
 		Object obj = null;
-		if (objects.containsKey(work.getName())) {
-
-			obj = objects.get(work.getName());
-		} else {
-			String implClassName = PropertyManager.getInstance().getClassName(work.getName());
-			try {
-				Class<?> implClass = Class.forName(implClassName);
-				obj = implClass.newInstance();
-				objects.put(implClassName, obj);
-			} catch (Exception e) {
-				System.out.println(e);
-			}
+		String implClassName = propertyWorker.getProps(DEPENDENCY_INJECTION, work.getName());
+		try {
+			Class<?> implClass = Class.forName(implClassName);
+			obj = implClass.newInstance();
+		} catch (Exception e) {
+			System.out.println(e);
 		}
 		return obj;
 	}

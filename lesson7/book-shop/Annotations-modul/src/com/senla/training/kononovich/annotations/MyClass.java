@@ -3,13 +3,13 @@ package com.senla.training.kononovich.annotations;
 import java.util.Date;
 
 public class MyClass {
-	@ConfigPropery(configName = "conf.properties", propertyName = "class.name", type = String.class)
+	@ConfigProperty(configName = "conf.properties", propertyName = "class.name", type = String.class)
 	private String name;
 	
-	@ConfigPropery(configName = "conf.properties", propertyName = "class.count", type = Integer.class)
+	@ConfigProperty(configName = "conf.properties", propertyName = "class.count", type = Integer.class)
 	public int count;
 	
-	@ConfigPropery(configName = "conf.properties", propertyName = "class.date", type = Date.class)
+	@ConfigProperty(configName = "conf.properties", propertyName = "class.date", type = Date.class)
 	public Date date;
 	
 	@Override
