@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="Annotations-modul/src"/>
+	<classpathentry kind="src" path="back/src"/>
+	<classpathentry kind="src" path="configuration"/>
+	<classpathentry kind="src" path="DI/src"/>
+	<classpathentry kind="src" path="serialization"/>
+	<classpathentry kind="src" path="ui/src"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="lib/textFileWorker.jar"/>
+	<classpathentry kind="output" path="Annotations-modul/bin"/>
+</classpath>
