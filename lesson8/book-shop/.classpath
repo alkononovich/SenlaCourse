@@ -7,6 +7,8 @@
 	<classpathentry kind="src" path="DI/src"/>
 	<classpathentry kind="src" path="serialization"/>
 	<classpathentry kind="src" path="ui/src"/>
+	<classpathentry kind="src" path="server"/>
+	<classpathentry kind="src" path="client"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.17.jar"/>
 	<classpathentry kind="lib" path="lib/textFileWorker.jar"/>
 	<classpathentry kind="output" path="Annotations-modul/bin"/>
