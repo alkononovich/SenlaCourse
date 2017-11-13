@@ -14,6 +14,9 @@ import com.senla.training.kononovich.userinterface.menu.MenuController;
 public class Client {
 	private static final Logger logger = Logger.getLogger(Client.class);
 	private static MenuController controller = new MenuController();
+	public static ObjectOutputStream out;
+	public static ObjectInputStream in;
+	
 	public static void main(String[] args) {
 		InetAddress addr = null;
 		try {
@@ -23,10 +26,12 @@ public class Client {
 		}
 
 		try (Socket fromServer = new Socket(addr, 1505);
-				ObjectOutputStream out = new ObjectOutputStream(fromServer.getOutputStream());
-				ObjectInputStream in = new ObjectInputStream(fromServer.getInputStream())) {
-
-				controller.run();
+				ObjectOutputStream oos = new ObjectOutputStream(fromServer.getOutputStream());
+				ObjectInputStream ois = new ObjectInputStream(fromServer.getInputStream())) {
+			out = oos;
+			in = ois;
+			
+			controller.run();
 				
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);

@@ -1,16 +1,21 @@
 package com.senla.training.kononovich.uicontroller.modelcontroller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.uicontroller.ReaderToField;
+import com.google.gson.Gson;
 import com.senla.training.kononovich.annotations.ConfigProperty;
-import com.senla.training.kononovich.annotations.IAutoConfigurer;
 import com.senla.training.kononovich.api.*;
 import com.senla.training.kononovich.api.core.IBookClaimService;
 import com.senla.training.kononovich.api.core.IBookService;
 import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
+import com.senla.training.kononovich.client.Client;
+import com.senla.training.kononovich.client.Request;
 
 
 public class BookController {
@@ -19,8 +24,10 @@ public class BookController {
 	private IBookClaimService bookClaimService = (IBookClaimService)DependencyInjection.getClassInstance(IBookClaimService.class);
 	private IBookConverter bookConverter = (IBookConverter)DependencyInjection.getClassInstance(IBookConverter.class);
 	private IFileWorker fileWorker = (IFileWorker)DependencyInjection.getClassInstance(IFileWorker.class);
-	
+	private static final Logger logger = Logger.getLogger(Client.class);
 	private ReaderToField reader = ReaderToField.getInstance();
+	
+	private static Gson GSON = new Gson();
 	
 	@ConfigProperty(configName = "config.properties", propertyName = "book.oldMonth", type = Integer.class)
 	private int oldMonth;
@@ -70,7 +77,14 @@ public class BookController {
 	}
 
 	public void addBook() {
-		bookClaimService.addBook(initializeBook());
+		//bookClaimService.addBook(initializeBook());
+		Request request = new Request("addBook", initializeBook());
+		String json = GSON.toJson(request);
+		try {
+			Client.out.writeObject(json);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);	
+		}		
 	}
 
 	public void removeBook() {
