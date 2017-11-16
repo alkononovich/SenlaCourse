@@ -1,11 +1,18 @@
 package com.senla.training.kononovich.uicontroller.viewers.comparators;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import com.senla.training.kononovich.entity.Book;
 
-public class BookIdComparator implements Comparator<Book> {
-	
+public class BookIdComparator implements Comparator<Book>, Serializable {
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1590475672552772737L;
+
 	@Override
 	public int compare(Book o1, Book o2) {
 		int res = 0;

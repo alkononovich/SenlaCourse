@@ -13,3 +13,4 @@ config.IConfiguration=config.Configuration
 serialization.ISerialization=serialization.Serialization
 com.senla.training.kononovich.dependencyinjection.propertyworker.IPropertyWorker=com.senla.training.kononovich.dependencyinjection.propertyworker.PropertyWorker
 com.senla.training.kononovich.annotations.IAutoConfigurer=com.senla.training.kononovich.annotations.AutoConfigurer
+com.senla.training.kononovich.controller.IShop=com.senla.training.kononovich.controller.Shop

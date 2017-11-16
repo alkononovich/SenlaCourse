@@ -11,15 +11,23 @@ import com.senla.training.kononovich.storage.*;
 import com.senla.training.kononovich.api.IBookConverter;
 import com.senla.training.kononovich.api.IFileWorker;
 import com.senla.training.kononovich.api.IPrinter;
+import com.senla.training.kononovich.api.core.IBookClaimService;
+import com.senla.training.kononovich.api.core.IBookService;
+import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
 import com.senla.training.kononovich.entity.*;
 import com.senla.training.kononovich.service.*;
 import com.senla.training.kononovich.service.comparators.*;
 
 public class Shop implements IShop, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4985008650066394061L;
 	private IPrinter printer = Printer.getInstance();
-	private BookService bookService = BookService.getInstance();
+	private IBookService bookService = (IBookService) DependencyInjection.getClassInstance(IBookService.class);
 	private BookOrderService bookOrderService = BookOrderService.getInstance();
-	private BookClaimService bookClaimService = BookClaimService.getInstance();
+	private IBookClaimService bookClaimService = (IBookClaimService) DependencyInjection
+			.getClassInstance(IBookClaimService.class);
 	private ClaimService claimService = ClaimService.getInstance();
 	private OrderService orderService = OrderService.getInstance();
 	private BookSorter bookSorter = new BookSorter();
@@ -34,7 +42,6 @@ public class Shop implements IShop, Serializable {
 	private Comparator orderCostComparator = new OrderCostComparator();
 	private Comparator orderDateComparator = new OrderDateComparator();
 	private Comparator orderStatusComparator = new OrderStatusComparator();
-
 
 	public void print(List<?> value) {
 		printer.printList(value);
@@ -91,22 +98,22 @@ public class Shop implements IShop, Serializable {
 
 	@Override
 	public void setOrders(OrderStore orders) {
-		orderService.setOrders(orders);		
+		orderService.setOrders(orders);
 	}
 
 	@Override
 	public void addOrder(Order order) {
-		orderService.addOrder(order);		
+		orderService.addOrder(order);
 	}
 
 	@Override
 	public void upDateOrder(int id, Order order) {
-		orderService.upDateOrder(id, order);		
+		orderService.upDateOrder(id, order);
 	}
 
 	@Override
 	public void removeOrder(int id) {
-		orderService.removeOrder(id);		
+		orderService.removeOrder(id);
 	}
 
 	@Override
@@ -136,7 +143,7 @@ public class Shop implements IShop, Serializable {
 
 	@Override
 	public void completeOrder(int id) {
-		bookOrderService.completeOrder(id);		
+		bookOrderService.completeOrder(id);
 	}
 
 	@Override
@@ -146,40 +153,52 @@ public class Shop implements IShop, Serializable {
 
 	@Override
 	public void setClaims(ClaimStore claims) {
-		claimService.setClaims(claims);		
+		claimService.setClaims(claims);
 	}
 
 	@Override
 	public void addClaim(Claim claim) {
-		claimService.addClaim(claim);		
+		claimService.addClaim(claim);
 	}
 
 	@Override
 	public void upDateClaim(int id, Claim claim) {
-		claimService.upDateClaim(id, claim);		
+		claimService.upDateClaim(id, claim);
 	}
 
 	@Override
 	public void removeClaim(int id) {
-		claimService.removeClaim(id);		
+		claimService.removeClaim(id);
 	}
 
 	@Override
 	public void exportBooksToFile(List<Book> books, String path) {
 		fileWorker.writeToFile(bookConverter.booksToStringAr(books), path);
-		
+
 	}
-	
+
 	@Override
 	public void exportBooksToFile(List<Book> books) {
-		fileWorker.writeToFile(bookConverter.booksToStringAr(books));		
+		fileWorker.writeToFile(bookConverter.booksToStringAr(books));
 	}
 
 	@Override
 	public void importBooksFromFile(String path) {
-		List<Book> temp = bookConverter.stringArToBooks(fileWorker.readFromFile(path));
-		for(Book b : temp) {
-			bookClaimService.addBook(b);
+		List<Book> list = bookConverter.stringArToBooks(fileWorker.readFromFile(path));
+		for (Book b : list) {
+			boolean check = false;
+			for (Book c : bookService.getBooks().getList()) {
+				if (c.getId() == b.getId()) {
+					check = true;
+				}
+			}
+			if (check) {
+				bookService.upDateBook(b.getId(), b);
+			} else {
+				bookClaimService.addBook(b);
+				;
+			}
+
 		}
 	}
 
@@ -221,6 +240,21 @@ public class Shop implements IShop, Serializable {
 	@Override
 	public List<Order> sortOrdersByStatus(List<Order> orders) {
 		return orderSorter.sort(orders, orderStatusComparator);
+	}
+
+	@Override
+	public List<Book> getBookList() {
+		return this.getBooks().getList();
+	}
+
+	@Override
+	public void exportBookListToFile(String path) {
+		fileWorker.writeToFile(bookConverter.booksToStringAr(getBookList()), path);
+	}
+
+	@Override
+	public List<Book> sortBooks(List<Book> books, Comparator<Book> comparator) {
+		return bookSorter.sort(books, comparator);
 	}
 
 }
