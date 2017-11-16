@@ -1,4 +1,4 @@
-package com.senla.training.kononovich.client;
+package com.senla.training.kononovich.request;
 
 import java.io.Serializable;
 

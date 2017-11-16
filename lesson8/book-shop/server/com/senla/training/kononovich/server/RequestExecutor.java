@@ -7,9 +7,10 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.senla.training.kononovich.api.IPrinter;
-import com.senla.training.kononovich.client.Request;
 import com.senla.training.kononovich.controller.*;
 import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
+import com.senla.training.kononovich.request.Request;
+import com.senla.training.kononovich.request.Response;
 
 public class RequestExecutor {
 	private static IShop shop = (IShop) DependencyInjection.getClassInstance(IShop.class);

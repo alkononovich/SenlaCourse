@@ -7,14 +7,14 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.senla.training.kononovich.entity.Book;
-import com.senla.training.kononovich.server.Response;
+import com.senla.training.kononovich.request.Request;
+import com.senla.training.kononovich.request.Response;
 import com.senla.training.kononovich.uicontroller.ReaderToField;
 //import com.google.gson.Gson;
 import com.senla.training.kononovich.annotations.ConfigProperty;
 import com.senla.training.kononovich.api.*;
 import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
 import com.senla.training.kononovich.client.Client;
-import com.senla.training.kononovich.client.Request;
 
 public class BookController {
 	private IPrinter printer = (IPrinter) DependencyInjection.getClassInstance(IPrinter.class);

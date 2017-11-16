@@ -9,10 +9,10 @@ import org.apache.log4j.Logger;
 
 import com.senla.training.kononovich.api.IPrinter;
 import com.senla.training.kononovich.client.Client;
-import com.senla.training.kononovich.client.Request;
 import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
 import com.senla.training.kononovich.entity.Book;
-import com.senla.training.kononovich.server.Response;
+import com.senla.training.kononovich.request.Request;
+import com.senla.training.kononovich.request.Response;
 import com.senla.training.kononovich.uicontroller.ReaderToField;
 import com.senla.training.kononovich.uicontroller.modelcontroller.BookController;
 import com.senla.training.kononovich.uicontroller.viewers.comparators.*;

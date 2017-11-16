@@ -6,8 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-//import com.google.gson.Gson;
-import com.senla.training.kononovich.client.Request;
+import com.senla.training.kononovich.request.Request;
 
 
 public class ClientThread extends Thread {
