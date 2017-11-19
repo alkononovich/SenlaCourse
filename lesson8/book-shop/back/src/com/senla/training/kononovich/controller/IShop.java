@@ -22,6 +22,7 @@ public interface IShop {
 	public Book getBookByName(String name);
 	public List<Book> oldBooks();
 	public OrderStore getOrders();
+	public List<Order> getOrderList();
 	public void setOrders(OrderStore orders);
 	public void addOrder(Order order);
 	public void upDateOrder(int id, Order order);
@@ -32,7 +33,11 @@ public interface IShop {
 	public int sumByTime(Date start, Date end);
 	public List<Order> ordersOfBook(int id);
 	public void completeOrder(int id);
+	public void cloneOrder(int id);
+	public void writeOrdersToFile(String path);
+	public void readOrdersFromFile(String path);
 	public ClaimStore getClaims();
+	public List<Claim> getClaimList();
 	public void setClaims(ClaimStore claims);
 	public void addClaim(Claim claim);
 	public void upDateClaim(int id, Claim claim);
@@ -43,12 +48,15 @@ public interface IShop {
 	public void exportBooksToFile(List<Book> books);
 	public void exportBookListToFile(String path);
 	public void importBooksFromFile(String path);
+	public void writeClaimsToFile(String path);
+	public void readClaimsFromFile(String path);
 	public List<Book> sortBooks(List<Book> books, Comparator<Book> comparator);
 	public List<Book> sortBooksByName(List<Book> books);
 	public List<Book> sortBooksByCost(List<Book> books);
 	public List<Book> sortBooksByPublicationDate(List<Book> books);
 	public List<Book> sortBooksByReceiptDate(List<Book> books);
 	public List<Book> sortBooksByCount(List<Book> books);
+	public List<Order> sortOrders(List<Order> orders, Comparator<Order> comparator);
 	public List<Order> sortOrdersByCost(List<Order> orders);
 	public List<Order> sortOrdersByDate(List<Order> orders);
 	public List<Order> sortOrdersByStatus(List<Order> orders);

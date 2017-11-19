@@ -25,17 +25,21 @@ public class Client {
 			logger.error(e.getMessage(), e);
 		}
 
-		try (Socket fromServer = new Socket(addr, 1505);
-				ObjectOutputStream oos = new ObjectOutputStream(fromServer.getOutputStream());
-				ObjectInputStream ois = new ObjectInputStream(fromServer.getInputStream())) {
-			out = oos;
-			in = ois;
+		try (Socket fromServer = new Socket(addr, 1505)) {
+			out = new ObjectOutputStream(fromServer.getOutputStream());
+			in = new ObjectInputStream(fromServer.getInputStream());			 
 			
 			controller.run();
 				
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
-
+		} finally {
+			try {
+				out.close();
+				in.close();
+			} catch (IOException e) {
+				logger.error(e.getMessage(), e);
+			}
 		}
 	}
 }

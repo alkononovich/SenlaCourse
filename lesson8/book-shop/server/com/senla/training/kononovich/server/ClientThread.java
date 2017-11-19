@@ -2,7 +2,6 @@ package com.senla.training.kononovich.server;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -12,7 +11,6 @@ import com.senla.training.kononovich.request.Request;
 public class ClientThread extends Thread {
 
 	private static final Logger logger = Logger.getLogger(ClientThread.class);
-	//private static Gson GSON = new Gson();
 	private Socket fromClient;
 
 	public ClientThread(Socket fromClient) {
@@ -30,7 +28,7 @@ public class ClientThread extends Thread {
 
 			}
 		} catch (IOException | ClassNotFoundException e) {
-System.out.println(e);
+			logger.error(e.getMessage(), e);
 		} 
 	}
 }

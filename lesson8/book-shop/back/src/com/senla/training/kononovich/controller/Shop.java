@@ -240,6 +240,12 @@ public class Shop implements IShop, Serializable {
 	@Override
 	public List<Order> sortOrdersByStatus(List<Order> orders) {
 		return orderSorter.sort(orders, orderStatusComparator);
+		
+	}
+	
+	@Override
+	public List<Order> sortOrders(List<Order> orders, Comparator<Order> comparator) {
+		return orderSorter.sort(orders, comparator);
 	}
 
 	@Override
@@ -256,5 +262,68 @@ public class Shop implements IShop, Serializable {
 	public List<Book> sortBooks(List<Book> books, Comparator<Book> comparator) {
 		return bookSorter.sort(books, comparator);
 	}
+
+	@Override
+	public List<Claim> getClaimList() {
+		return this.getClaims().getList();
+	}
+
+	@Override
+	public void writeClaimsToFile(String path) {
+		fileWorker.writeToFile(ClaimsConverter.claimsToStringAr(claimService.getClaims().getList()), path);		
+	}
+
+	@Override
+	public void readClaimsFromFile(String path) {
+		List<Claim> list = ClaimsConverter.stringArToClaims(fileWorker.readFromFile(path));
+		for (Claim b : list) {
+			boolean check = false;
+			for (Claim c : claimService.getClaims().getList()) {
+				if (c.getId() == b.getId()) {
+					check = true;
+				}
+			}
+			if (check) {
+				claimService.upDateClaim(b.getId(), b);
+			} else {
+				claimService.addClaim(b);
+			}
+		}
+	}
+
+	@Override
+	public List<Order> getOrderList() {
+		return this.getOrders().getList();
+	}
+
+	@Override
+	public void cloneOrder(int id) {
+		orderService.cloneOrder(id);
+	}
+
+	@Override
+	public void writeOrdersToFile(String path) {
+		fileWorker.writeToFile(OrdersConverter.ordersToStringAr(orderService.getOrders().getList()), path);		
+	}
+
+	@Override
+	public void readOrdersFromFile(String path) {
+		List<Order> list = OrdersConverter.stringArToOrders(fileWorker.readFromFile(path));
+		for (Order b : list) {
+			boolean check = false;
+			for (Order c : orderService.getOrders().getList()) {
+				if (c.getId() == b.getId()) {
+					check = true;
+				}
+			}
+			if (check) {
+				orderService.upDateOrder(b.getId(), b);
+			} else {
+				orderService.addOrder(b);
+			}
+		}		
+	}
+
+	
 
 }

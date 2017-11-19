@@ -1,27 +1,21 @@
 package com.senla.training.kononovich.uicontroller.modelcontroller;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 
 import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.request.Request;
 import com.senla.training.kononovich.request.Response;
 import com.senla.training.kononovich.uicontroller.ReaderToField;
-//import com.google.gson.Gson;
 import com.senla.training.kononovich.annotations.ConfigProperty;
 import com.senla.training.kononovich.api.*;
 import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
-import com.senla.training.kononovich.client.Client;
+import com.senla.training.kononovich.client.*;
 
 public class BookController {
 	private IPrinter printer = (IPrinter) DependencyInjection.getClassInstance(IPrinter.class);
-	private static final Logger logger = Logger.getLogger(BookController.class);
 	private ReaderToField reader = ReaderToField.getInstance();
-
-	// private static Gson GSON = new Gson();
 
 	@ConfigProperty(configName = "config.properties", propertyName = "book.oldMonth", type = Integer.class)
 	private int oldMonth;
@@ -67,38 +61,18 @@ public class BookController {
 
 	public void addBook() {
 		Request request = new Request("addBook", initializeBook());
-		Response response = null;
-		try {
-			Client.out.writeObject(request);
-			response = (Response) Client.in.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			logger.error(e.getMessage(), e);
-		}
+		Response response = RequestSender.sendRequest(request);		
 	}
 
 	public List<Book> getBookList() {
 		Request request = new Request("getBookList");
-		Response response = null;
-		try {
-			Client.out.writeObject(request);
-			response = (Response) Client.in.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			logger.error(e.getMessage(), e);
-		} 
-		
+		Response response = RequestSender.sendRequest(request);		
 		return (List<Book>)response.getResult();
 	}
 	
 	public List<Book> getOldBooks() {
 		Request request = new Request("oldBooks");
-		Response response = null;
-		try {
-			Client.out.writeObject(request);
-			response = (Response) Client.in.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			logger.error(e.getMessage(), e);
-		} 
-		
+		Response response = RequestSender.sendRequest(request);		
 		return (List<Book>)response.getResult();
 	}
 
@@ -107,15 +81,8 @@ public class BookController {
 		printer.print(ID);
 		int id = reader.readInt();
 		try {
-			// bookService.removeBook(id);
 			Request request = new Request("removeBook", id);
-			Response response = null;
-			try {
-				Client.out.writeObject(request);
-				response = (Response) Client.in.readObject();
-			} catch (IOException e) {
-				logger.error(e.getMessage(), e);
-			}
+			Response response = RequestSender.sendRequest(request);		
 		} catch (Exception e) {
 			printer.print(INVALID_ID);
 		}
@@ -126,15 +93,8 @@ public class BookController {
 		printer.print(ID);
 		int id = reader.readInt();
 		try {
-			// bookService.upDateBook(id, initializeBook());
 			Request request = new Request("upDateBook", id, initializeBook());
-			Response response;
-			try {
-				Client.out.writeObject(request);
-				response = (Response) Client.in.readObject();
-			} catch (IOException | ClassNotFoundException e) {
-				logger.error(e.getMessage(), e);
-			}
+			Response response = RequestSender.sendRequest(request);		
 		} catch (Exception e) {
 			printer.print(INVALID_ID);
 		}
@@ -144,26 +104,13 @@ public class BookController {
 		printer.print(PATH);
 		String path = reader.readString();
 		Request request = new Request("importBooksFromFile", path);
-		Response response = null;
-		try {
-			Client.out.writeObject(request);
-			response = (Response) Client.in.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			logger.error(e.getMessage(), e);
-		}
+		Response response = RequestSender.sendRequest(request);		
 	}
 
 	public void writeBooksToFile() {
 		printer.print(PATH);
 		String path = reader.readString();
-		//fileWorker.writeToFile(bookConverter.booksToStringAr(bookService.getBooks().getList()), path);
 		Request request = new Request("exportBookListToFile", path);
-		Response response = null;
-		try {
-			Client.out.writeObject(request);
-			response = (Response) Client.in.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			logger.error(e.getMessage(), e);
-		}
+		Response response = RequestSender.sendRequest(request);		
 	}
 }

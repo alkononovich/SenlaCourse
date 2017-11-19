@@ -3,22 +3,21 @@ package com.senla.training.kononovich.uicontroller.modelcontroller;
 import java.util.List;
 
 import com.senla.training.kononovich.api.*;
-import com.senla.training.kononovich.api.core.*;
+import com.senla.training.kononovich.client.RequestSender;
 import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
 import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.entity.Order;
+import com.senla.training.kononovich.request.Request;
+import com.senla.training.kononovich.request.Response;
 import com.senla.training.kononovich.uicontroller.*;
 
 public class OrderController {
-	private IPrinter printer = (IPrinter)DependencyInjection.getClassInstance(IPrinter.class);
-	private IBookService bookService = (IBookService)DependencyInjection.getClassInstance(IBookService.class);
-	private IOrderService orderService = (IOrderService)DependencyInjection.getClassInstance(IOrderService.class);
-	private IBookOrderService bookOrderService = (IBookOrderService)DependencyInjection.getClassInstance(IBookOrderService.class);
-	private IFileWorker fileWorker = (IFileWorker)DependencyInjection.getClassInstance(IFileWorker.class);
+	private IPrinter printer = (IPrinter) DependencyInjection.getClassInstance(IPrinter.class);
 
 	private ReaderToField reader = ReaderToField.getInstance();
+	private BookController bookController = BookController.getInstance();
 	private BookReader bookReader = new BookReader();
-	
+
 	private static final String ID = "Id: ";
 	private static final String BOOK_ID = "Books Id: ";
 	private static final String CLIENT = "Client: ";
@@ -35,88 +34,87 @@ public class OrderController {
 		}
 		return instance;
 	}
-	
+
 	public Order initializeOrder() {
 		printer.print(CLIENT);
 		String client = reader.readString();
-		printer.printList(bookService.getBooks().getList());
+		printer.printList(bookController.getBookList());
 		printer.print(BOOK_ID);
 		List<Book> books = bookReader.readBooks(reader.readString());
 		return new Order(client, books);
 	}
-	
+
+	public List<Order> getOrderList() {
+		Request request = new Request("getOrderList");
+		Response response = RequestSender.sendRequest(request);
+		return (List<Order>) response.getResult();
+	}
+
 	public void addOrder() {
-		orderService.addOrder(this.initializeOrder());
+		Request request = new Request("addOrder", initializeOrder());
+		Response response = RequestSender.sendRequest(request);
 	}
-	
+
 	public void removeOrder() {
-		printer.printList(orderService.getOrders().getList());
+		printer.printList(getOrderList());
 		printer.print(ID);
 		int id = reader.readInt();
-		if (id > 0 && id <= orderService.getOrders().getList().size()) {
-			orderService.removeOrder(id);
+		if (id > 0 && id <= getOrderList().size()) {
+			Request request = new Request("removeOrder", id);
+			Response response = RequestSender.sendRequest(request);
 		} else {
 			printer.print(INVALID_ID);
 		}
 	}
-	
+
 	public void updateOrder() {
-		printer.printList(orderService.getOrders().getList());
+		printer.printList(getOrderList());
 		printer.print(ID);
 		int id = reader.readInt();
-		if (id > 0 && id <= orderService.getOrders().getList().size()) {
-			orderService.upDateOrder(id, initializeOrder());
+		if (id > 0 && id <= getOrderList().size()) {
+			Request request = new Request("upDateOrder", id, initializeOrder());
+			Response response = RequestSender.sendRequest(request);
 		} else {
 			printer.print(INVALID_ID);
 		}
 	}
-	
+
 	public void completeOrder() {
-		printer.printList(orderService.getOrders().getList());
+		printer.printList(getOrderList());
 		printer.print(ID);
 		int id = reader.readInt();
-		if (id > 0 && id <= orderService.getOrders().getList().size()) {
-			bookOrderService.completeOrder(id);
+		if (id > 0 && id <= getOrderList().size()) {
+			Request request = new Request("completeOrder", id);
+			Response response = RequestSender.sendRequest(request);
 		} else {
 			printer.print(INVALID_ID);
 		}
 	}
-	
+
 	public void cloneOrder() {
-		printer.printList(orderService.getOrders().getList());
+		printer.printList(getOrderList());
 		printer.print(ID);
 		int id = reader.readInt();
-		if (id > 0 && id <= orderService.getOrders().getList().size()) {
-			orderService.cloneOrder(id);
+		if (id > 0 && id <= getOrderList().size()) {
+			Request request = new Request("cloneOrder", id);
+			Response response = RequestSender.sendRequest(request);
 		} else {
 			printer.print(INVALID_ID);
 		}
 	}
-	
+
 	public void readOrdersFromFile() {
 		printer.print(PATH);
 		String path = reader.readString();
-		List<Order> list = OrdersConverter.stringArToOrders(fileWorker.readFromFile(path));
-		for (Order b : list) {
-			boolean check = false;
-			for (Order c : orderService.getOrders().getList()) {
-				if (c.getId() == b.getId()) {
-					check = true;
-				}
-			}
-			if (check) {
-				orderService.upDateOrder(b.getId(), b);
-			} else {
-				orderService.addOrder(b);
-			}
-		}
+		Request request = new Request("readOrdersFromFile", path);
+		Response response = RequestSender.sendRequest(request);
 	}
 
 	public void writeOrdersToFile() {
 		printer.print(PATH);
 		String path = reader.readString();
-		fileWorker.writeToFile(OrdersConverter.ordersToStringAr(orderService.getOrders().getList()), path);
+		Request request = new Request("writeOrdersToFile", path);
+		Response response = RequestSender.sendRequest(request);
 	}
-	
-}
 
+}

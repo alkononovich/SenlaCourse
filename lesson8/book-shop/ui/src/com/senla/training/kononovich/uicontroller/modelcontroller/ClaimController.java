@@ -3,17 +3,15 @@ package com.senla.training.kononovich.uicontroller.modelcontroller;
 import java.util.List;
 
 import com.senla.training.kononovich.api.*;
-import com.senla.training.kononovich.api.core.*;
+import com.senla.training.kononovich.client.RequestSender;
 import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
 import com.senla.training.kononovich.entity.Claim;
-import com.senla.training.kononovich.service.utilites.FileWorker;
-import com.senla.training.kononovich.uicontroller.ClaimsConverter;
+import com.senla.training.kononovich.request.Request;
+import com.senla.training.kononovich.request.Response;
 import com.senla.training.kononovich.uicontroller.ReaderToField;
 
 public class ClaimController {
 	private IPrinter printer = (IPrinter)DependencyInjection.getClassInstance(IPrinter.class);
-	private IClaimService claimService = (IClaimService)DependencyInjection.getClassInstance(IClaimService.class);
-	private IFileWorker fileWorker = (IFileWorker)DependencyInjection.getClassInstance(IFileWorker.class);
 	
 	private ReaderToField reader = ReaderToField.getInstance();
 
@@ -37,28 +35,37 @@ public class ClaimController {
 		String book = reader.readString();
 		return new Claim(book);
 	}
+	
+	public List<Claim> getClaimList() {
+		Request request = new Request("getClaimList");
+		Response response = RequestSender.sendRequest(request);		
+		return (List<Claim>)response.getResult();
+	}
 
 	public void addClaim() {
-		claimService.addClaim(this.initializeClaim());
+		Request request = new Request("addClaim", this.initializeClaim());
+		Response response = RequestSender.sendRequest(request);		
 	}
 
 	public void removeClaim() {
-		printer.printList(claimService.getClaims().getList());
+		printer.printList(getClaimList());
 		printer.print(ID);
 		int id = reader.readInt();
-		if (id > 0 && id <= claimService.getClaims().getList().size()) {
-			claimService.removeClaim(id);
+		if (id > 0 && id <= getClaimList().size()) {
+			Request request = new Request("removeClaim", id);
+			Response response = RequestSender.sendRequest(request);		
 		} else {
 			printer.print("Invalid Id");
 		}
 	}
 
 	public void updateClaim() {
-		printer.printList(claimService.getClaims().getList());
+		printer.printList(getClaimList());
 		printer.print(ID);
 		int id = reader.readInt();
-		if (id > 0 && id <= claimService.getClaims().getList().size()) {
-			claimService.upDateClaim(id, initializeClaim());
+		if (id > 0 && id <= getClaimList().size()) {
+			Request request = new Request("upDateClaim", id, initializeClaim());
+			Response response = RequestSender.sendRequest(request);		
 		} else {
 			printer.print("Invalid Id");
 		}
@@ -67,26 +74,15 @@ public class ClaimController {
 	public void readClaimsFromFile() {
 		printer.print(PATH);
 		String path = reader.readString();
-		List<Claim> list = ClaimsConverter.stringArToClaims(fileWorker.readFromFile(path));
-		for (Claim b : list) {
-			boolean check = false;
-			for (Claim c : claimService.getClaims().getList()) {
-				if (c.getId() == b.getId()) {
-					check = true;
-				}
-			}
-			if (check) {
-				claimService.upDateClaim(b.getId(), b);
-			} else {
-				claimService.addClaim(b);
-			}
-		}
+		Request request = new Request("readClaimsFromFile", path);
+		Response response = RequestSender.sendRequest(request);
 	}
 
 	public void writeClaimsToFile() {
 		printer.print(PATH);
 		String path = reader.readString();
-		fileWorker.writeToFile(ClaimsConverter.claimsToStringAr(claimService.getClaims().getList()), path);
+		Request request = new Request("writeClaimsToFile", path);
+		Response response = RequestSender.sendRequest(request);
 	}
 
 }
