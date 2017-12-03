@@ -1,0 +1,34 @@
+INSERT INTO product VALUES ('Acer','Aspire','Laptop');
+INSERT INTO product VALUES ('Toshiba','L455','Laptop');
+INSERT INTO product VALUES ('Toshiba','I500','PC');
+INSERT INTO product VALUES ('HP','255','Laptop');
+INSERT INTO product VALUES ('Asus','K800','PC');
+INSERT INTO product VALUES ('Asus','H888','PC');
+INSERT INTO product VALUES ('Samsung','I100','PRINTER');
+INSERT INTO product VALUES ('HP','D600','PRINTER');
+INSERT INTO product VALUES ('LG','V630','PRINTER');
+INSERT INTO product VALUES ('Samsung','E500','PRINTER');
+
+INSERT INTO pc VALUES (0001, 'H888', 788,  512,  16, '4x', 425);
+INSERT INTO pc VALUES (0002, 'I500', 722,  512,  16, '4x', 425);
+INSERT INTO pc VALUES (0003, 'I500', 654,  1024,  32,  '12x', 555);
+INSERT INTO pc VALUES (0004, 'K800', 857, 1024, 64, '16x',  590);
+INSERT INTO pc VALUES (0005, 'I500', 789, 2048,  64,  '16x', 620);
+INSERT INTO pc VALUES (0006, 'H888', 5485, 2048,  128,  '16x', 620);
+INSERT INTO pc VALUES (0007, 'K800', 565, 3072,  128, '24x', 780);
+INSERT INTO pc VALUES (0008, 'K800', 654, 4096, 360, '32x', 1200);
+
+INSERT INTO laptop VALUES (654, '255', 531, 1024, 64, 520, 15);
+INSERT INTO laptop VALUES (895, '255', 942, 2048, 128, 800, 17);
+INSERT INTO laptop VALUES (1653, 'Aspire', 451, 512, 128, 750, 14);
+INSERT INTO laptop VALUES (3515, 'Aspire', 458, 2048, 64, 850, 17);
+INSERT INTO laptop VALUES (351, 'L455', 455, 1024, 256, 800, 17);
+INSERT INTO laptop VALUES (6574, 'L455', 782, 2048, 128, 1000, 21);
+
+INSERT INTO printer VALUES (1, 'I100', 'n', 'Jet', 200);
+INSERT INTO printer VALUES (2, 'V630', 'n', 'Matrix', 250);
+INSERT INTO printer VALUES (3, 'I100', 'y', 'Lader', 300);
+INSERT INTO printer VALUES (4, 'D600', 'n', 'Matrix', 150);
+INSERT INTO printer VALUES (5, 'V630', 'y', 'Lazer', 350);
+INSERT INTO printer VALUES (6, 'E500', 'n', 'Jet', 150);
+INSERT INTO printer VALUES (7, 'D600', 'y', 'Lazer', 350)
