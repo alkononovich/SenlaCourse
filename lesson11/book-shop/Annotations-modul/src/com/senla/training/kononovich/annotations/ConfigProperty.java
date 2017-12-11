@@ -1,0 +1,13 @@
+package com.senla.training.kononovich.annotations;
+
+import java.lang.annotation.*;
+
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ConfigProperty {
+	String configName() default "";
+
+	String propertyName() default "";
+
+	Class<?> type() default Object.class;
+}

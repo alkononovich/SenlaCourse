@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="Annotations-modul/src"/>
+	<classpathentry kind="src" path="back/src"/>
+	<classpathentry kind="src" path="client/src"/>
+	<classpathentry kind="src" path="configuration"/>
+	<classpathentry kind="src" path="DI/src"/>
+	<classpathentry kind="src" path="request/src"/>
+	<classpathentry kind="src" path="serialization"/>
+	<classpathentry kind="src" path="server/src"/>
+	<classpathentry kind="src" path="ui/src"/>
+	<classpathentry kind="src" path="dao"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="lib/textFileWorker.jar"/>
+	<classpathentry kind="lib" path="D:/SenlaCourse/lesson11/book-shop/properties"/>
+	<classpathentry kind="lib" path="D:/SenlaCourse/lesson11/book-shop/lib/mysql-connector-java-5.1.45-bin.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
