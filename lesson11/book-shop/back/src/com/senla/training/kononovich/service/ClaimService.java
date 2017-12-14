@@ -3,16 +3,16 @@ package com.senla.training.kononovich.service;
 import org.apache.log4j.Logger;
 
 import com.senla.training.kononovich.api.core.IClaimService;
+import com.senla.training.kononovich.dao.dao.PersistException;
+import com.senla.training.kononovich.dao.mysql.MySqlBookDao;
+import com.senla.training.kononovich.dao.mysql.MySqlClaimDao;
+import com.senla.training.kononovich.dao.mysql.MySqlDaoFactory;
 import com.senla.training.kononovich.entity.Claim;
-import com.senla.training.kononovich.storage.ClaimStore;
-import com.senla.training.kononovich.storage.Container;
 
 public class ClaimService implements IClaimService {
-	private Container container = Container.getInstance();
 	private static final Logger logger = Logger.getLogger(ClaimService.class);
+	private static MySqlDaoFactory daoFactory = MySqlDaoFactory.getInstance();
 	private static ClaimService instance;
-
-
 
 	public static ClaimService getInstance() {
 		if (instance == null) {
@@ -21,25 +21,27 @@ public class ClaimService implements IClaimService {
 		return instance;
 	}
 
-	public ClaimStore getClaims() {
-		return container.getClaims();
-	}
-
-	public void setClaims(ClaimStore claims) {
-		container.setClaims(claims);
+	public MySqlClaimDao getClaims() {
+		try {
+			return (MySqlClaimDao) daoFactory.getDao(daoFactory.getContext(), MySqlClaimDao.class);
+		} catch (PersistException e) {
+			logger.error(e.getMessage(), e);
+			return null;
+		}
 	}
 
 	public void addClaim(Claim claim) {
 		try {
-			getClaims().add(claim);
+			getClaims().create();
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
 	}
 
-	public void upDateClaim(int id, Claim claim) {
+	public void upDateClaim(Claim claim) {
 		try {
-			getClaims().update(id, claim);
+			getClaims().update(claim);
+			;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -47,7 +49,8 @@ public class ClaimService implements IClaimService {
 
 	public void removeClaim(int id) {
 		try {
-			getClaims().remove(id);
+			Claim claim = getClaims().getByPK(id);
+			getClaims().delete(claim);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}

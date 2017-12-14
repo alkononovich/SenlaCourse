@@ -7,12 +7,12 @@ import java.util.List;
 
 import com.senla.training.kononovich.service.printers.*;
 import com.senla.training.kononovich.service.utilites.*;
-import com.senla.training.kononovich.storage.*;
 import com.senla.training.kononovich.api.IBookConverter;
 import com.senla.training.kononovich.api.IFileWorker;
 import com.senla.training.kononovich.api.IPrinter;
-import com.senla.training.kononovich.api.core.IBookClaimService;
 import com.senla.training.kononovich.api.core.IBookService;
+import com.senla.training.kononovich.dao.dao.PersistException;
+import com.senla.training.kononovich.dao.mysql.*;
 import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
 import com.senla.training.kononovich.entity.*;
 import com.senla.training.kononovich.service.*;
@@ -26,8 +26,6 @@ public class Shop implements IShop, Serializable {
 	private IPrinter printer = Printer.getInstance();
 	private IBookService bookService = (IBookService) DependencyInjection.getClassInstance(IBookService.class);
 	private BookOrderService bookOrderService = BookOrderService.getInstance();
-	private IBookClaimService bookClaimService = (IBookClaimService) DependencyInjection
-			.getClassInstance(IBookClaimService.class);
 	private ClaimService claimService = ClaimService.getInstance();
 	private OrderService orderService = OrderService.getInstance();
 	private BookSorter bookSorter = new BookSorter();
@@ -53,22 +51,18 @@ public class Shop implements IShop, Serializable {
 
 	@Override
 	public void addBook(Book book) {
-		bookClaimService.addBook(book);
+		bookService.addBook(book);
 	}
 
 	@Override
-	public BookStore getBooks() {
+	public MySqlBookDao getBooks() {
 		return bookService.getBooks();
 	}
 
-	@Override
-	public void setBooks(BookStore books) {
-		bookService.setBooks(books);
-	}
 
 	@Override
-	public void upDateBook(int id, Book book) {
-		bookService.upDateBook(id, book);
+	public void upDateBook(Book book) {
+		bookService.upDateBook(book);
 	}
 
 	@Override
@@ -92,14 +86,10 @@ public class Shop implements IShop, Serializable {
 	}
 
 	@Override
-	public OrderStore getOrders() {
+	public MySqlOrderDao getOrders() {
 		return orderService.getOrders();
 	}
 
-	@Override
-	public void setOrders(OrderStore orders) {
-		orderService.setOrders(orders);
-	}
 
 	@Override
 	public void addOrder(Order order) {
@@ -107,8 +97,8 @@ public class Shop implements IShop, Serializable {
 	}
 
 	@Override
-	public void upDateOrder(int id, Order order) {
-		orderService.upDateOrder(id, order);
+	public void upDateOrder(Order order) {
+		orderService.upDateOrder(order);
 	}
 
 	@Override
@@ -147,14 +137,10 @@ public class Shop implements IShop, Serializable {
 	}
 
 	@Override
-	public ClaimStore getClaims() {
+	public MySqlClaimDao getClaims() {
 		return claimService.getClaims();
 	}
 
-	@Override
-	public void setClaims(ClaimStore claims) {
-		claimService.setClaims(claims);
-	}
 
 	@Override
 	public void addClaim(Claim claim) {
@@ -162,8 +148,8 @@ public class Shop implements IShop, Serializable {
 	}
 
 	@Override
-	public void upDateClaim(int id, Claim claim) {
-		claimService.upDateClaim(id, claim);
+	public void upDateClaim(Claim claim) {
+		claimService.upDateClaim(claim);
 	}
 
 	@Override
@@ -187,15 +173,20 @@ public class Shop implements IShop, Serializable {
 		List<Book> list = bookConverter.stringArToBooks(fileWorker.readFromFile(path));
 		for (Book b : list) {
 			boolean check = false;
-			for (Book c : bookService.getBooks().getList()) {
-				if (c.getId() == b.getId()) {
-					check = true;
+			try {
+				for (Book c : bookService.getBooks().getAll()) {
+					if (c.getId() == b.getId()) {
+						check = true;
+					}
 				}
+			} catch (PersistException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			if (check) {
-				bookService.upDateBook(b.getId(), b);
+				bookService.upDateBook(b);
 			} else {
-				bookClaimService.addBook(b);
+				bookService.addBook(b);
 				;
 			}
 

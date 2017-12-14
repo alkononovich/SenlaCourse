@@ -3,17 +3,15 @@ package com.senla.training.kononovich.api.core;
 import java.util.Date;
 import java.util.List;
 
+import com.senla.training.kononovich.dao.mysql.MySqlOrderDao;
 import com.senla.training.kononovich.entity.Order;
-import com.senla.training.kononovich.storage.OrderStore;
 
 public interface IOrderService {
-	public OrderStore getOrders();
-
-	public void setOrders(OrderStore orders);
+	public MySqlOrderDao getOrders();
 
 	public void addOrder(Order order);
 
-	public void upDateOrder(int id, Order order);
+	public void upDateOrder(Order order);
 
 	public void removeOrder(int id);
 

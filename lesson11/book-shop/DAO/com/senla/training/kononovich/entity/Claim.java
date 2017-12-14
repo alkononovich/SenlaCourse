@@ -1,14 +1,28 @@
 package com.senla.training.kononovich.entity;
 
+import com.senla.training.kononovich.dao.dao.Identified;
 import com.senla.training.kononovich.enums.Status;
 
-public class Claim extends AbstractModel {
+public class Claim extends AbstractModel implements Identified<Integer> {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 455320977275344269L;
 	private String book;
 	private Status status;
+	private Integer id = null;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public Claim() {
+		super();
+	}
 	
 	public Claim(String book) {
 		super();

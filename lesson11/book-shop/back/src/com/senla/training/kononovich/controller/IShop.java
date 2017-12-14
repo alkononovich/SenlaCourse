@@ -4,28 +4,27 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import com.senla.training.kononovich.dao.mysql.MySqlBookDao;
+import com.senla.training.kononovich.dao.mysql.MySqlClaimDao;
+import com.senla.training.kononovich.dao.mysql.MySqlOrderDao;
 import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.entity.Claim;
 import com.senla.training.kononovich.entity.Order;
-import com.senla.training.kononovich.storage.BookStore;
-import com.senla.training.kononovich.storage.ClaimStore;
-import com.senla.training.kononovich.storage.OrderStore;
+
 
 public interface IShop {
 	public void addBook(Book book);
-	public BookStore getBooks();
+	public MySqlBookDao getBooks();
 	public List<Book> getBookList();
-	public void setBooks(BookStore books);
-	public void upDateBook(int id, Book book);
+	public void upDateBook(Book book);
 	public void removeBook(int id);
 	public Book getBookById(int id);
 	public Book getBookByName(String name);
 	public List<Book> oldBooks();
-	public OrderStore getOrders();
+	public MySqlOrderDao getOrders();
 	public List<Order> getOrderList();
-	public void setOrders(OrderStore orders);
 	public void addOrder(Order order);
-	public void upDateOrder(int id, Order order);
+	public void upDateOrder(Order order);
 	public void removeOrder(int id);
 	public Order getOrderById(int id);
 	public int numOfCompleteOrders();
@@ -36,11 +35,10 @@ public interface IShop {
 	public void cloneOrder(int id);
 	public void writeOrdersToFile(String path);
 	public void readOrdersFromFile(String path);
-	public ClaimStore getClaims();
+	public MySqlClaimDao getClaims();
 	public List<Claim> getClaimList();
-	public void setClaims(ClaimStore claims);
 	public void addClaim(Claim claim);
-	public void upDateClaim(int id, Claim claim);
+	public void upDateClaim(Claim claim);
 	public void removeClaim(int id);
 	public void print(List<?> value);
 	public void print(String value);

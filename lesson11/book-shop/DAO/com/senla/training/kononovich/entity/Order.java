@@ -5,10 +5,11 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.senla.training.kononovich.dao.dao.Identified;
 import com.senla.training.kononovich.enums.Status;
 import com.senla.training.kononovich.service.utilites.DateConverter;
 
-public class Order extends AbstractModel implements Cloneable {
+public class Order extends AbstractModel implements Cloneable, Identified<Integer> {
 	/**
 	 * 
 	 */
@@ -17,7 +18,21 @@ public class Order extends AbstractModel implements Cloneable {
 	private String client;
 	private Date executionDate;
 	private Status status;
+	private Integer id = null;
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Order() {
+		super();
+		this.books = new ArrayList<Book>();
+	}
+	
 	public Order(String client, Book... book) {
 		super();
 		this.books = new ArrayList<Book>();

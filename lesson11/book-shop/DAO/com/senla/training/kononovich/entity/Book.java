@@ -2,9 +2,10 @@ package com.senla.training.kononovich.entity;
 
 import java.util.Date;
 
+import com.senla.training.kononovich.dao.dao.Identified;
 import com.senla.training.kononovich.service.utilites.DateConverter;
 
-public class Book extends AbstractModel {
+public class Book extends AbstractModel implements Identified<Integer>  {
 	/**
 	 * 
 	 */
@@ -14,7 +15,12 @@ public class Book extends AbstractModel {
 	private int count;
 	private Date publicationDate;
 	private Date receiptDate;
-			
+	private Integer id = null;
+
+	public Book() {
+		super();
+	}	
+	
 	public Book(String name, int cost, Date publicationDate) {
 		super();
 		this.name = name;
@@ -32,6 +38,14 @@ public class Book extends AbstractModel {
 	public Book(int id, String name, int cost, Date publicationDate, int count) {
 		this(name, cost, publicationDate, count);
 		this.setId(id);
+	}
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {

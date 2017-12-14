@@ -10,10 +10,9 @@
 	<classpathentry kind="src" path="serialization"/>
 	<classpathentry kind="src" path="server/src"/>
 	<classpathentry kind="src" path="ui/src"/>
-	<classpathentry kind="src" path="dao"/>
+	<classpathentry kind="src" path="DAO"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.45-bin.jar"/>
 	<classpathentry kind="lib" path="lib/textFileWorker.jar"/>
-	<classpathentry kind="lib" path="D:/SenlaCourse/lesson11/book-shop/properties"/>
-	<classpathentry kind="lib" path="D:/SenlaCourse/lesson11/book-shop/lib/mysql-connector-java-5.1.45-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
