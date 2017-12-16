@@ -13,7 +13,7 @@ import java.util.List;
  */
 public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integer> implements GenericDao<T, PK> {
 
-    protected Connection connection;
+    public Connection connection;
 
     /**
      * ¬озвращает sql запрос дл€ получени€ всех записей.
@@ -123,11 +123,11 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     }
 
     @Override
-    public void delete(T object) throws PersistException {
+    public void delete(int id) throws PersistException {
         String sql = getDeleteQuery();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             try {
-                statement.setObject(1, object.getId());
+                statement.setInt(1, id);
             } catch (Exception e) {
                 throw new PersistException(e);
             }

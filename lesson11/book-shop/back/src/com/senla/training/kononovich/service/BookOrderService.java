@@ -3,14 +3,17 @@ package com.senla.training.kononovich.service;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 
 import com.senla.training.kononovich.api.core.IBookOrderService;
-import com.senla.training.kononovich.dao.mysql.*;
+import com.senla.training.kononovich.dao.dao.PersistException;
+import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.entity.Order;
 
 public class BookOrderService implements IBookOrderService {
+	private static final Logger logger = Logger.getLogger(BookOrderService.class);
 	private OrderService orderService = OrderService.getInstance();
-	private MySqlOrderDao orders = orderService.getOrders();
+	private BookService bookService = BookService.getInstance();
 
 	private static BookOrderService instance;
 
@@ -22,10 +25,33 @@ public class BookOrderService implements IBookOrderService {
 	}
 
 	public List<Order> ordersOfBook(int id) {
-		return orders.ordersOfBook(id);
+		return orderService.getOrders().ordersOfBook(id);
 	}
 
 	public void completeOrder(int id) {
-		orders.fullCompleteOrder(id);
+		try {
+			orderService.getOrders().connection.setAutoCommit(false);
+			boolean check = false;
+			for (Book o : orderService.getOrderById(id).getBooks()) {
+				if (o.getCount() > 0) {
+						check = true;
+				}
+			}
+			if (check) {
+				try {
+					orderService.getOrders().completeOrder(id);
+					for (Book o : orderService.getOrderById(id).getBooks()) {
+						o.setCount(o.getCount() - 1);
+						bookService.upDateBook(o);
+						orderService.getOrders().connection.commit();
+					}
+				} catch (Exception e) {
+					orderService.getOrders().connection.rollback();
+					throw new PersistException(e);
+		        }
+			}
+		} catch (Exception e1) {
+			logger.error(e1.getMessage(), e1);
+		}
 	}
 }

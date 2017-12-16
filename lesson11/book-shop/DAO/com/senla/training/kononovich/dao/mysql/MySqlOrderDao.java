@@ -4,7 +4,6 @@ package com.senla.training.kononovich.dao.mysql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -12,22 +11,25 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.senla.training.kononovich.api.core.IBookService;
 import com.senla.training.kononovich.dao.dao.AbstractJDBCDao;
 import com.senla.training.kononovich.dao.dao.PersistException;
-import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
 import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.entity.Order;
 import com.senla.training.kononovich.enums.Status;
 
 public class MySqlOrderDao extends AbstractJDBCDao<Order, Integer> {
 	
-	private IBookService bookService = (IBookService) DependencyInjection.getClassInstance(IBookService.class);
 	private static final Logger logger = Logger.getLogger(MySqlOrderDao.class);
+	private static MySqlDaoFactory daoFactory = MySqlDaoFactory.getInstance();
+	private static MySqlBookDao bookDao = null;
 
-
-    public MySqlOrderDao(Connection connection) {
+	public MySqlOrderDao(Connection connection) {
 		super(connection);
+		try {
+			bookDao = (MySqlBookDao)daoFactory.getDao(daoFactory.getContext(), MySqlBookDao.class);
+		} catch (PersistException e) {
+			logger.error(e.getMessage(), e);
+		}
 	}
 
 	private class PersistOrder extends Order {
@@ -73,7 +75,7 @@ public class MySqlOrderDao extends AbstractJDBCDao<Order, Integer> {
 	                PersistOrder order = new PersistOrder();
 	                order.setId(rs.getInt("id"));
 	                List<Book> books = new ArrayList<Book>();
-	       		 	books.add(bookService.getBookById(rs.getInt("book_id")));
+	       		 	books.add(bookDao.getByPK(rs.getInt("book_id")));
 	                order.setBooks(books);
 	                order.setClient(rs.getString("client"));
 	                order.setExecutionDate(rs.getDate("executionDate"));
@@ -154,40 +156,12 @@ public class MySqlOrderDao extends AbstractJDBCDao<Order, Integer> {
         String sql = "UPDATE senla_kononovich_bookshop._order SET executionDate = CURDATE() orderStatus = 'c' where id = ?;" ;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
         	statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
+            statement.executeQuery();
         } catch (Exception e) {
             throw new PersistException(e);
         }
         
     }
-	
-	public void fullCompleteOrder(int id) {
-		try {
-			connection.setAutoCommit(false);
-			boolean check = false;
-			for (Book o : getByPK(id).getBooks()) {
-				if (o.getCount() > 0) {
-						check = true;
-				}
-			}
-			if (check) {
-				try {
-					completeOrder(id);
-					for (Book o : getByPK(id).getBooks()) {
-						o.setCount(o.getCount() - 1);
-						bookService.upDateBook(o);
-						connection.commit();
-					}
-				} catch (Exception e) {
-					connection.rollback();
-					throw new PersistException(e);
-		        }
-			}
-		} catch (Exception e1) {
-			logger.error(e1.getMessage(), e1);
-		}
-		
-	}
 	
 	public List<Order> completedOrdersByTime(java.util.Date start, java.util.Date end) throws PersistException {
         List<Order> list;
@@ -205,6 +179,23 @@ public class MySqlOrderDao extends AbstractJDBCDao<Order, Integer> {
         }
         
         return list;
+    }
+	
+	public int sumOfompletedOrdersByTime(java.util.Date start, java.util.Date end) throws PersistException {
+        int sum;
+        String sql = "select sum(cost) from _order join book on _order.id_book = book.id_book where executionDate between ? and ?;";
+        Date sqlStart = convert(start);
+        Date sqlEnd = convert(end);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setDate(1, sqlStart);
+            statement.setDate(2, sqlEnd);
+            ResultSet rs = statement.executeQuery();
+            sum = rs.getInt("count(*)");
+        } catch (Exception e) {
+            throw new PersistException(e);
+        }
+        
+        return sum;
     }
 	
 	public List<Order> ordersOfBook(int id) {

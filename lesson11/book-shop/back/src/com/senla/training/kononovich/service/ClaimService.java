@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 
 import com.senla.training.kononovich.api.core.IClaimService;
 import com.senla.training.kononovich.dao.dao.PersistException;
-import com.senla.training.kononovich.dao.mysql.MySqlBookDao;
 import com.senla.training.kononovich.dao.mysql.MySqlClaimDao;
 import com.senla.training.kononovich.dao.mysql.MySqlDaoFactory;
 import com.senla.training.kononovich.entity.Claim;
@@ -41,7 +40,6 @@ public class ClaimService implements IClaimService {
 	public void upDateClaim(Claim claim) {
 		try {
 			getClaims().update(claim);
-			;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -49,8 +47,7 @@ public class ClaimService implements IClaimService {
 
 	public void removeClaim(int id) {
 		try {
-			Claim claim = getClaims().getByPK(id);
-			getClaims().delete(claim);
+			getClaims().delete(id);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}

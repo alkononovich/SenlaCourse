@@ -23,7 +23,7 @@ public interface GenericDao<T extends Identified<PK>, PK extends Serializable> {
     public void update(T object) throws PersistException;
 
     /** Удаляет запись об объекте из базы данных */
-    public void delete(T object) throws PersistException;
+    public void delete(int id) throws PersistException;
 
     /** Возвращает список объектов соответствующих всем записям в базе данных */
     public List<T> getAll() throws PersistException;

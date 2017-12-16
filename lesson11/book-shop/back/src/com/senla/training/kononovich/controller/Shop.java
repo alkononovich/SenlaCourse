@@ -241,7 +241,7 @@ public class Shop implements IShop, Serializable {
 
 	@Override
 	public List<Book> getBookList() {
-		return this.getBooks().getList();
+		return this.getBooks().getAll();
 	}
 
 	@Override
@@ -275,7 +275,7 @@ public class Shop implements IShop, Serializable {
 				}
 			}
 			if (check) {
-				claimService.upDateClaim(b.getId(), b);
+				claimService.upDateClaim(b);
 			} else {
 				claimService.addClaim(b);
 			}
@@ -308,7 +308,7 @@ public class Shop implements IShop, Serializable {
 				}
 			}
 			if (check) {
-				orderService.upDateOrder(b.getId(), b);
+				orderService.upDateOrder(b);
 			} else {
 				orderService.addOrder(b);
 			}

@@ -53,9 +53,8 @@ public class OrderService implements IOrderService {
 	}
 
 	public void removeOrder(int id) {
-		Order order = getOrderById(id);
 		try {
-			getOrders().delete(order);;
+			getOrders().delete(id);;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -93,12 +92,7 @@ public class OrderService implements IOrderService {
 	public int sumByTime(Date start, Date end) {
 		int sum = 0;
 		try {
-			for (Order o : getOrders().getAll()) {
-				if ((o.getExecutionDate().after(start) && o.getExecutionDate().before(end))
-						&& o.getStatus() == Status.COMPLETED) {
-					sum += o.getCost();
-				}
-			}
+			sum = getOrders().sumOfompletedOrdersByTime(start, end);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}

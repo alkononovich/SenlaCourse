@@ -2,7 +2,6 @@ package com.senla.training.kononovich.dao.mysql;
 
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
@@ -10,7 +9,6 @@ import java.util.List;
 
 import com.senla.training.kononovich.dao.dao.AbstractJDBCDao;
 import com.senla.training.kononovich.dao.dao.PersistException;
-import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.entity.Claim;
 import com.senla.training.kononovich.enums.Status;
 

@@ -10,7 +10,6 @@ import com.senla.training.kononovich.dao.dao.PersistException;
 import com.senla.training.kononovich.dao.mysql.MySqlBookDao;
 import com.senla.training.kononovich.dao.mysql.MySqlDaoFactory;
 import com.senla.training.kononovich.entity.Book;
-import com.senla.training.kononovich.entity.Order;
 
 public class BookService implements IBookService {
 	private Integer month = 6;
@@ -60,9 +59,8 @@ public class BookService implements IBookService {
 	}
 
 	public void removeBook(int id) {
-		Book book = getBookById(id);
 		try {
-			getBooks().delete(book);
+			getBooks().delete(id);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
