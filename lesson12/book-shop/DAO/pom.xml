@@ -14,4 +14,13 @@
     <version>${book-shop.version}</version>
 
     <name>DAO</name>
+        <dependencies>
+       
+        <dependency>
+            <groupId>com.senla.training.kononovich</groupId>
+            <artifactId>core</artifactId>
+            <version>${book-shop.version}</version>
+        </dependency>
+        
+	</dependencies>
 </project>

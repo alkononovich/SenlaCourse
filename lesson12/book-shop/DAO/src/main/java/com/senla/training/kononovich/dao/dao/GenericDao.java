@@ -3,6 +3,8 @@ package com.senla.training.kononovich.dao.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import com.senla.training.kononovich.entity.Identified;
+
 /**
  * Унифицированный интерфейс управления персистентным состоянием объектов
  * @param <T> тип объекта персистенции

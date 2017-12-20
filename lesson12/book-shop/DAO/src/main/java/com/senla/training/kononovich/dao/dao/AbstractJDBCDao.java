@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 
+import com.senla.training.kononovich.entity.Identified;
+
 /**
  * јбстрактный класс предоставл€ющий базовую реализацию CRUD операций с использованием JDBC.
  *

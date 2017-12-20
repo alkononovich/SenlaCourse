@@ -1,4 +1,4 @@
-package com.senla.training.kononovich.dao.dao;
+package com.senla.training.kononovich.entity;
 
 import java.io.Serializable;
 

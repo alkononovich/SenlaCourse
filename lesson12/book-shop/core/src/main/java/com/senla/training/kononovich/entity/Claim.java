@@ -1,6 +1,5 @@
 package com.senla.training.kononovich.entity;
 
-import com.senla.training.kononovich.dao.dao.Identified;
 import com.senla.training.kononovich.enums.Status;
 
 public class Claim extends AbstractModel implements Identified<Integer> {

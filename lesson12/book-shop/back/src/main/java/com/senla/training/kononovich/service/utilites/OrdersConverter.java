@@ -9,7 +9,6 @@ import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
 import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.entity.Order;
 import com.senla.training.kononovich.enums.Status;
-import com.senla.training.kononovich.uicontroller.DateConverter;
 
 public class OrdersConverter {
 	private static IBookService bookService = (IBookService)DependencyInjection.getClassInstance(IBookService.class);

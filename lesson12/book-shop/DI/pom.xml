@@ -13,5 +13,7 @@
     <artifactId>DI</artifactId>
     <version>${book-shop.version}</version>
 
-    <name>DI</name>
+    <name>dependency-injection</name>
+    
+    <packaging>jar</packaging>
 </project>

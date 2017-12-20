@@ -2,8 +2,6 @@ package com.senla.training.kononovich.entity;
 
 import java.util.Date;
 
-import com.senla.training.kononovich.dao.dao.Identified;
-import com.senla.training.kononovich.service.utilites.DateConverter;
 
 public class Book extends AbstractModel implements Identified<Integer>  {
 	/**
@@ -90,7 +88,7 @@ public class Book extends AbstractModel implements Identified<Integer>  {
 
 	public String view() {
 		StringBuffer str = new StringBuffer();
-		str.append(getId()).append(";").append(name).append(";").append(cost).append(";").append(DateConverter.dateToString(publicationDate)).append(";").append(DateConverter.dateToString(receiptDate)).append(";").append(count);
+		str.append(getId()).append(";").append(name).append(";").append(cost).append(";").append(publicationDate.toString()).append(";").append(receiptDate.toString()).append(";").append(count);
 		return str.toString();
 	}	
 	

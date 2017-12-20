@@ -5,9 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import com.senla.training.kononovich.dao.dao.Identified;
 import com.senla.training.kononovich.enums.Status;
-import com.senla.training.kononovich.service.utilites.DateConverter;
 
 public class Order extends AbstractModel implements Cloneable, Identified<Integer> {
 	/**
@@ -111,7 +109,7 @@ public class Order extends AbstractModel implements Cloneable, Identified<Intege
 		StringBuffer str = new StringBuffer();
 		if (status == Status.COMPLETED) {
 			str.append(getId()).append(";").append(client).append(";").append(books).append(";").append(status)
-					.append(";").append(DateConverter.dateToString(executionDate));
+					.append(";").append(executionDate.toString());
 		} else {
 			str.append(getId()).append(";").append(client).append(";").append(books).append(";").append(status);
 		}

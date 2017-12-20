@@ -9,10 +9,9 @@ import org.apache.log4j.Logger;
 
 import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
 import com.senla.training.kononovich.dependencyinjection.propertyworker.IPropertyWorker;
-import com.senla.training.kononovich.service.BookClaimService;
 
 public class AutoConfigurer implements IAutoConfigurer {
-	private static final Logger logger = Logger.getLogger(BookClaimService.class);
+	private static final Logger logger = Logger.getLogger(AutoConfigurer.class);
 	private static final String NULL = "";
 	private SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 	private IPropertyWorker propertyWorker = (IPropertyWorker)DependencyInjection.getClassInstance(IPropertyWorker.class);
