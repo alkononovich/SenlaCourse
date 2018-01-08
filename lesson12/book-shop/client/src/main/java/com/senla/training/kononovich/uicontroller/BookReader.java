@@ -3,7 +3,6 @@ package com.senla.training.kononovich.uicontroller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 
 import com.senla.training.kononovich.api.IPrinter;
 import com.senla.training.kononovich.api.core.IBookService;
@@ -13,7 +12,6 @@ import com.senla.training.kononovich.entity.Book;
 public class BookReader {
 	private IPrinter printer = (IPrinter) DependencyInjection.getClassInstance(IPrinter.class);
 	private IBookService bookService = (IBookService) DependencyInjection.getClassInstance(IBookService.class);
-	private static final Logger logger = Logger.getLogger(BookReader.class);
 
 
 	public List<Book> readBooks(String str) {
