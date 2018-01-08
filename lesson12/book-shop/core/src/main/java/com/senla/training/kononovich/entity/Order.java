@@ -5,17 +5,33 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.*;
+
 import com.senla.training.kononovich.enums.Status;
 
+@Entity
+@Table(name="order")
 public class Order extends AbstractModel implements Cloneable, Identified<Integer> {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4376601678405872708L;
+	
+	@OneToMany(targetEntity=Book.class, mappedBy="id", fetch = FetchType.LAZY)
 	private List<Book> books;
+	
+	@Column(name="client")
 	private String client;
+	
+	@Column(name="executionDate")
 	private Date executionDate;
+	
+	@Column(name="order_status")
 	private Status status;
+	
+	@Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id = null;
 
 	public Integer getId() {

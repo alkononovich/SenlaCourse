@@ -15,16 +15,33 @@
 	<name>client</name>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.senla.training.kononovich</groupId>
+			<artifactId>api</artifactId>
+			<version>${book-shop.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.senla.training.kononovich</groupId>
-			<artifactId>ui</artifactId>
+			<artifactId>core</artifactId>
+			<version>${book-shop.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.senla.training.kononovich</groupId>
+			<artifactId>DI</artifactId>
 			<version>${book-shop.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.senla.training.kononovich</groupId>
 			<artifactId>request</artifactId>
+			<version>${book-shop.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.senla.training.kononovich</groupId>
+			<artifactId>Annotations-modul</artifactId>
 			<version>${book-shop.version}</version>
 		</dependency>
 

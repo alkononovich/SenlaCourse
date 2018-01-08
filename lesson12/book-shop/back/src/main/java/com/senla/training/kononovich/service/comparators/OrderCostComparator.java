@@ -6,7 +6,6 @@ import com.senla.training.kononovich.entity.Order;
 
 public class OrderCostComparator implements Comparator<Order> {
 
-	@Override
 	public int compare(Order o1, Order o2) {
 		int res = 0;
 		if (o1 != null && o2 != null) {

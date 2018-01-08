@@ -4,6 +4,8 @@ package com.senla.training.kononovich.service;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 import com.senla.training.kononovich.api.core.IBookOrderService;
 import com.senla.training.kononovich.dao.dao.PersistException;
@@ -24,13 +26,25 @@ public class BookOrderService implements IBookOrderService {
 		return instance;
 	}
 
-	public List<Order> ordersOfBook(int id) {
-		return orderService.getOrders().ordersOfBook(id);
+	public List<Order> ordersOfBook(int id){
+		List<Order> orders = null;
+		try {
+			Criteria empQuery = OrderService.getInstance().getOrders().getSession()
+					.createCriteria(Order.class).add(Restrictions.like("book", bookService.getBookById(id)));
+			orders = empQuery.list();
+		} catch (Exception e) {
+			 try {
+				throw new PersistException(e);
+			} catch (PersistException e1) {
+				logger.error(e1.getMessage(), e1);
+			}
+		} 
+		return orders;
 	}
 
 	public void completeOrder(int id) {
 		try {
-			orderService.getOrders().connection.setAutoCommit(false);
+			orderService.getOrders().getSession().beginTransaction();
 			boolean check = false;
 			for (Book o : orderService.getOrderById(id).getBooks()) {
 				if (o.getCount() > 0) {
@@ -43,10 +57,10 @@ public class BookOrderService implements IBookOrderService {
 					for (Book o : orderService.getOrderById(id).getBooks()) {
 						o.setCount(o.getCount() - 1);
 						bookService.upDateBook(o);
-						orderService.getOrders().connection.commit();
+						orderService.getOrders().getSession().getTransaction().commit();
 					}
 				} catch (Exception e) {
-					orderService.getOrders().connection.rollback();
+					orderService.getOrders().getSession().getTransaction().rollback();
 					throw new PersistException(e);
 		        }
 			}

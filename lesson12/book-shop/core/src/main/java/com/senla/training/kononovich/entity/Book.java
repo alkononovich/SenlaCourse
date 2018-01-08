@@ -2,17 +2,33 @@ package com.senla.training.kononovich.entity;
 
 import java.util.Date;
 
+import javax.persistence.*;
 
+@Entity
+@Table(name="book")
 public class Book extends AbstractModel implements Identified<Integer>  {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 335376399320755204L;
+	@Column(name="book_name")
 	private String name;
+	
+	@Column(name="book_cost")
 	private int cost;
+	
+	@Column(name="book_count")
 	private int count;
+	
+	@Column(name="publicationDate")
 	private Date publicationDate;
+	
+	@Column(name="receiptDate")
 	private Date receiptDate;
+	
+	@Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id = null;
 
 	public Book() {

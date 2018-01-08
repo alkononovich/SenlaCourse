@@ -15,14 +15,12 @@ public class Printer implements IPrinter<AbstractModel> {
 		return instance;
 	}
 
-	@Override
 	public void printList(List<AbstractModel> value) {
 		for (AbstractModel a : value) {
 			System.out.println(a.view());
 		}
 	}
 
-	@Override
 	public void print(String value) {
 		System.out.println(value);
 	}

@@ -11,7 +11,7 @@ public class PropertyWorker implements IPropertyWorker {
 	private static final Logger logger = Logger.getLogger(PropertyWorker.class);
 	private static PropertyWorker instance;
 
-	private Map<String, Properties> confs = new HashMap<>();
+	private Map<String, Properties> confs = new HashMap<String, Properties>();
 	
 	public static PropertyWorker getInstance() {
 		if (instance == null) {

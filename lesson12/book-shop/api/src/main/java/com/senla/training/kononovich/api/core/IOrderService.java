@@ -3,11 +3,11 @@ package com.senla.training.kononovich.api.core;
 import java.util.Date;
 import java.util.List;
 
-import com.senla.training.kononovich.dao.mysql.MySqlOrderDao;
+import com.senla.training.kononovich.dao.daoimpl.OrderDaoImpl;
 import com.senla.training.kononovich.entity.Order;
 
 public interface IOrderService {
-	public MySqlOrderDao getOrders();
+	public OrderDaoImpl getOrders();
 
 	public void addOrder(Order order);
 

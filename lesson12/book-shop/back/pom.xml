@@ -10,7 +10,6 @@
 	</parent>
 
 	<artifactId>back</artifactId>
-	<version>${book-shop.version}</version>
 
 	<name>back-end</name>
 	<dependencies>
@@ -20,25 +19,18 @@
 			<artifactId>DI</artifactId>
 			<version>${book-shop.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.senla.training.kononovich</groupId>
 			<artifactId>api</artifactId>
 			<version>${book-shop.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.senla.training.kononovich</groupId>
 			<artifactId>core</artifactId>
 			<version>${book-shop.version}</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>com.senla.training.kononovich</groupId>
-			<artifactId>core</artifactId>
-			<version>${book-shop.version}</version>
-		</dependency>
-		
 
 	</dependencies>
 

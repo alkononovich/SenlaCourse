@@ -2,6 +2,9 @@ package com.senla.training.kononovich.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public abstract class AbstractModel implements Serializable {
 
 	/**

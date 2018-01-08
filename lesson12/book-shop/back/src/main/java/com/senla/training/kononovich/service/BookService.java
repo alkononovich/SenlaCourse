@@ -7,15 +7,15 @@ import org.apache.log4j.Logger;
 
 import com.senla.training.kononovich.api.core.IBookService;
 import com.senla.training.kononovich.dao.dao.PersistException;
-import com.senla.training.kononovich.dao.mysql.MySqlBookDao;
-import com.senla.training.kononovich.dao.mysql.MySqlDaoFactory;
+import com.senla.training.kononovich.dao.daoimpl.BookDaoImpl;
+import com.senla.training.kononovich.dao.daoimpl.DaoFactoryImpl;
 import com.senla.training.kononovich.entity.Book;
 
 public class BookService implements IBookService {
 	private Integer month = 6;
 	private static BookService instance;
 	private static final Logger logger = Logger.getLogger(BookService.class);
-	private static MySqlDaoFactory daoFactory = MySqlDaoFactory.getInstance();
+	private static DaoFactoryImpl daoFactory = DaoFactoryImpl.getInstance();
 
 	public static BookService getInstance() {
 		if (instance == null) {
@@ -33,9 +33,9 @@ public class BookService implements IBookService {
 		this.month = month;
 	}
 
-	public MySqlBookDao getBooks() {
+	public BookDaoImpl getBooks() {
 		try {
-			return (MySqlBookDao)daoFactory.getDao(daoFactory.getContext(), MySqlBookDao.class);
+			return (BookDaoImpl)daoFactory.getDao(daoFactory.getContext(), BookDaoImpl.class);
 		} catch (PersistException e) {
 			logger.error(e.getMessage(), e);
 			return null;
@@ -44,7 +44,7 @@ public class BookService implements IBookService {
 	
 	public void addBook(Book book) {
 		try {
-			getBooks().create();
+			getBooks().add(book);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}

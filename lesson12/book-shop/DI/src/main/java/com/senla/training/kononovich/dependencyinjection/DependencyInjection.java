@@ -11,7 +11,7 @@ public class DependencyInjection {
 	private static final Logger logger = Logger.getLogger(DependencyInjection.class);
 	private static final String DEPENDENCY_INJECTION = "DependencyInjection.txt";
 
-	private static Map<String, Object> objects = new HashMap<>();
+	private static Map<String, Object> objects = new HashMap<String, Object>();
 
 	public static Object getClassInstance(Class<?> work) {
 		Object obj = null;

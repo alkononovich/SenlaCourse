@@ -4,9 +4,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import com.senla.training.kononovich.dao.mysql.MySqlBookDao;
-import com.senla.training.kononovich.dao.mysql.MySqlClaimDao;
-import com.senla.training.kononovich.dao.mysql.MySqlOrderDao;
+import com.senla.training.kononovich.dao.daoimpl.BookDaoImpl;
+import com.senla.training.kononovich.dao.daoimpl.ClaimDaoImpl;
+import com.senla.training.kononovich.dao.daoimpl.OrderDaoImpl;
 import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.entity.Claim;
 import com.senla.training.kononovich.entity.Order;
@@ -14,14 +14,14 @@ import com.senla.training.kononovich.entity.Order;
 
 public interface IShop {
 	public void addBook(Book book);
-	public MySqlBookDao getBooks();
+	public BookDaoImpl getBooks();
 	public List<Book> getBookList();
 	public void upDateBook(Book book);
 	public void removeBook(int id);
 	public Book getBookById(int id);
 	public Book getBookByName(String name);
 	public List<Book> oldBooks();
-	public MySqlOrderDao getOrders();
+	public OrderDaoImpl getOrders();
 	public List<Order> getOrderList();
 	public void addOrder(Order order);
 	public void upDateOrder(Order order);
@@ -35,7 +35,7 @@ public interface IShop {
 	public void cloneOrder(int id);
 	public void writeOrdersToFile(String path);
 	public void readOrdersFromFile(String path);
-	public MySqlClaimDao getClaims();
+	public ClaimDaoImpl getClaims();
 	public List<Claim> getClaimList();
 	public void addClaim(Claim claim);
 	public void upDateClaim(Claim claim);

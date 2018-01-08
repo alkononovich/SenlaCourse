@@ -8,15 +8,15 @@ import org.apache.log4j.Logger;
 
 import com.senla.training.kononovich.api.core.IOrderService;
 import com.senla.training.kononovich.dao.dao.PersistException;
-import com.senla.training.kononovich.dao.mysql.MySqlDaoFactory;
-import com.senla.training.kononovich.dao.mysql.MySqlOrderDao;
+import com.senla.training.kononovich.dao.daoimpl.DaoFactoryImpl;
+import com.senla.training.kononovich.dao.daoimpl.OrderDaoImpl;
 import com.senla.training.kononovich.entity.Order;
 import com.senla.training.kononovich.enums.Status;
 
 public class OrderService implements IOrderService {
 	private static final Logger logger = Logger.getLogger(OrderService.class);
 	private static OrderService instance;
-	private static MySqlDaoFactory daoFactory = MySqlDaoFactory.getInstance();
+	private static DaoFactoryImpl daoFactory = DaoFactoryImpl.getInstance();
 
 
 	public static OrderService getInstance() {
@@ -26,9 +26,9 @@ public class OrderService implements IOrderService {
 		return instance;
 	}
 
-	public MySqlOrderDao getOrders() {
+	public OrderDaoImpl getOrders() {
 		try {
-			return (MySqlOrderDao)daoFactory.getDao(daoFactory.getContext(), MySqlOrderDao.class);
+			return (OrderDaoImpl)daoFactory.getDao(daoFactory.getContext(), OrderDaoImpl.class);
 		} catch (PersistException e) {
 			logger.error(e.getMessage(), e);
 			return null;
@@ -38,7 +38,7 @@ public class OrderService implements IOrderService {
 
 	public void addOrder(Order order) {
 		try {
-			getOrders().create();
+			getOrders().add(order);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
