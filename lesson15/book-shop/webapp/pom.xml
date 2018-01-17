@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.senla.training.kononovich</groupId>
+		<artifactId>book-shop</artifactId>
+		<version>${book-shop.version}</version>
+	</parent>
+	<artifactId>webapp</artifactId>
+	<name>webapp</name>
+	<packaging>war</packaging>
+	<url>http://maven.apache.org</url>
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.senla.training.kononovich</groupId>
+			<artifactId>core</artifactId>
+			<version>${book-shop.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.senla.training.kononovich</groupId>
+			<artifactId>api</artifactId>
+			<version>${book-shop.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.senla.training.kononovich</groupId>
+			<artifactId>back</artifactId>
+			<version>${book-shop.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>webapp</finalName>
+	</build>
+</project>
