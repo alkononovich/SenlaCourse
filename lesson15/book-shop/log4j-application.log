@@ -1,6 +1,0 @@
-2017-12-06 18:51:33 ERROR com.senla.training.kononovich.server.ClientThread.run:31 - 
-java.io.EOFException
-	at java.io.ObjectInputStream$BlockDataInputStream.peekByte(Unknown Source)
-	at java.io.ObjectInputStream.readObject0(Unknown Source)
-	at java.io.ObjectInputStream.readObject(Unknown Source)
-	at com.senla.training.kononovich.server.ClientThread.run(ClientThread.java:25)
