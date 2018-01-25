@@ -4,19 +4,23 @@ package com.senla.training.kononovich.dao.daoimpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
+
 
 import com.senla.training.kononovich.entity.AbstractModel;
 
 public abstract class AbstractDAOImpl<T extends AbstractModel> {
 	private static final Logger LOG = Logger.getLogger(AbstractDAOImpl.class);
-	SessionFactory sessionFactory = HibernateUtil.getInstance().getSessionFactory();
+	protected EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("kononovich_bookshop");
+	protected EntityManager em;
 	protected Class<T> clazz;
 
 	public AbstractDAOImpl(Class<T> clazz) {
@@ -28,19 +32,19 @@ public abstract class AbstractDAOImpl<T extends AbstractModel> {
 			LOG.warn("It is impossible to add entity to list of entities " + "because entity equals to null");
 			return;
 		}
-		Session session = sessionFactory.openSession();
-		Transaction tx = null;
+		em = entityManagerFactory.createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			session.save(entity);
-			tx.commit();
+			em.getTransaction().begin();
+			em.persist(entity);
+			em.getTransaction().commit();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
 			}
 			LOG.error(e);
 		}
-		session.close();
+		em.close();
+			
 	}
 
 	public void update(T entity) {
@@ -48,77 +52,70 @@ public abstract class AbstractDAOImpl<T extends AbstractModel> {
 			LOG.warn("It is impossible to to update entity at the list of entities" + " because it is equal to null");
 			return;
 		}
-		Session session = sessionFactory.openSession();
-		Transaction tx = null;
+		em = entityManagerFactory.createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			session.update(entity);
-			tx.commit();
+			em.getTransaction().begin();
+			em.merge(entity);
+			em.getTransaction().commit();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
 			}
 			LOG.error(e);
 		}
-		session.close();
+		em.close();
 	}
 
 	public T getByPK(Integer id) {
 		T result = null;
-
-		Session session = sessionFactory.openSession();
-		Transaction tx = null;
+		em = entityManagerFactory.createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			Criteria query = session.createCriteria(clazz);
-			query.add(Restrictions.idEq(id));
-			result = (T) query.list().get(0);
-			tx.commit();
+			//CriteriaBuilder cb = em.getCriteriaBuilder();
+			//CriteriaQuery<T> criteria = cb.createQuery(clazz);
+			//Root<T> root = criteria.from(clazz);
+			//criteria.select(root);
+			//criteria.where(cb.equal(root.get("id"), id));
+			//result = (T)em.createQuery(criteria).getResultList().get(0);
+			result = em.find(clazz, id);
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
-			}
 			LOG.error(e);
 		} catch (Exception e) {
 			LOG.error(e);
 		}
-		session.close();
+		em.close();
 		return result;
 	}
 
 	public List<T> getAll() {
 		List<T> result = new ArrayList<T>();
-
-		Session session = sessionFactory.openSession();
-		Transaction tx = null;
+		em = entityManagerFactory.createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			Criteria query = session.createCriteria(clazz);
-			result = query.list();
-			tx.commit();
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<T> criteria = cb.createQuery(clazz);
+			Root<T> root = criteria.from(clazz);
+			criteria.select(root);
+			result = em.createQuery(criteria).getResultList();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
-			}
+
 			LOG.error(e);
 		}
-		session.close();
+		em.close();
 		return result;
 	}
 
 	public void delete(int id) {
-		Session session = sessionFactory.openSession();
-		Transaction tx = null;
+		em = entityManagerFactory.createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			session.delete(getByPK(id));
-			tx.commit();
+			em.getTransaction().begin();
+			T t = em.merge(getByPK(id));
+			em.remove(t);
+			em.getTransaction().commit();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
 			}
 			LOG.error(e);
 		}
-		session.close();		
+		em.close();		
 	}
 }

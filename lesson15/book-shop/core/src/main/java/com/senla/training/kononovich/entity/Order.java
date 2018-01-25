@@ -10,14 +10,18 @@ import javax.persistence.*;
 import com.senla.training.kononovich.enums.Status;
 
 @Entity
-@Table(name="order")
+@Table(name="orders")
 public class Order extends AbstractModel implements Cloneable, Identified<Integer> {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4376601678405872708L;
 	
-	@OneToMany(targetEntity=Book.class, mappedBy="id", fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "ORDER_BOOKS",
+            joinColumns = @JoinColumn(name = "orderId"),
+            inverseJoinColumns = @JoinColumn(name = "bookId")
+    )
 	private List<Book> books;
 	
 	@Column(name="client")
@@ -32,14 +36,14 @@ public class Order extends AbstractModel implements Cloneable, Identified<Intege
 	@Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id = null;
+	private Integer orderId = null;
 
 	public Integer getId() {
-		return id;
+		return orderId;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.orderId = id;
 	}
 
 	public Order() {

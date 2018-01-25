@@ -10,7 +10,6 @@ import com.senla.training.kononovich.api.core.IOrderService;
 import com.senla.training.kononovich.dao.dao.PersistException;
 import com.senla.training.kononovich.dao.daoimpl.OrderDaoImpl;
 import com.senla.training.kononovich.entity.Order;
-import com.senla.training.kononovich.enums.Status;
 
 public class OrderService implements IOrderService {
 	private static final Logger logger = Logger.getLogger(OrderService.class);

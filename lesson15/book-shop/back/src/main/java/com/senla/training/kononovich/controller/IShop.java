@@ -33,6 +33,7 @@ public interface IShop {
 	public void readOrdersFromFile(String path);
 	public ClaimDaoImpl getClaims();
 	public List<Claim> getClaimList();
+	public Claim getClaimById(int id);
 	public void addClaim(Claim claim);
 	public void upDateClaim(Claim claim);
 	public void removeClaim(int id);

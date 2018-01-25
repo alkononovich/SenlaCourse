@@ -4,14 +4,30 @@
 
 <web-app>
 	<display-name>TestWebApp</display-name>
-	
+
 	<servlet>
 		<servlet-name>Book</servlet-name>
-		<servlet-class>BookServlet</servlet-class>
+		<servlet-class>com.senla.training.kononovich.webapp.BookServlet</servlet-class>
 	</servlet>
-		<servlet-mapping>
+	<servlet>
+		<servlet-name>Claim</servlet-name>
+		<servlet-class>com.senla.training.kononovich.webapp.ClaimServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>Order</servlet-name>
+		<servlet-class>com.senla.training.kononovich.webapp.OrderServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
 		<servlet-name>Book</servlet-name>
 		<url-pattern>/book</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Claim</servlet-name>
+		<url-pattern>/claim</url-pattern>
+	</servlet-mapping>
+		<servlet-mapping>
+		<servlet-name>Order</servlet-name>
+		<url-pattern>/order</url-pattern>
 	</servlet-mapping>
 
 </web-app>

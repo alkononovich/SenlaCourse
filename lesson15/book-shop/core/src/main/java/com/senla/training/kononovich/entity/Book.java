@@ -1,6 +1,7 @@
 package com.senla.training.kononovich.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -29,7 +30,18 @@ public class Book extends AbstractModel implements Identified<Integer>  {
 	@Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id = null;
+	private Integer bookId = null;
+	
+	@ManyToMany(mappedBy = "books")
+    private List<Order> orders;
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
 
 	public Book() {
 		super();
@@ -55,11 +67,11 @@ public class Book extends AbstractModel implements Identified<Integer>  {
 	}
 	
 	public Integer getId() {
-		return id;
+		return bookId;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.bookId = id;
 	}
 
 	public String getName() {

@@ -1,15 +1,14 @@
 package com.senla.training.kononovich.dao.daoimpl;
 
 
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 
 import com.senla.training.kononovich.dao.dao.PersistException;
 import com.senla.training.kononovich.entity.Book;
@@ -25,41 +24,40 @@ public class BookDaoImpl extends AbstractDAOImpl<Book> {
 		
 	public Book getByName(String name) throws PersistException {
 		List<Book> books = null;
-		Session session = sessionFactory.openSession();
-		Transaction tx = null;
+		em = entityManagerFactory.createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			Criteria empQuery = session.createCriteria(Book.class).add(Restrictions.like("book_name", name));
-			books = empQuery.list();
-			tx.commit();
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Book> criteria = cb.createQuery(Book.class);
+			Root<Book> root = criteria.from(Book.class);
+			criteria.select(root);
+			criteria.where(cb.equal(root.get("book_name"), name));
+			books = em.createQuery(criteria).getResultList();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
-			}
+
 			logger.error(e);
 		}
-		session.close();
+		em.close();
 		return books.get(0);
 	}
 	
 	public List<Book> getOldBooks(int month) throws PersistException{
 		List<Book> books = null;
-		Session session = sessionFactory.openSession();
-		Transaction tx = null;
+		em = entityManagerFactory.createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			int oldMonth = 1000 * 60 * 60 * 24 * 30 * month;
-			Date today = new Date();
-			Criteria empQuery = session.createCriteria(Book.class).add(Restrictions.le("receiptDate", today.getTime() - oldMonth));
-			books = empQuery.list();
-			tx.commit();
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Book> criteria = cb.createQuery(Book.class);
+			Root<Book> root = criteria.from(Book.class);
+			criteria.select(root);
+			//int oldMonth = 1000 * 60 * 60 * 24 * 30 * month;
+			//Date today = new Date();
+			//criteria.where(cb.le(Long.parseLong(root.get("receiptDate")), today.getTime() - oldMonth));
+			//books = em.createQuery(criteria).getResultList();
+			//TO DO
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
-			}
+
 			logger.error(e);
 		}
-		session.close();
+		em.close();
 		return books;
 	}
 

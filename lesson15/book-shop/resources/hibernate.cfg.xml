@@ -13,7 +13,7 @@
 
 		<!-- Assume wsdata is the database name -->
 		<property name="hibernate.connection.url">
-			jdbc:mysql://localhost:3306/kononovich_bookshop
+			jdbc:mysql://localhost:3306/senla_kononovich_bookshop
 		</property>
 		<property name="hibernate.current_session_context_class">thread</property>
 		<property name="hibernate.connection.username">

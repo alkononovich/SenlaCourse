@@ -3,17 +3,18 @@ package com.senla.training.kononovich.service;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 
 import com.senla.training.kononovich.api.core.IBookOrderService;
 import com.senla.training.kononovich.dao.dao.PersistException;
-import com.senla.training.kononovich.dao.daoimpl.HibernateUtil;
 import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.entity.Order;
 
@@ -21,7 +22,8 @@ public class BookOrderService implements IBookOrderService {
 	private static final Logger logger = Logger.getLogger(BookOrderService.class);
 	private OrderService orderService = OrderService.getInstance();
 	private BookService bookService = BookService.getInstance();
-	private SessionFactory sessionFactory = HibernateUtil.getInstance().getSessionFactory();
+	private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("kononovich_bookshop");
+	private EntityManager em;
 
 	private static BookOrderService instance;
 
@@ -34,28 +36,25 @@ public class BookOrderService implements IBookOrderService {
 
 	public List<Order> ordersOfBook(int id){
 		List<Order> orders = null;
-		Session session = sessionFactory.openSession();
-		Transaction tx = null;
+		em = entityManagerFactory.createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			Criteria empQuery = session.createCriteria(Order.class).add(Restrictions.like("book", bookService.getBookById(id)));
-			orders = empQuery.list();
-			tx.commit();
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
+			Root<Book> root = criteria.from(Book.class);
+			criteria.multiselect(root.get("orders"));
+			orders = em.createQuery(criteria).getResultList();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
-			}
+
 			logger.error(e);
 		}
-		session.close();
+		em.close();
 		return orders;
 	}
 
 	public void completeOrder(int id) {
-		Session session = sessionFactory.openSession();
-		Transaction tx = null;
+		em = entityManagerFactory.createEntityManager();
 		try {
-			tx = session.beginTransaction();
+			em.getTransaction().begin();
 			boolean check = false;
 			for (Book o : orderService.getOrderById(id).getBooks()) {
 				if (o.getCount() > 0) {
@@ -73,13 +72,13 @@ public class BookOrderService implements IBookOrderService {
 						bookService.upDateBook(o);
 					}
 			}
-			tx.commit();
+			em.getTransaction().commit();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
 			}
 			logger.error(e);
 		}
-
+		em.close();
 	}
 }

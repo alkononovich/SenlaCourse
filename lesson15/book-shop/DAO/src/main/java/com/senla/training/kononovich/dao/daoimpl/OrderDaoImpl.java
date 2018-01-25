@@ -3,13 +3,13 @@ package com.senla.training.kononovich.dao.daoimpl;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+
 
 import com.senla.training.kononovich.dao.dao.PersistException;
 import com.senla.training.kononovich.entity.Order;
@@ -24,62 +24,50 @@ public class OrderDaoImpl extends AbstractDAOImpl<Order> {
 	
 		public int completeCount() throws PersistException {
 		List<Order> orders = null;
-		Session session = sessionFactory.openSession();
-		Transaction tx = null;
+		em = entityManagerFactory.createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			Criteria empQuery = session.createCriteria(Order.class)
-					.add(Restrictions.like("order_status", com.senla.training.kononovich.enums.Status.COMPLETED));
-			orders = empQuery.list();
-			tx.commit();
+			em.getTransaction().begin();
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
+			Root<Order> root = criteria.from(Order.class);
+			criteria.select(root);
+			criteria.where(cb.equal(root.get("order_status"), Status.COMPLETED));
+			orders = em.createQuery(criteria).getResultList();
+			em.getTransaction().commit();
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
+			if (em.getTransaction() != null) {
+				em.getTransaction().rollback();
 			}
 			logger.error(e);
 		}
-		session.close();
+		em.close();
 		return orders.size();
 	}
 	
 	public List<Order> completedOrdersByTime(Date start, Date end) throws PersistException{
 		List<Order> orders = null;
-		Session session = sessionFactory.openSession();
-		Transaction tx = null;
+		em = entityManagerFactory.createEntityManager();
 		try {
-			tx = session.beginTransaction();
-			Criteria empQuery = session.createCriteria(Order.class).add(Restrictions.like("order_status", "COMPLETE"))
-					.add(Restrictions.between("birth_date", start, end));
-			orders = empQuery.list();
-			tx.commit();
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
+			Root<Order> root = criteria.from(Order.class);
+			criteria.select(root);
+			//criteria.where(cb.equal(root.get("order_status"), Status.COMPLETED)).where(cb.between(root.get("executionDate"), start, end));
+			orders = em.createQuery(criteria).getResultList();
+			//TO DO
 		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
-			}
 			logger.error(e);
 		}
-		session.close();
+		em.close();
 		return orders;
 	}
 	public int sumOfompletedOrdersByTime(Date start, Date end)throws PersistException{
-		List<Integer> sum = null;
-		Session session = sessionFactory.openSession();
-		Transaction tx = null;
-		try {
-			tx = session.beginTransaction();
-			Criteria empQuery = session.createCriteria(Order.class)
-					.add(Restrictions.like("order_status", "COMPLETE")).createCriteria("books");
-			empQuery.setProjection(Projections.sum("book_cost"));
-			sum = empQuery.list();
-			tx.commit();
-		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
-			}
-			logger.error(e);
+		int sum = 0;
+		List<Order> orders = completedOrdersByTime(start, end);
+		for (Order o : orders) {
+			sum += o.getCost();
 		}
-		session.close();
-		return sum.get(0);
+		return sum;
 	}
 
 	public void completeOrder(int id) throws PersistException {

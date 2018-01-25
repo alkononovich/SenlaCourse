@@ -1,23 +1,26 @@
 package com.senla.training.kononovich.webapp;
 
-import com.senla.training.kononovich.controller.Shop;
-import com.senla.training.kononovich.entity.Book;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.senla.training.kononovich.controller.IShop;
+import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
+import com.senla.training.kononovich.entity.*;
 
 public class Test {
 
 	public static void main(String[] args) {
-		Shop sh = Shop.getInstance();
-		Book b = new Book();
-		b.setName("451");
-		sh.addBook(b);
+		IShop shop = (IShop) DependencyInjection.getClassInstance(IShop.class);
+		Order b = new Order();
 		
-		b = new Book();
-		b.setName("Witcher");
-		sh.addBook(b);
+		b.setClient("Vasili");
+		List<Book> books = new ArrayList<>();
+		books.add(shop.getBookById(1));
+		b.setBooks(books);
 		
-		b = new Book();
-		b.setName("repka");
-		sh.addBook(b);
+		shop.addOrder(b);
+		
+		System.out.println(shop.getOrderById(1));
 	}
 
 }

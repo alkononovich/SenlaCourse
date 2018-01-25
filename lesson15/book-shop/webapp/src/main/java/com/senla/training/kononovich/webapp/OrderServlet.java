@@ -11,14 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.senla.training.kononovich.controller.IShop;
 import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
-import com.senla.training.kononovich.entity.Book;
+import com.senla.training.kononovich.entity.Order;
 
-public class BookServlet extends HttpServlet {
+public class OrderServlet extends HttpServlet{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6452238432153747073L;
+	private static final long serialVersionUID = 2980688985920329437L;
 	private IShop shop = (IShop) DependencyInjection.getClassInstance(IShop.class);
 
 
@@ -29,7 +29,7 @@ public class BookServlet extends HttpServlet {
 		
 		ObjectMapper mapper = new ObjectMapper();
 
-		Book book = new Book();
+		Order order = new Order();
 		
 		
 	}*/
@@ -37,9 +37,9 @@ public class BookServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String json = request.getParameter("json");
 		ObjectMapper mapper = new ObjectMapper();
-		Book book = mapper.readValue(json, Book.class);
+		Order order = mapper.readValue(json, Order.class);
 
-		shop.addBook(book);
+		shop.addOrder(order);
 		
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
@@ -52,8 +52,8 @@ public class BookServlet extends HttpServlet {
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
 		String json = "";
-		Book book = shop.getBookById(new Integer(id));
-		json = mapper.writeValueAsString(book);
+		Order order = shop.getOrderById(new Integer(id));
+		json = mapper.writeValueAsString(order);
 		
 		out.println("{\"Result\":" + json + "}");
 	}
@@ -62,16 +62,15 @@ public class BookServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String json = request.getParameter("json");
 		ObjectMapper mapper = new ObjectMapper();
-		Book book = new Book();
-		book = mapper.readValue(json, Book.class);
+		Order order = new Order();
+		order = mapper.readValue(json, Order.class);
 
-		Integer bookId = book.getId();
+		Integer orderId = order.getId();
 
-		shop.removeBook(bookId);
+		shop.removeOrder(orderId);
 
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
 		out.println("{\"Result\":\"success\"}");
 	}
-
 }

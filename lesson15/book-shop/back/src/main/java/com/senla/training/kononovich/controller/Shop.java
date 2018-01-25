@@ -41,7 +41,7 @@ public class Shop implements IShop, Serializable {
 	private Comparator orderStatusComparator = new OrderStatusComparator();
 	private static Shop instance;
 	
-	private Shop() {
+	public Shop() {
 		
 	}
 	
@@ -276,6 +276,10 @@ public class Shop implements IShop, Serializable {
 				orderService.addOrder(b);
 			}
 		}
+	}
+
+	public Claim getClaimById(int id) {
+		return claimService.getClaimById(id);
 	}
 
 }

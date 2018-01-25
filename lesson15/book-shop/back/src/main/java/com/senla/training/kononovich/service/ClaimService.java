@@ -3,7 +3,6 @@ package com.senla.training.kononovich.service;
 import org.apache.log4j.Logger;
 
 import com.senla.training.kononovich.api.core.IClaimService;
-import com.senla.training.kononovich.dao.dao.PersistException;
 import com.senla.training.kononovich.dao.daoimpl.ClaimDaoImpl;
 import com.senla.training.kononovich.entity.Claim;
 
@@ -48,6 +47,15 @@ public class ClaimService implements IClaimService {
 			getClaims().delete(id);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
+		}
+	}
+	
+	public Claim getClaimById(int id) {
+		try {
+			return getClaims().getByPK(id);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return null;
 		}
 	}
 

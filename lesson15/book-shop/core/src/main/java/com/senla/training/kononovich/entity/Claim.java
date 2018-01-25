@@ -26,14 +26,14 @@ public class Claim extends AbstractModel implements Identified<Integer> {
 	@Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id = null;
+	private Integer claimId = null;
 
 	public Integer getId() {
-		return id;
+		return claimId;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.claimId = id;
 	}
 	
 	public Claim() {
