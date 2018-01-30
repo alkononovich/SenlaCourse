@@ -3,6 +3,7 @@ package com.senla.training.kononovich.dao.daoimpl;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -22,9 +23,8 @@ public class BookDaoImpl extends AbstractDAOImpl<Book> {
 
 
 		
-	public Book getByName(String name) throws PersistException {
+	public Book getByName(EntityManager em, String name) throws PersistException {
 		List<Book> books = null;
-		em = entityManagerFactory.createEntityManager();
 		try {
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<Book> criteria = cb.createQuery(Book.class);
@@ -33,16 +33,14 @@ public class BookDaoImpl extends AbstractDAOImpl<Book> {
 			criteria.where(cb.equal(root.get("book_name"), name));
 			books = em.createQuery(criteria).getResultList();
 		} catch (HibernateException e) {
-
 			logger.error(e);
+			throw e;
 		}
-		em.close();
 		return books.get(0);
 	}
 	
-	public List<Book> getOldBooks(int month) throws PersistException{
+	public List<Book> getOldBooks(EntityManager em, int month) throws PersistException{
 		List<Book> books = null;
-		em = entityManagerFactory.createEntityManager();
 		try {
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<Book> criteria = cb.createQuery(Book.class);
@@ -54,10 +52,9 @@ public class BookDaoImpl extends AbstractDAOImpl<Book> {
 			//books = em.createQuery(criteria).getResultList();
 			//TO DO
 		} catch (HibernateException e) {
-
 			logger.error(e);
+			throw e;
 		}
-		em.close();
 		return books;
 	}
 

@@ -4,18 +4,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
 import org.apache.log4j.Logger;
 
 import com.senla.training.kononovich.api.core.IOrderService;
 import com.senla.training.kononovich.dao.dao.PersistException;
 import com.senla.training.kononovich.dao.daoimpl.OrderDaoImpl;
+import com.senla.training.kononovich.entity.Book;
 import com.senla.training.kononovich.entity.Order;
 
 public class OrderService implements IOrderService {
 	private static final Logger logger = Logger.getLogger(OrderService.class);
 	private static OrderService instance;
 	private OrderDaoImpl orders;
-	
+
 	public OrderService() {
 		orders = new OrderDaoImpl();
 	}
@@ -31,71 +35,96 @@ public class OrderService implements IOrderService {
 		return orders;
 	}
 
-
-	public void addOrder(Order order) {
+	public void addOrder(EntityManager em, Order order) {
+		EntityTransaction tx = em.getTransaction();
 		try {
-			getOrders().add(order);
+			tx.begin();
+			if (order.getBooks() != null) {
+				for(Book b : order.getBooks())
+				em.merge(b);
+			}
+			getOrders().add(em, order);
+			tx.commit();
 		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
 			logger.error(e.getMessage(), e);
 		}
 	}
 
-	public void upDateOrder(Order order) {
+	public void upDateOrder(EntityManager em, Order order) {
+		EntityTransaction tx = em.getTransaction();
 		try {
-			getOrders().update(order);;
+			tx.begin();
+			if (order.getBooks() != null) {
+				for(Book b : order.getBooks())
+				em.merge(b);
+			}
+			getOrders().update(em, order);
+			tx.commit();
 		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
 			logger.error(e.getMessage(), e);
 		}
 	}
 
-	public void removeOrder(int id) {
+	public void removeOrder(EntityManager em, int id) {
+		EntityTransaction tx = em.getTransaction();
 		try {
-			getOrders().delete(id);;
+			tx.begin();
+			getOrders().delete(em, id);
+			tx.commit();
 		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
 			logger.error(e.getMessage(), e);
 		}
 	}
 
-	public Order getOrderById(int id) {
+	public Order getOrderById(EntityManager em, int id) {
 		Order searchedOrder = null;
 		try {
-			searchedOrder = getOrders().getByPK(id);
+			searchedOrder = getOrders().getByPK(em, id);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
 		return searchedOrder;
 	}
 
-	public int numOfCompleteOrders() {
+	public int numOfCompleteOrders(EntityManager em) {
 		try {
-			return getOrders().completeCount();
+			return getOrders().completeCount(em);
 		} catch (PersistException e) {
 			logger.error(e.getMessage(), e);
 			return 0;
 		}
 	}
-	
-	public List<Order> completedOrdersByTime(Date start, Date end) {
+
+	public List<Order> completedOrdersByTime(EntityManager em, Date start, Date end) {
 		List<Order> list = new ArrayList<Order>();
 		try {
-			list = getOrders().completedOrdersByTime(start, end);
+			list = getOrders().completedOrdersByTime(em, start, end);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
 		return list;
 	}
 
-	public int sumByTime(Date start, Date end) {
+	public int sumByTime(EntityManager em, Date start, Date end) {
 		int sum = 0;
 		try {
-			sum = getOrders().sumOfompletedOrdersByTime(start, end);
+			sum = getOrders().sumOfompletedOrdersByTime(em, start, end);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
 		return sum;
 	}
-	
-	public void cloneOrder(int id) {
-		this.addOrder(this.getOrderById(id).clone());
+
+	public void cloneOrder(EntityManager em, int id) {
+		this.addOrder(em, this.getOrderById(em, id).clone());
 	}
 }

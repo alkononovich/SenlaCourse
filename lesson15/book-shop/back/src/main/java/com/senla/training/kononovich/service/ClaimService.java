@@ -1,5 +1,8 @@
 package com.senla.training.kononovich.service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
 import org.apache.log4j.Logger;
 
 import com.senla.training.kononovich.api.core.IClaimService;
@@ -26,33 +29,51 @@ public class ClaimService implements IClaimService {
 		return claims;
 	}
 
-	public void addClaim(Claim claim) {
+	public void addClaim(EntityManager em, Claim claim) {
+		EntityTransaction tx = em.getTransaction();
 		try {
-			getClaims().add(claim);
+			tx.begin();
+			getClaims().add(em, claim);
+			tx.commit();
 		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
 			logger.error(e.getMessage(), e);
 		}
 	}
 
-	public void upDateClaim(Claim claim) {
+	public void upDateClaim(EntityManager em, Claim claim) {
+		EntityTransaction tx = em.getTransaction();
 		try {
-			getClaims().update(claim);
+			tx.begin();
+			getClaims().update(em, claim);
+			tx.commit();
 		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
 			logger.error(e.getMessage(), e);
 		}
 	}
 
-	public void removeClaim(int id) {
+	public void removeClaim(EntityManager em, int id) {
+		EntityTransaction tx = em.getTransaction();
 		try {
-			getClaims().delete(id);
+			tx.begin();
+			getClaims().delete(em, id);
+			tx.commit();
 		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
 			logger.error(e.getMessage(), e);
 		}
 	}
 	
-	public Claim getClaimById(int id) {
+	public Claim getClaimById(EntityManager em, int id) {
 		try {
-			return getClaims().getByPK(id);
+			return getClaims().getByPK(em, id);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			return null;

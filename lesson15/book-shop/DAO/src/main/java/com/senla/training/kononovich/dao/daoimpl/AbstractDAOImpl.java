@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -19,56 +18,41 @@ import com.senla.training.kononovich.entity.AbstractModel;
 
 public abstract class AbstractDAOImpl<T extends AbstractModel> {
 	private static final Logger LOG = Logger.getLogger(AbstractDAOImpl.class);
-	protected EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("kononovich_bookshop");
-	protected EntityManager em;
 	protected Class<T> clazz;
 
 	public AbstractDAOImpl(Class<T> clazz) {
 		this.clazz = clazz;
 	}
 
-	public void add(T entity) {
+	public void add(EntityManager em, T entity) {
 		if (entity == null) {
 			LOG.warn("It is impossible to add entity to list of entities " + "because entity equals to null");
 			return;
 		}
-		em = entityManagerFactory.createEntityManager();
 		try {
-			em.getTransaction().begin();
 			em.persist(entity);
-			em.getTransaction().commit();
 		} catch (HibernateException e) {
-			if (em.getTransaction() != null) {
-				em.getTransaction().rollback();
-			}
 			LOG.error(e);
+			throw e;
 		}
-		em.close();
 			
 	}
 
-	public void update(T entity) {
+	public void update(EntityManager em, T entity) {
 		if (entity == null) {
 			LOG.warn("It is impossible to to update entity at the list of entities" + " because it is equal to null");
 			return;
 		}
-		em = entityManagerFactory.createEntityManager();
 		try {
-			em.getTransaction().begin();
 			em.merge(entity);
-			em.getTransaction().commit();
 		} catch (HibernateException e) {
-			if (em.getTransaction() != null) {
-				em.getTransaction().rollback();
-			}
 			LOG.error(e);
+			throw e;
 		}
-		em.close();
 	}
 
-	public T getByPK(Integer id) {
+	public T getByPK(EntityManager em, Integer id) {
 		T result = null;
-		em = entityManagerFactory.createEntityManager();
 		try {
 			//CriteriaBuilder cb = em.getCriteriaBuilder();
 			//CriteriaQuery<T> criteria = cb.createQuery(clazz);
@@ -79,16 +63,13 @@ public abstract class AbstractDAOImpl<T extends AbstractModel> {
 			result = em.find(clazz, id);
 		} catch (HibernateException e) {
 			LOG.error(e);
-		} catch (Exception e) {
-			LOG.error(e);
-		}
-		em.close();
+			throw e;
+		} 
 		return result;
 	}
 
-	public List<T> getAll() {
+	public List<T> getAll(EntityManager em) {
 		List<T> result = new ArrayList<T>();
-		em = entityManagerFactory.createEntityManager();
 		try {
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<T> criteria = cb.createQuery(clazz);
@@ -96,26 +77,19 @@ public abstract class AbstractDAOImpl<T extends AbstractModel> {
 			criteria.select(root);
 			result = em.createQuery(criteria).getResultList();
 		} catch (HibernateException e) {
-
 			LOG.error(e);
+			throw e;
 		}
-		em.close();
 		return result;
 	}
 
-	public void delete(int id) {
-		em = entityManagerFactory.createEntityManager();
+	public void delete(EntityManager em, int id) {
 		try {
-			em.getTransaction().begin();
-			T t = em.merge(getByPK(id));
+			T t = em.merge(getByPK(em, id));
 			em.remove(t);
-			em.getTransaction().commit();
 		} catch (HibernateException e) {
-			if (em.getTransaction() != null) {
-				em.getTransaction().rollback();
-			}
 			LOG.error(e);
+			throw e;
 		}
-		em.close();		
 	}
 }

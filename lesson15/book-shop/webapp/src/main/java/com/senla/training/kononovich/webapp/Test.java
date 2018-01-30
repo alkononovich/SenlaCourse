@@ -3,24 +3,31 @@ package com.senla.training.kononovich.webapp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.senla.training.kononovich.controller.IShop;
+import javax.persistence.EntityManager;
+
+import com.senla.training.kononovich.api.core.IBookService;
+import com.senla.training.kononovich.api.core.IOrderService;
+import com.senla.training.kononovich.dao.daoimpl.FactoryUtil;
 import com.senla.training.kononovich.dependencyinjection.DependencyInjection;
 import com.senla.training.kononovich.entity.*;
 
 public class Test {
 
 	public static void main(String[] args) {
-		IShop shop = (IShop) DependencyInjection.getClassInstance(IShop.class);
+		IOrderService orderService = (IOrderService) DependencyInjection.getClassInstance(IOrderService.class);
+		IBookService bookService = (IBookService) DependencyInjection.getClassInstance(IBookService.class);
+		EntityManager em = FactoryUtil.getEntityManager();
+		
 		Order b = new Order();
 		
 		b.setClient("Vasili");
 		List<Book> books = new ArrayList<>();
-		books.add(shop.getBookById(1));
+		books.add(bookService.getBookById(em, 1));
 		b.setBooks(books);
 		
-		shop.addOrder(b);
+		orderService.addOrder(em, b);
 		
-		System.out.println(shop.getOrderById(1));
+		System.out.println(orderService.getOrderById(em, 1));
 	}
 
 }
