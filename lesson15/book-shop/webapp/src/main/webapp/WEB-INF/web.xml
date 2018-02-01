@@ -17,6 +17,31 @@
 		<servlet-name>Order</servlet-name>
 		<servlet-class>com.senla.training.kononovich.webapp.OrderServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>CloneOrder</servlet-name>
+		<servlet-class>com.senla.training.kononovich.webapp.CloneOrderServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>CompletedOrders</servlet-name>
+		<servlet-class>com.senla.training.kononovich.webapp.CompletedOrdersServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>SumOfCompleted</servlet-name>
+		<servlet-class>com.senla.training.kononovich.webapp.SumOfCompleteServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>CompleteOrder</servlet-name>
+		<servlet-class>com.senla.training.kononovich.webapp.CompleteOrderServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>OldBooks</servlet-name>
+		<servlet-class>com.senla.training.kononovich.webapp.OldBooksServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>OrdersOfBook</servlet-name>
+		<servlet-class>com.senla.training.kononovich.webapp.OrdersOfBookServlet</servlet-class>
+	</servlet>
+
 	<servlet-mapping>
 		<servlet-name>Book</servlet-name>
 		<url-pattern>/book</url-pattern>
@@ -25,9 +50,32 @@
 		<servlet-name>Claim</servlet-name>
 		<url-pattern>/claim</url-pattern>
 	</servlet-mapping>
-		<servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>Order</servlet-name>
 		<url-pattern>/order</url-pattern>
 	</servlet-mapping>
-
+	<servlet-mapping>
+		<servlet-name>CloneOrder</servlet-name>
+		<url-pattern>/cloneOrder</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CompletedOrders</servlet-name>
+		<url-pattern>/completedOrders</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SumOfCompleted</servlet-name>
+		<url-pattern>/sumOfCompleted</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CompleteOrder</servlet-name>
+		<url-pattern>/completeOrder</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>OldBooks</servlet-name>
+		<url-pattern>/oldBooks</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>OrdersOfBook</servlet-name>
+		<url-pattern>/ordersOfBook</url-pattern>
+	</servlet-mapping>
 </web-app>

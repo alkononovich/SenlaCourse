@@ -24,25 +24,17 @@ public class OrderServlet extends HttpServlet{
 	private IOrderService shop = (IOrderService) DependencyInjection.getClassInstance(IOrderService.class);
 	private EntityManager em;
 
-	/*public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String json = request.getParameter("json");
-		String action = request.getParameter("action");
-		IShop shop = Shop.getInstance();
-		
-		ObjectMapper mapper = new ObjectMapper();
-
-		Order order = new Order();
-		
-		
-	}*/
-	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		em = FactoryUtil.getEntityManager();
 		String json = request.getParameter("json");
 		ObjectMapper mapper = new ObjectMapper();
 		Order order = mapper.readValue(json, Order.class);
 
-		shop.addOrder(em, order);
+		if (order.getId() == null) {
+			shop.addOrder(em, order);
+		} else {
+			shop.upDateOrder(em, order);
+		}
 		
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();

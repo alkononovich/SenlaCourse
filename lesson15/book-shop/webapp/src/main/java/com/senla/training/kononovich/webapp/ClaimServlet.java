@@ -25,25 +25,17 @@ public class ClaimServlet extends HttpServlet{
 	private EntityManager em;
 
 
-	/*public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String json = request.getParameter("json");
-		String action = request.getParameter("action");
-		IShop shop = Shop.getInstance();
-		
-		ObjectMapper mapper = new ObjectMapper();
-
-		Claim claim = new Claim();
-		
-		
-	}*/
-	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		em = FactoryUtil.getEntityManager();
 		String json = request.getParameter("json");
 		ObjectMapper mapper = new ObjectMapper();
 		Claim claim = mapper.readValue(json, Claim.class);
 
-		shop.addClaim(em, claim);
+		if (claim.getId() == null) {
+			shop.addClaim(em, claim);
+		} else {
+			shop.upDateClaim(em, claim);
+		}
 		
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();

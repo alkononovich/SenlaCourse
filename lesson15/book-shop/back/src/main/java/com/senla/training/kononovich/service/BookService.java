@@ -13,7 +13,6 @@ import com.senla.training.kononovich.dao.daoimpl.BookDaoImpl;
 import com.senla.training.kononovich.entity.Book;
 
 public class BookService implements IBookService {
-	private Integer month = 6;
 	private static BookService instance;
 	private static final Logger logger = Logger.getLogger(BookService.class);
 	private BookDaoImpl books;
@@ -29,13 +28,6 @@ public class BookService implements IBookService {
 		return instance;
 	}
 
-	public Integer getMonth() {
-		return month;
-	}
-
-	public void setMonth(Integer month) {
-		this.month = month;
-	}
 
 	public BookDaoImpl getBooks() {
 		return books;
@@ -102,7 +94,7 @@ public class BookService implements IBookService {
 		return searchedBook;
 	}
 
-	public List<Book> oldBooks(EntityManager em) {
+	public List<Book> oldBooks(EntityManager em, int month) {
 		List<Book> list = new ArrayList<Book>();
 		try {
 			list = getBooks().getOldBooks(em, month);
@@ -111,5 +103,6 @@ public class BookService implements IBookService {
 		}
 		return list;
 	}
+
 
 }

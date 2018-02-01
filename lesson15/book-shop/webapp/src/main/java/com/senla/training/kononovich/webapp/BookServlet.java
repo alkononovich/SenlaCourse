@@ -24,47 +24,44 @@ public class BookServlet extends HttpServlet {
 	private IBookService shop = (IBookService) DependencyInjection.getClassInstance(IBookService.class);
 	private EntityManager em;
 
-
-	/*public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String json = request.getParameter("json");
-		String action = request.getParameter("action");
-		IShop shop = Shop.getInstance();
-		
-		ObjectMapper mapper = new ObjectMapper();
-
-		Book book = new Book();
-		
-		
-	}*/
-	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		em = FactoryUtil.getEntityManager();
 		String json = request.getParameter("json");
 		ObjectMapper mapper = new ObjectMapper();
 		Book book = mapper.readValue(json, Book.class);
 
-		shop.addBook(em, book);
-		
+		if (book.getId() == null) {
+			shop.addBook(em, book);
+		} else {
+			shop.upDateBook(em, book);
+		}
+
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
 		out.println("{\"Result\":\"success\"}");
 		em.close();
 	}
-	
+
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		em = FactoryUtil.getEntityManager();
 		String id = request.getParameter("id");
+		String name = request.getParameter("name");
 		ObjectMapper mapper = new ObjectMapper();
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
 		String json = "";
-		Book book = shop.getBookById(em, new Integer(id));
+		Book book = null;
+		if (id != null) {
+			book = shop.getBookById(em, new Integer(id));
+		} else if (name != null) {
+			book = shop.getBookByName(em, name);
+		}
 		json = mapper.writeValueAsString(book);
-		
+
 		out.println("{\"Result\":" + json + "}");
 		em.close();
 	}
-	
+
 	public void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		em = FactoryUtil.getEntityManager();
