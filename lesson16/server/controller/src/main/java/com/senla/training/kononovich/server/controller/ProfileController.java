@@ -16,7 +16,7 @@ import com.senla.training.kononovich.server.service.TokenUtility;
 @Controller
 public class ProfileController {
     @Autowired
-    private ProfileService userDataService;
+    private ProfileService profileService;
 
     @RequestMapping(
             value = {"api/profile"},
@@ -27,7 +27,7 @@ public class ProfileController {
     private Profile getUserData(@RequestHeader String token, HttpServletResponse response) {
         Long id = TokenUtility.getInstance().getUserId(token);
         if (id != null) {
-        	Profile profile = userDataService.getUserDataByUserId(id);
+        	Profile profile = profileService.getUserData(id);
             if (profile != null) {
                 return profile;
             }

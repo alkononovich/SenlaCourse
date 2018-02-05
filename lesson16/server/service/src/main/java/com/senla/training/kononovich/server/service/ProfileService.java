@@ -32,7 +32,7 @@ public class ProfileService {
     }
 
     @Transactional
-    public Profile getUserDataByUserId(Long id) {
+    public Profile getUserData(Long id) {
         try {
             User user = userDao.getEntityById(id);
             Profile profile = profileDao.getProfile(user);
