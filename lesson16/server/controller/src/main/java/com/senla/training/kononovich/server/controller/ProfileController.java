@@ -9,23 +9,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.senla.training.kononovich.server.api.service.IProfileService;
+import com.senla.training.kononovich.server.api.service.ITokenUtility;
 import com.senla.training.kononovich.server.model.Profile;
-import com.senla.training.kononovich.server.service.ProfileService;
-import com.senla.training.kononovich.server.service.TokenUtility;
 
 @Controller
 public class ProfileController {
     @Autowired
-    private ProfileService profileService;
+    private IProfileService profileService;
+    @Autowired
+    private ITokenUtility tokenUtility;
 
-    @RequestMapping(
-            value = {"api/profile"},
-            method = {RequestMethod.GET}
-    )
-
+    @RequestMapping(value = {"api/profile"}, method = {RequestMethod.GET})
     @ResponseBody
     private Profile getUserData(@RequestHeader String token, HttpServletResponse response) {
-        Long id = TokenUtility.getInstance().getUserId(token);
+        Long id = tokenUtility.getUserIdByToken(token);
         if (id != null) {
         	Profile profile = profileService.getUserData(id);
             if (profile != null) {
@@ -36,3 +34,4 @@ public class ProfileController {
         return new Profile();
     }
 }
+

@@ -1,13 +1,14 @@
 package com.senla.training.kononovich.server.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.senla.training.kononovich.server.service.TokenUtility;
+import com.senla.training.kononovich.server.api.service.ITokenUtility;
+import com.senla.training.kononovich.server.api.service.IUserHandler;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class FilterToken implements Filter {
 
@@ -25,19 +26,24 @@ public class FilterToken implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse rs = (HttpServletResponse) response;
         String token = req.getHeader("token");
-		Long id = TokenUtility.getInstance().getUserId(token);
+
+        ITokenUtility tokenUtility = WebApplicationContextUtils.
+                getRequiredWebApplicationContext(filterConfig.getServletContext()).
+                getBean( ITokenUtility.class);
+
+        IUserHandler userHandler=WebApplicationContextUtils.
+                getRequiredWebApplicationContext(filterConfig.getServletContext()).
+                getBean( IUserHandler.class);
+        Long id = tokenUtility.getUserIdByToken(token);
         if (id != null) {
             try {
+                userHandler.setUserId(id);
                 chain.doFilter(request, response);
-            } catch (IOException e) {
-                log.error(e.toString());
-            } catch (ServletException e) {
+            } catch (Exception e) {
                 log.error(e.toString());
             }
-        } else {
-            rs.setStatus(401);
         }
-
+        rs.setStatus(401);
     }
 
     @Override

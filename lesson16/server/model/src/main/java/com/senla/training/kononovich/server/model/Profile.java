@@ -1,15 +1,10 @@
 package com.senla.training.kononovich.server.model;
 
-import java.util.Date;
-
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name = "profile")
+@Table(name = "user_data")
 public class Profile extends AbstractEntity {
 
 	/**
@@ -17,57 +12,15 @@ public class Profile extends AbstractEntity {
 	 */
 	private static final long serialVersionUID = -1537354694934785128L;
 	
-    @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "authentificationId")
-    private User user;
-    
     @Column(name = "name")
     private String name;
-    @Column(name = "address")
-    private String address;
-    @Column(name = "dateOfBirth")
-    private Date dateOfBirth;
+    @Column(name = "surname")
+    private String surname;
     
     public Profile() {
     	
     }
     
-    @JsonCreator
-    public Profile(
-            @JsonProperty("user") User user,
-            @JsonProperty("id") Long id,
-            @JsonProperty("name") String name,
-            @JsonProperty("address") String address,
-            @JsonProperty("dateOfBirth") Date dateOfBirth) {
-
-        super(id);
-        this.user = user;
-        this.name = name;
-        this.address = address;
-        this.dateOfBirth = dateOfBirth;
-    }
-    
-    @JsonCreator
-	public Profile(@JsonProperty("user") User user,
-            @JsonProperty("name") String name,
-            @JsonProperty("address") String address,
-            @JsonProperty("dateOfBirth") Date dateOfBirth) {
-		super();
-		this.user = user;
-		this.name = name;
-		this.address = address;
-		this.dateOfBirth = dateOfBirth;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -76,21 +29,14 @@ public class Profile extends AbstractEntity {
 		this.name = name;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getSurname() {
+		return surname;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
 
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-    
-    
+
 }

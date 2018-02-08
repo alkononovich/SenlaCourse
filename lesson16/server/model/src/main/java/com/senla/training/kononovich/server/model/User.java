@@ -2,12 +2,8 @@ package com.senla.training.kononovich.server.model;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 @Entity
-@Table(name = "authentification")
+@Table(name = "user_autifification")
 public class User extends AbstractEntity{
 
 	/**
@@ -21,22 +17,6 @@ public class User extends AbstractEntity{
     @Column(name = "password")
     private String password;
     
-    @JsonIgnore
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Profile profile;
-
-    @JsonCreator
-    public User(@JsonProperty("id") Long id, @JsonProperty("login") String login, @JsonProperty("password") String password) {
-        super(id);
-        this.login = login;
-        this.password = password;
-    }
-
-    @JsonCreator
-    public User(@JsonProperty("login") String login,@JsonProperty("password") String password) {
-        this.login = login;
-        this.password = password;
-    }
 
     public User() {
     }

@@ -3,8 +3,9 @@ package com.senla.training.kononovich.server.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.senla.training.kononovich.server.service.TokenUtility;
-import com.senla.training.kononovich.server.service.UserService;
+import com.senla.training.kononovich.server.api.service.ITokenUtility;
+import com.senla.training.kononovich.server.api.service.IUserService;
+import com.senla.training.kononovich.server.model.User;
 
 import org.springframework.stereotype.Controller;
 
@@ -14,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginController {
 
     @Autowired
-    UserService userService;
+    private IUserService userService;
+    @Autowired
+    private ITokenUtility tokenUtility;
 
     public LoginController() {
     }
@@ -23,11 +26,10 @@ public class LoginController {
             value = {"/login"},
             method = {RequestMethod.POST}
     )
-    public void login(@RequestHeader String login, @RequestHeader String password, HttpServletResponse response) {
-
-        Long id = userService.checkUser(login, password);
+    public void login(HttpServletResponse response, @RequestBody User user) {
+        Long id = userService.checkUser(user);
         if (id != null) {
-            String token = TokenUtility.getInstance().createToken(id);
+            String token = tokenUtility.createToken(id);
             response.addHeader("token", token);
         } else {
             response.setStatus(401);
