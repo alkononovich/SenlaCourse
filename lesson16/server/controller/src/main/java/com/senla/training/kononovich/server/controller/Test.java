@@ -11,23 +11,23 @@ import com.senla.training.kononovich.server.model.User;
 
 public class Test {
 
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        ApplicationContext context = new ClassPathXmlApplicationContext("WEB-INF/spring/root-context.xml");
+       /* ApplicationContext context = new ClassPathXmlApplicationContext("WEB-INF/spring/root-context.xml");
         IUserService userService = context.getBean(IUserService.class);
         IProfileService userDataService = context.getBean(IProfileService.class);
         IUserDao userDao = context.getBean(IUserDao.class);
         
 		User u = new User();
-		u.setLogin("roots");
-		u.setPassword("654654");
+		u.setLogin("log");
+		u.setPassword("pas");
 
 		Profile p = new Profile();
-		p.setName("prof");
+		p.setName("testname");
 
 		userService.addUser(u);
-		userDataService.addUserData(p);
+		userDataService.addUserData(p);*/
 
-	}*/
+	}
 
 }

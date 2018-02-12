@@ -1,4 +1,4 @@
-package com.senla.training.kononovich.server.controller;
+package com.senla.training.kononovich.server.servlets;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,7 +14,7 @@ import com.senla.training.kononovich.server.api.service.ITokenUtility;
 import com.senla.training.kononovich.server.model.Profile;
 
 @Controller
-public class ProfileController {
+public class ProfileServlet {
     @Autowired
     private IProfileService profileService;
     @Autowired

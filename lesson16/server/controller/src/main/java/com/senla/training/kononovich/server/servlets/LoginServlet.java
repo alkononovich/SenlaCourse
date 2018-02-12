@@ -1,4 +1,4 @@
-package com.senla.training.kononovich.server.controller;
+package com.senla.training.kononovich.server.servlets;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,14 +12,14 @@ import org.springframework.stereotype.Controller;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class LoginController {
+public class LoginServlet {
 
     @Autowired
     private IUserService userService;
     @Autowired
     private ITokenUtility tokenUtility;
 
-    public LoginController() {
+    public LoginServlet() {
     }
 
     @RequestMapping(
