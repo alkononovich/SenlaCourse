@@ -31,7 +31,7 @@ public class FilterToken implements Filter {
                 getRequiredWebApplicationContext(filterConfig.getServletContext()).
                 getBean( ITokenUtility.class);
 
-        IUserHandler userHandler=WebApplicationContextUtils.
+        IUserHandler userHandler = WebApplicationContextUtils.
                 getRequiredWebApplicationContext(filterConfig.getServletContext()).
                 getBean( IUserHandler.class);
         Long id = tokenUtility.getUserIdByToken(token);
