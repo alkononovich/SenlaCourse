@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import kononovich.vetpharmacy.model.enums.UserRole;
+
 @Entity
 @Table
 public class User extends AbstractEntity {
@@ -20,7 +22,7 @@ public class User extends AbstractEntity {
 	private String address;
 
 	@Column
-	private Role role;
+	private UserRole role;
 
 	@OneToOne(optional = false, mappedBy = "user")
 	private UserCreds creds;
@@ -67,11 +69,11 @@ public class User extends AbstractEntity {
 		this.name = name;
 	}
 
-	public Role getRole() {
+	public UserRole getRole() {
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(UserRole role) {
 		this.role = role;
 	}
 
